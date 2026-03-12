@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SUPABASE_DB_URL")
+}
+
+model User {
+  id             String     @id @default(uuid())
+  email          String     @unique
+  businessName   String
+  plan           String     @default("starter")
+  onboarded      Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  merchants      Merchant[]
+}
+
+model Merchant {
+  id                    String            @id @default(uuid())
+  userId                String
+  user                  User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName          String
+  websiteUrl            String?
+  processor             String?
+  processorKey          String?           @db.Text
+  processorMetadata     Json?
+  mid                   String?
+  plan                  String            @default("starter")
+  onboardMethod         String?
+  status                String            @default("active")
+  processingStatus      String            @default("awaiting_intake")
+  merchantCategory      String?
+  productsDescription   String?
+  monthlyProcessing     Float             @default(0)
+  averageTicket         Float             @default(0)
+  highestTicket         Float             @default(0)
+  countriesServed       String[]
+  approvalHistory       String?
+  chargebackHistory     String?
+  reserveHistory        String?
+  processingModel       String?
+  fulfillmentTimeline   String?
+  reserveAmount         Float             @default(0)
+  midHealthScore        Int               @default(58)
+  createdAt             DateTime          @default(now())
+  transactions          Transaction[]
+  alerts                Alert[]
+  reports               Report[]
+  uploads               StatementUpload[]
+}
+
+model Transaction {
+  id           String    @id @default(uuid())
+  merchantId   String
+  merchant     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  txId         String
+  amount       Float
+  currency     String    @default("USD")
+  country      String?
+  cardBin      String?
+  processor    String?
+  status       String    @default("approved")
+  riskScore    Int       @default(0)
+  riskSignals  Json?
+  disputed     Boolean   @default(false)
+  refunded     Boolean   @default(false)
+  ipAddress    String?
+  email        String?
+  createdAt    DateTime  @default(now())
+}
+
+model Alert {
+  id          String    @id @default(uuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  type        String
+  message     String
+  read        Boolean   @default(false)
+  resolved    Boolean   @default(false)
+  metadata    Json?
+  createdAt   DateTime  @default(now())
+}
+
+model Report {
+  id          String    @id @default(uuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  week        String
+  summary     Json
+  fileUrl     String?
+  createdAt   DateTime  @default(now())
+}
+
+model StatementUpload {
+  id          String    @id @default(uuid())
+  merchantId  String
+  merchant    Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  fileName    String
+  fileType    String
+  fileUrl     String
+  parsed      Boolean   @default(false)
+  parsedAt    DateTime?
+  createdAt   DateTime  @default(now())
+}
