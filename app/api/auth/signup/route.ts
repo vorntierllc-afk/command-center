@@ -47,6 +47,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ user: data.user, session: data.session });
   } catch (error) {
-    return NextResponse.json({ error: "Unable to create account." }, { status: 400 });
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("signup error:", msg);
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 }
