@@ -738,16 +738,90 @@ export function HRIDashboard() {
   const [search, setSearch] = useState("");
   const [actionDone, setActionDone] = useState<Record<string,string>>({});
   const [riskFilter, setRiskFilter] = useState("all");
-  const user = { name: "Demo Merchant", email: "demo@highriskintel.com" };
+  const [overview, setOverview] = useState<any>(null);
+  const [txns, setTxns] = useState(TXNS);
+  const [isSample, setIsSample] = useState(true);
+  const [user, setUser] = useState({ name: "Demo Merchant", email: "demo@highriskintel.com" });
+
+  useEffect(() => {
+    // Fetch overview
+    fetch("/api/dashboard/overview")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && !data.error) {
+          setOverview(data);
+          setIsSample(data.isSample !== false ? true : false);
+        }
+      }).catch(() => {});
+
+    // Fetch transactions
+    fetch("/api/transactions?limit=50")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data?.data?.length) {
+          setTxns(data.data.map((tx: any) => ({
+            id: tx.txId || tx.id,
+            email: tx.email || "—",
+            amount: "$" + Number(tx.amount).toLocaleString("en-US", {minimumFractionDigits:2}),
+            country: tx.country || "—",
+            bin: tx.cardBin || "—",
+            risk: tx.riskScore ?? 0,
+            processor: tx.processor || "—",
+            status: tx.status ? tx.status.charAt(0).toUpperCase() + tx.status.slice(1) : "—",
+          })));
+        }
+      }).catch(() => {});
+
+    // Fetch alerts
+    fetch("/api/alerts")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (Array.isArray(data) && data.length) {
+          setAlerts(data.map((a: any, i: number) => ({
+            id: i + 1,
+            time: new Date(a.createdAt).toLocaleString(),
+            type: a.type,
+            msg: a.message,
+            read: a.read,
+          })));
+        }
+      }).catch(() => {});
+
+    // Try to get current user info
+    fetch("/api/admin/merchants")
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (Array.isArray(data) && data[0]?.businessName) {
+          setUser({ name: data[0].businessName, email: "" });
+        }
+      }).catch(() => {});
+  }, []);
+
   const unread = alerts.filter(a=>!a.read).length;
   const markRead = (id: number) => setAlerts(prev=>prev.map(a=>a.id===id?{...a,read:true}:a));
   const markAllRead = () => setAlerts(prev=>prev.map(a=>({...a,read:true})));
   const doAction = (tx: string, action: string) => setActionDone(prev=>({...prev,[tx]:action}));
-  const filteredTxns = TXNS.filter(tx=>{
+  const filteredTxns = txns.filter(tx=>{
     const ms = tx.id.toLowerCase().includes(search.toLowerCase())||tx.email.toLowerCase().includes(search.toLowerCase());
     const mr = riskFilter==="all"||(riskFilter==="high"&&tx.risk>=70)||(riskFilter==="med"&&tx.risk>=40&&tx.risk<70)||(riskFilter==="low"&&tx.risk<40);
     return ms && mr;
   });
+
+  // Map overview to display values (fall back to demo values)
+  const stats = overview ? {
+    totalVolume: "$" + Number(overview.totalVolume).toLocaleString("en-US", {minimumFractionDigits:0}),
+    chargebackRate: Number(overview.chargebackRate).toFixed(2) + "%",
+    riskScore: String(overview.riskScore ?? 62),
+    activeAlerts: String(overview.activeAlerts ?? 7),
+    transactionsToday: String(overview.transactionsToday ?? 438),
+    refundsIssued: String(overview.refundsIssued ?? 12),
+    processorRisk: overview.processorRisk > 60 ? "High" : overview.processorRisk > 30 ? "Moderate" : "Low",
+    disputeProbability: Number(overview.disputeProbability).toFixed(1) + "%",
+  } : {
+    totalVolume: "$284,920", chargebackRate: "1.84%", riskScore: "62",
+    activeAlerts: "7", transactionsToday: "438", refundsIssued: "12",
+    processorRisk: "Moderate", disputeProbability: "14.2%",
+  };
   const tabs = [
     {id:"overview",label:"Overview",icon:"◈"},
     {id:"transactions",label:"Transactions",icon:"⬡"},
@@ -786,13 +860,18 @@ export function HRIDashboard() {
         </div>
         {tab==="overview"&&(
           <div>
+            {isSample && (
+              <div style={{background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:10,padding:"12px 18px",marginBottom:20,fontSize:13,color:"#F59E0B"}}>
+                📊 Sample data — Sign up and complete onboarding to see your real analytics.
+              </div>
+            )}
             <div style={d.grid4}>
-              {[{label:"Total Volume",val:"$284,920",sub:"↑ 12% this week",c:"#60A5FA"},{label:"Chargeback Rate",val:"1.84%",sub:"↓ 0.3% vs last week",c:"#10B981"},{label:"Risk Score",val:"62",sub:"Moderate risk",c:"#F59E0B"},{label:"Active Alerts",val:"7",sub:"2 critical",c:"#EF4444"}].map((c,i)=>(
+              {[{label:"Total Volume",val:stats.totalVolume,sub:"↑ 12% this week",c:"#60A5FA"},{label:"Chargeback Rate",val:stats.chargebackRate,sub:"↓ 0.3% vs last week",c:"#10B981"},{label:"Risk Score",val:stats.riskScore,sub:"Moderate risk",c:"#F59E0B"},{label:"Active Alerts",val:stats.activeAlerts,sub:"2 critical",c:"#EF4444"}].map((c,i)=>(
                 <div key={i} className="ch" style={d.card}><p style={d.cardLbl}>{c.label}</p><p style={{...d.cardVal,color:c.c}}>{c.val}</p><p style={d.cardSub}>{c.sub}</p></div>
               ))}
             </div>
             <div style={d.grid4}>
-              {[{label:"Transactions Today",val:"438"},{label:"Refunds Issued",val:"12"},{label:"Processor Risk",val:"Moderate"},{label:"Dispute Probability",val:"14.2%"}].map((c,i)=>(
+              {[{label:"Transactions Today",val:stats.transactionsToday},{label:"Refunds Issued",val:stats.refundsIssued},{label:"Processor Risk",val:stats.processorRisk},{label:"Dispute Probability",val:stats.disputeProbability}].map((c,i)=>(
                 <div key={i} style={d.flatCard}><span style={d.flatLbl}>{c.label}</span><span style={d.flatVal}>{c.val}</span></div>
               ))}
             </div>
