@@ -667,14 +667,29 @@ export function HRIAuthPage({ mode }: { mode: "signin" | "signup" }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement>) => setForm(f=>({...f,[k]:e.target.value}));
-  const handle = () => {
+  const handle = async () => {
     setError("");
     if (!form.email || !form.password) { setError("Please fill in all fields."); return; }
     if (!form.email.includes("@")) { setError("Enter a valid email address."); return; }
-    if (form.password.length < 6) { setError("Password must be at least 6 characters."); return; }
+    if (form.password.length < 8) { setError("Password must be at least 8 characters."); return; }
     if (mode==="signup" && !form.name) { setError("Enter your business name."); return; }
     setLoading(true);
-    setTimeout(() => { setLoading(false); router.push("/dashboard"); }, 900);
+    try {
+      const body = mode === "signup"
+        ? { email: form.email, password: form.password, business_name: form.name, plan: "starter" }
+        : { email: form.email, password: form.password };
+      const res = await fetch(`/api/auth/${mode}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.error || "Something went wrong."); setLoading(false); return; }
+      router.push("/dashboard");
+    } catch {
+      setError("Network error. Please try again.");
+      setLoading(false);
+    }
   };
   return (
     <div style={a.root}>
