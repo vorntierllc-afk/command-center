@@ -54,7 +54,7 @@ export async function POST(request: Request) {
     data: {
       processor: body.processor,
       processorKey: encryptSecret(body.api_key),
-      processorMetadata: body.extra_fields,
+      processorMetadata: body.extra_fields as any,
       onboardMethod: "api",
       processingStatus: "processing"
     }
@@ -79,12 +79,12 @@ export async function POST(request: Request) {
             currency: tx.currency || "USD",
             country: tx.country || "US",
             cardBin: tx.cardBin || "",
-            processor: "stripe",
-            status: tx.status || "approved",
-            riskScore: scored.riskScore,
-            riskSignals: scored.signals,
-            email: tx.email,
-            createdAt: tx.createdAt || new Date()
+              processor: "stripe",
+              status: tx.status || "approved",
+              riskScore: scored.riskScore,
+              riskSignals: scored.signals as any,
+              email: tx.email,
+              createdAt: tx.createdAt || new Date()
           };
         })
       }).catch(() => null);

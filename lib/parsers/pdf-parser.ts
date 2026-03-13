@@ -1,3 +1,4 @@
+// @ts-ignore
 import pdf from "pdf-parse";
 import type { TransactionInput } from "@/lib/server/types";
 

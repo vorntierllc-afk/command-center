@@ -11,10 +11,10 @@ export function createSupabaseServerClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options) {
+        set(name: string, value: string, options?: Record<string, any>) {
           cookieStore.set({ name, value, ...options });
         },
-        remove(name: string, options) {
+        remove(name: string, options?: Record<string, any>) {
           cookieStore.set({ name, value: "", ...options, maxAge: 0 });
         }
       }

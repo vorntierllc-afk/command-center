@@ -1,13 +1,13 @@
 import Stripe from "stripe";
 
 export async function validateStripeConnection(secretKey: string) {
-  const stripe = new Stripe(secretKey, { apiVersion: "2025-02-24.acacia" });
+  const stripe = new Stripe(secretKey, { apiVersion: "2025-08-27.basil" });
   const account = await stripe.accounts.retrieve();
   return { valid: true, accountId: account.id };
 }
 
 export async function syncStripeTransactions(secretKey: string) {
-  const stripe = new Stripe(secretKey, { apiVersion: "2025-02-24.acacia" });
+  const stripe = new Stripe(secretKey, { apiVersion: "2025-08-27.basil" });
   const charges = await stripe.charges.list({ limit: 25, created: { gte: Math.floor(Date.now() / 1000) - 90 * 24 * 60 * 60 } });
   return charges.data.map((charge) => ({
     txId: charge.id,

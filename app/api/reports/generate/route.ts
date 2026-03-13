@@ -21,7 +21,7 @@ export async function POST() {
     data: {
       merchantId: merchant.id,
       week: new Date().toISOString().slice(0, 10),
-      summary
+      summary: summary as any
     }
   });
 
