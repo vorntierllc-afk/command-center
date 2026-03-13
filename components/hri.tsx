@@ -685,7 +685,7 @@ export function HRIAuthPage({ mode }: { mode: "signin" | "signup" }) {
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || "Something went wrong."); setLoading(false); return; }
-      router.push("/dashboard");
+      router.push(mode === "signup" ? "/onboarding" : "/dashboard");
     } catch {
       setError("Network error. Please try again.");
       setLoading(false);
@@ -861,8 +861,9 @@ export function HRIDashboard() {
         {tab==="overview"&&(
           <div>
             {isSample && (
-              <div style={{background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:10,padding:"12px 18px",marginBottom:20,fontSize:13,color:"#F59E0B"}}>
-                📊 Sample data — Sign up and complete onboarding to see your real analytics.
+              <div style={{background:"rgba(245,158,11,0.1)",border:"1px solid rgba(245,158,11,0.3)",borderRadius:10,padding:"12px 18px",marginBottom:20,fontSize:13,color:"#F59E0B",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <span>📊 Sample data — Complete onboarding to see your real analytics.</span>
+                <button onClick={()=>router.push("/onboarding")} style={{background:"#F59E0B",color:"#000",border:"none",borderRadius:6,padding:"6px 14px",fontSize:12,fontWeight:700,cursor:"pointer"}}>Complete onboarding →</button>
               </div>
             )}
             <div style={d.grid4}>
