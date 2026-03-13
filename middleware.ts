@@ -1,14 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { decodeSession } from "@/lib/server/session";
 import { updateSupabaseSession } from "@/lib/supabase/middleware";
 
 const protectedPrefixes = [
-  "/dashboard",
   "/onboarding",
-  "/api/dashboard",
-  "/api/transactions",
-  "/api/alerts",
-  "/api/reports"
+  "/api/onboarding"
 ];
 
 export function middleware(request: NextRequest) {
@@ -21,8 +16,10 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const session = decodeSession(request.cookies.get("highriskintel_session")?.value);
-  if (!session) {
+  // Basic cookie presence check (Edge Runtime compatible).
+  // Full cryptographic verification happens in server-side route handlers.
+  const sessionCookie = request.cookies.get("highriskintel_session")?.value;
+  if (!sessionCookie || !sessionCookie.includes(".")) {
     const url = new URL("/signin", request.url);
     return NextResponse.redirect(url);
   }
