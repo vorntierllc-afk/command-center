@@ -1,0 +1,40 @@
+import type { MetadataRoute } from "next";
+
+const SITE_URL = "https://highriskintel.com";
+
+export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
+
+  return [
+    {
+      url: SITE_URL,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 1.0
+    },
+    {
+      url: `${SITE_URL}/product`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9
+    },
+    {
+      url: `${SITE_URL}/pricing`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9
+    },
+    {
+      url: `${SITE_URL}/security`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7
+    },
+    {
+      url: `${SITE_URL}/docs`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8
+    }
+  ];
+}

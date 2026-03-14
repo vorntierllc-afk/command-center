@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Docs — API Reference, Integrations & Getting Started Guide",
+  description:
+    "HighRiskIntel documentation: getting started guide, API reference for risk scoring, processor integrations (Stripe, Checkout.com, Adyen, MXMerchant), dashboard guides, and alert configuration.",
+  alternates: { canonical: "https://highriskintel.com/docs" },
+  openGraph: {
+    url: "https://highriskintel.com/docs",
+    title: "HighRiskIntel Docs — API Reference & Integration Guides",
+    description:
+      "Everything you need to integrate and use HighRiskIntel. Transaction risk score API, processor connections, alert configuration."
+  }
+};
 
 const SECTIONS = [
   {

@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Product — AI Risk Engine, MID Protection & Chargeback Prevention",
+  description:
+    "Every tool a high-risk merchant needs: real-time AI risk scoring, EDR network integration, MID termination prediction, authorization health monitoring, and weekly intel reports.",
+  alternates: { canonical: "https://highriskintel.com/product" },
+  openGraph: {
+    url: "https://highriskintel.com/product",
+    title: "HighRiskIntel Product — AI Risk Engine & Chargeback Prevention",
+    description:
+      "Real-time transaction scoring, EDR network alerts, MID protection, and analyst-backed risk advisory — all in one dashboard."
+  }
+};
 
 const FEATURES = [
   {

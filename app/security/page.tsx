@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Security — SOC 2 Type II, PCI DSS Level 1, GDPR Compliant",
+  description:
+    "HighRiskIntel is SOC 2 Type II certified, PCI DSS Level 1 compliant, and GDPR ready. AES-256 encryption, HMAC-signed sessions, and strict row-level security protect your merchant data.",
+  alternates: { canonical: "https://highriskintel.com/security" },
+  openGraph: {
+    url: "https://highriskintel.com/security",
+    title: "HighRiskIntel Security — SOC 2, PCI DSS, GDPR",
+    description:
+      "Enterprise-grade security for industries where it isn't optional. SOC 2 Type II, PCI DSS Level 1, AES-256 encryption at rest."
+  }
+};
 
 const PILLARS = [
   {

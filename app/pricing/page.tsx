@@ -1,4 +1,18 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Pricing — Starter $250/mo, Professional $600/mo, Enterprise",
+  description:
+    "Simple, transparent pricing for high-risk merchants. Starter at $250/mo, Professional at $600/mo, and custom Enterprise plans. Plus a 10% performance fee only on disputes we prevent.",
+  alternates: { canonical: "https://highriskintel.com/pricing" },
+  openGraph: {
+    url: "https://highriskintel.com/pricing",
+    title: "HighRiskIntel Pricing — From $250/mo",
+    description:
+      "No setup fees. No hidden charges. Cancel anytime. Plus a 10% performance fee only on disputes we actually prevent."
+  }
+};
 
 const PLANS = [
   {
