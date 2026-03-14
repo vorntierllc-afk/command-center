@@ -144,6 +144,13 @@ model AuthorizationMetrics {
   createdAt      DateTime @default(now())
 }
 
+model NewsletterSubscriber {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  source      String   @default("landing")
+  createdAt   DateTime @default(now())
+}
+
 model RiskScore {
   id         String   @id @default(uuid())
   merchantId String
