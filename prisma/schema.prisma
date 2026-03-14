@@ -50,6 +50,10 @@ model Merchant {
   alerts                Alert[]
   reports               Report[]
   uploads               StatementUpload[]
+  transactionMetrics    TransactionMetrics[]
+  disputeMetrics        DisputeMetrics[]
+  authorizationMetrics  AuthorizationMetrics[]
+  riskScores            RiskScore[]
 }
 
 model Transaction {
@@ -104,4 +108,52 @@ model StatementUpload {
   parsed      Boolean   @default(false)
   parsedAt    DateTime?
   createdAt   DateTime  @default(now())
+}
+
+model TransactionMetrics {
+  id                 String   @id @default(uuid())
+  merchantId         String
+  merchant           Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  date               DateTime
+  volume             Float    @default(0)
+  transactionCount   Int      @default(0)
+  crossBorderRatio   Float    @default(0)
+  ticketVariance     Float    @default(0)
+  refundRatio        Float    @default(0)
+  createdAt          DateTime @default(now())
+}
+
+model DisputeMetrics {
+  id             String   @id @default(uuid())
+  merchantId     String
+  merchant       Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  date           DateTime
+  disputeRatio   Float    @default(0)
+  disputeCount   Int      @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model AuthorizationMetrics {
+  id             String   @id @default(uuid())
+  merchantId     String
+  merchant       Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  date           DateTime
+  approvalRate   Float    @default(0)
+  declineRate    Float    @default(0)
+  baseline       Float    @default(0)
+  createdAt      DateTime @default(now())
+}
+
+model RiskScore {
+  id         String   @id @default(uuid())
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  score      Int      @default(0)
+  status     String   @default("stable")
+  disputeRatioInput   Float @default(0)
+  authDeviationInput  Float @default(0)
+  volumeSpikeInput    Float @default(0)
+  refundRatioInput    Float @default(0)
+  crossBorderInput    Float @default(0)
+  createdAt  DateTime @default(now())
 }

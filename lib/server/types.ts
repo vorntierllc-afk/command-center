@@ -1,9 +1,19 @@
-export type AlertLevel = "critical" | "warning" | "info";
+export type AlertLevel = "critical" | "warning" | "low" | "info";
+export type RiskStatus = "stable" | "elevated" | "critical";
 
 export interface DashboardOverview {
   totalVolume: number;
   chargebackRate: number;
   riskScore: number;
+  riskStatus: RiskStatus;
+  riskTrend: number; // delta vs 30 days ago
+  authApprovalRate: number;
+  authDeclineRate: number;
+  authDeviation: number; // vs 7-day baseline
+  disputeRatio: number;
+  refundRatio: number;
+  volumeSpike: number; // multiplier, 1 = normal
+  crossBorderRatio: number;
   activeAlerts: number;
   transactionsToday: number;
   refundsIssued: number;
@@ -12,6 +22,18 @@ export interface DashboardOverview {
   midHealth: number;
   reserveAmount: number;
   isSample: boolean;
+}
+
+export interface ChartDataPoint {
+  date: string;
+  value: number;
+}
+
+export interface DashboardChartData {
+  disputeRatioTrend: ChartDataPoint[];
+  authRateTrend: ChartDataPoint[];
+  volumeTrend: ChartDataPoint[];
+  refundRatioTrend: ChartDataPoint[];
 }
 
 export interface MerchantIntakePayload {
@@ -42,4 +64,13 @@ export interface TransactionInput {
   ipAddress?: string;
   email?: string;
   createdAt?: Date;
+}
+
+export interface AlertWithMitigations {
+  id: string;
+  type: string;
+  message: string;
+  severity: AlertLevel;
+  createdAt: string;
+  mitigations: string[];
 }
