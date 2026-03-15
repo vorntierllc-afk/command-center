@@ -195,25 +195,26 @@ export default function DashboardPage() {
       if (!user) return
       setName(user.user_metadata?.full_name?.split(' ')[0] || 'there')
 
-      // Load merchant data
+      // Load merchant data — column names match Prisma camelCase schema
       const { data: merchant } = await supabase
-        .from('merchants')
-        .select('ai_analysis, edr_dismissed_at, processing_status')
-        .eq('user_id', user.id)
+        .from('Merchant')
+        .select('aiAnalysis, processingStatus')
+        .eq('userId', user.id)
         .single()
 
       if (merchant) {
-        if (merchant.processing_status === 'complete') setHasSampleData(false)
+        if (merchant.processingStatus === 'complete') setHasSampleData(false)
 
-        if (merchant.ai_analysis) {
-          const analysis = merchant.ai_analysis as AiAnalysis
+        if (merchant.aiAnalysis) {
+          const analysis = merchant.aiAnalysis as AiAnalysis
           setAiAnalysis(analysis)
 
           // Show EDR panel if chargeback rate > 0.8%
           const rate = analysis.chargeback_rate ?? 0
           if (rate > 0.008) {
-            const dismissedAt = merchant.edr_dismissed_at
-            const dismissed = dismissedAt && (Date.now() - new Date(dismissedAt).getTime() < 24 * 60 * 60 * 1000)
+            // EDR dismissed state stored in localStorage (no schema change needed)
+            const dismissedAt = localStorage.getItem('edr_dismissed_at')
+            const dismissed = dismissedAt && (Date.now() - Number(dismissedAt) < 24 * 60 * 60 * 1000)
             if (!dismissed) setShowEDR(true)
           }
         }
@@ -221,14 +222,9 @@ export default function DashboardPage() {
     })
   }, [])
 
-  async function dismissEDR() {
+  function dismissEDR() {
     setShowEDR(false)
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return
-    await supabase
-      .from('merchants')
-      .update({ edr_dismissed_at: new Date().toISOString() })
-      .eq('user_id', user.id)
+    localStorage.setItem('edr_dismissed_at', String(Date.now()))
   }
 
   const chargebackRate = aiAnalysis?.chargeback_rate

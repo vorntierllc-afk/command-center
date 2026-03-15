@@ -12,21 +12,21 @@ export async function POST(request: Request) {
   const { message } = await request.json();
   if (!message?.trim()) return NextResponse.json({ error: "Message required" }, { status: 400 });
 
-  // Get merchant + ai_analysis
+  // Get merchant + ai_analysis (Prisma camelCase column names)
   const { data: merchant } = await supabase
-    .from("merchants")
-    .select("id, ai_analysis")
-    .eq("user_id", user.id)
+    .from("Merchant")
+    .select("id, aiAnalysis")
+    .eq("userId", user.id)
     .single();
 
-  const aiAnalysis = merchant?.ai_analysis ?? null;
+  const aiAnalysis = merchant?.aiAnalysis ?? null;
 
-  // Get chat history (last 10 messages for context)
+  // Get chat history (last 10 messages for context) — table may not exist yet
   const { data: history } = await supabase
-    .from("chat_history")
+    .from("ChatMessage")
     .select("role, message")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: true })
+    .eq("merchantId", merchant?.id)
+    .order("createdAt", { ascending: true })
     .limit(10);
 
   const systemPrompt = `You are a payment risk analyst for HighRiskIntel. ${
@@ -52,11 +52,15 @@ export async function POST(request: Request) {
 
   const reply = response.content[0].type === "text" ? response.content[0].text : "";
 
-  // Save both messages to chat_history
-  await supabase.from("chat_history").insert([
-    { user_id: user.id, role: "user", message },
-    { user_id: user.id, role: "assistant", message: reply },
-  ]);
+  // Save both messages (silently ignore if ChatMessage table not yet migrated)
+  if (merchant?.id) {
+    try {
+      await supabase.from("ChatMessage").insert([
+        { merchantId: merchant.id, role: "user", message },
+        { merchantId: merchant.id, role: "assistant", message: reply },
+      ])
+    } catch { /* table may not exist yet */ }
+  }
 
   return NextResponse.json({ reply });
 }
