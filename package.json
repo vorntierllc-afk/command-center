@@ -9,9 +9,11 @@
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma db push --accept-data-loss && next build"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.78.0",
     "@prisma/client": "^5.22.0",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.49.1",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@types/node": "^20.17.24",
     "@types/papaparse": "^5.3.16",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "autoprefixer": "^10.4.21",

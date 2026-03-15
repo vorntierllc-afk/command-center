@@ -45,6 +45,8 @@ model Merchant {
   fulfillmentTimeline   String?
   reserveAmount         Float             @default(0)
   midHealthScore        Int               @default(58)
+  aiAnalysis            Json?
+  edrDismissedAt        DateTime?
   createdAt             DateTime          @default(now())
   transactions          Transaction[]
   alerts                Alert[]
@@ -54,6 +56,16 @@ model Merchant {
   disputeMetrics        DisputeMetrics[]
   authorizationMetrics  AuthorizationMetrics[]
   riskScores            RiskScore[]
+  chatMessages          ChatMessage[]
+}
+
+model ChatMessage {
+  id         String   @id @default(uuid())
+  merchantId String
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  role       String
+  message    String   @db.Text
+  createdAt  DateTime @default(now())
 }
 
 model Transaction {

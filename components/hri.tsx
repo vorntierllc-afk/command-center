@@ -17,21 +17,21 @@ const FEATURES = [
 
 const PRICING = [
   {
-    name: "Starter", price: "$250", period: "/mo",
-    desc: "For merchants under $50k/mo getting started with risk management.",
-    features: ["Up to $50k monthly volume", "AI risk scoring on all transactions", "EDR alerts via Chargebacks911", "Weekly branded reports", "Dispute reason code analysis", "Email support"],
+    name: "Basic", price: "$30", period: "/mo",
+    desc: "For solo merchants under $50k/mo getting started with risk management.",
+    features: ["Up to $50k monthly volume", "AI risk scoring on all transactions", "Weekly intel reports", "Email support"],
     cta: "Get started", highlight: false,
   },
   {
-    name: "Professional", price: "$600", period: "/mo",
-    desc: "Full intelligence suite for established high-risk merchants.",
-    features: ["Up to $500k monthly volume", "Everything in Starter", "12hr human review cycle", "MID termination prediction", "Rolling reserve forecasting", "Automation rules builder", "Priority support + analyst access"],
+    name: "Pro", price: "$50", period: "/mo",
+    desc: "Full intelligence suite for established high-risk merchants up to $500k/mo.",
+    features: ["Up to $500k monthly volume", "Everything in Basic", "AI chat analyst", "EDR dispute alerts", "MID termination prediction", "Priority support"],
     cta: "Get started", highlight: true,
   },
   {
-    name: "Enterprise", price: "Custom", period: "",
-    desc: "For high-volume merchants, ISOs, and payment facilitators.",
-    features: ["Unlimited volume", "Everything in Professional", "Dedicated risk analyst", "Custom integrations", "SLA guarantee", "White-glove onboarding", "Direct acquirer relationships"],
+    name: "Agency", price: "$200", period: "/mo",
+    desc: "For ISOs, payment facilitators, and agencies managing multiple merchants.",
+    features: ["Unlimited MIDs", "Everything in Pro", "White-label reports", "Dedicated support"],
     cta: "Contact sales", highlight: false,
   },
 ];
