@@ -120,7 +120,7 @@ export async function POST(request: Request) {
     data: {
       onboardMethod: "upload",
       processingStatus: "complete",
-      ...(aiAnalysis ? { aiAnalysis } : {}),
+      ...(aiAnalysis ? { aiAnalysis: aiAnalysis as object } : {}),
     },
   });
 
