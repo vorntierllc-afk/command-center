@@ -1,32 +1,22 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { updateSupabaseSession } from "@/lib/supabase/middleware";
+import { NextResponse, type NextRequest } from 'next/server'
+import { updateSession } from '@/lib/supabase/middleware'
 
-const protectedPrefixes = [
-  "/onboarding",
-  "/api/onboarding"
-];
+const PROTECTED = ['/dashboard', '/onboarding']
 
-export function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
-  const needsAuth = protectedPrefixes.some((prefix) => pathname.startsWith(prefix));
+export async function middleware(request: NextRequest) {
+  const { supabaseResponse, user } = await updateSession(request)
+  const path = request.nextUrl.pathname
 
-  updateSupabaseSession(request);
-
-  if (!needsAuth) {
-    return NextResponse.next();
+  const isProtected = PROTECTED.some(p => path.startsWith(p))
+  if (isProtected && !user) {
+    return NextResponse.redirect(new URL('/signin', request.url))
   }
-
-  // Basic cookie presence check (Edge Runtime compatible).
-  // Full cryptographic verification happens in server-side route handlers.
-  const sessionCookie = request.cookies.get("highriskintel_session")?.value;
-  if (!sessionCookie || !sessionCookie.includes(".")) {
-    const url = new URL("/signin", request.url);
-    return NextResponse.redirect(url);
+  if ((path === '/signin' || path === '/signup') && user) {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
-
-  return NextResponse.next();
+  return supabaseResponse
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/onboarding/:path*", "/api/:path*"]
-};
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+}

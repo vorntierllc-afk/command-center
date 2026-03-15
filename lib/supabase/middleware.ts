@@ -1,26 +1,26 @@
-import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { createServerClient } from '@supabase/ssr'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export function updateSupabaseSession(request: NextRequest) {
-  const response = NextResponse.next({ request });
-
-  createServerClient(
+export async function updateSession(request: NextRequest) {
+  let supabaseResponse = NextResponse.next({ request })
+  const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name: string) {
-          return request.cookies.get(name)?.value;
+        getAll() { return request.cookies.getAll() },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setAll(cookiesToSet: any[]) {
+          cookiesToSet.forEach(({ name, value }: { name: string; value: string }) => request.cookies.set(name, value))
+          supabaseResponse = NextResponse.next({ request })
+          cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options: unknown }) =>
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            supabaseResponse.cookies.set(name, value, options as any)
+          )
         },
-        set(name: string, value: string, options?: Record<string, any>) {
-          response.cookies.set({ name, value, ...options });
-        },
-        remove(name: string, options?: Record<string, any>) {
-          response.cookies.set({ name, value: "", ...options, maxAge: 0 });
-        }
-      }
+      },
     }
-  );
-
-  return response;
+  )
+  const { data: { user } } = await supabase.auth.getUser()
+  return { supabaseResponse, user }
 }
