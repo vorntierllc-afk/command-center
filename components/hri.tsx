@@ -628,7 +628,7 @@ export function LandingPage() {
 
             <div className="fu d3" style={s.heroBtns}>
               <button style={s.btnPrimary} className="btn-p" onClick={() => router.push("/signup")}>Start free trial</button>
-              <button style={s.btnOutline} className="btn-o" onClick={() => router.push("/signin")}>Sign in →</button>
+              <button style={s.btnOutline} className="btn-o" onClick={() => router.push("/demo")}>See live demo →</button>
             </div>
 
             <div className="fu d4" style={s.trustBadges}>
