@@ -14,6 +14,8 @@ export async function middleware(request: NextRequest) {
   if ((path === '/signin' || path === '/signup') && user) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
+  // Prevent completed merchants from being stuck in onboarding
+  // (onboarding page itself handles the redirect-to-dashboard if already done)
   return supabaseResponse
 }
 

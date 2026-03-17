@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
@@ -110,6 +110,23 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [syncResult, setSyncResult] = useState<{ transactions_synced?: number; chargeback_rate?: number; total_volume?: number } | null>(null)
+
+  // If merchant already completed onboarding, skip straight to dashboard
+  useEffect(() => {
+    async function checkStatus() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+      const { data: merchant } = await supabase
+        .from('merchants')
+        .select('status')
+        .eq('user_id', user.id)
+        .single()
+      if (merchant && merchant.status === 'active') {
+        router.replace('/dashboard')
+      }
+    }
+    checkStatus()
+  }, [])
 
   const stepIndex = step === 1 ? 0 : step === 2 ? 1 : step === 3 ? 2 : step === 4 ? 3 : 4
 

@@ -16,15 +16,26 @@ export default function SigninPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { setError(error.message); setLoading(false); return }
-    router.push('/dashboard')
+    if (data.user) {
+      const { data: merchant } = await supabase
+        .from('merchants')
+        .select('status, onboard_method')
+        .eq('user_id', data.user.id)
+        .single()
+      if (!merchant || merchant.status === 'onboarding') {
+        router.push('/onboarding')
+      } else {
+        router.push('/dashboard')
+      }
+    }
   }
 
   async function handleGoogle() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/dashboard` }
+      options: { redirectTo: `${window.location.origin}/api/auth/callback` }
     })
   }
 

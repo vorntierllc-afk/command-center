@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -226,6 +227,7 @@ function ChatPanel({ merchant }: { merchant: Merchant | null }) {
 // ── Main Dashboard Page ────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const supabase = createClient()
+  const router = useRouter()
   const [name, setName] = useState('there')
   const [greeting, setGreeting] = useState('')
   const [merchant, setMerchant] = useState<Merchant | null | undefined>(undefined)
@@ -249,6 +251,12 @@ export default function DashboardPage() {
         supabase.from('merchants').select('*').eq('user_id', user.id).single(),
         supabase.from('alerts').select('*').eq('user_id', user.id).order('created_at', { ascending: false }).limit(5)
       ])
+
+      // Redirect to onboarding if not yet completed
+      if (!m || m.status === 'onboarding') {
+        router.replace('/onboarding')
+        return
+      }
 
       setMerchant((m as Merchant) || null)
       setAlerts(als || [])
