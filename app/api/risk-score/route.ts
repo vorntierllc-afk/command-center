@@ -23,17 +23,18 @@ export async function POST(request: Request) {
   const body = schema.parse(await request.json());
   const result = scoreTransaction({
     amount: body.amount,
-    country: body.country,
-    cardBin: body.card_bin,
-    email: body.email,
-    ipVelocityCount: body.ip_address ? 1 : 0,
-    createdAt: new Date()
+    country: body.country ?? undefined,
+    email: body.email ?? undefined,
   });
 
   return NextResponse.json({
-    risk_score: result.riskScore,
+    risk_score: result.score,
     action: result.action,
     signals: result.signals,
-    reason: result.reason
+    reason: result.action === 'block'
+      ? 'Risk exceeds automated acceptance threshold.'
+      : result.action === 'review'
+        ? 'Transaction requires manual review.'
+        : 'Risk remains inside approval range.'
   });
 }

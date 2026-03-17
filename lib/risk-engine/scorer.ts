@@ -1,73 +1,56 @@
-import { DISPOSABLE_EMAIL_DOMAINS, HIGH_RISK_COUNTRIES, KNOWN_FRAUD_BINS, MEDIUM_RISK_COUNTRIES, PREPAID_BINS, VIRTUAL_BINS } from "@/lib/risk-engine/rules";
+export const HIGH_RISK_COUNTRIES = ["NG","RU","UA","BY","IR","KP","SY","YE","VE","MM","AF","IQ","LY","SD"]
+export const MED_RISK_COUNTRIES = ["BR","MX","PH","PK","BD","VN","ID","GH","KE","TZ","EG","MA"]
+const DISPOSABLE_EMAIL_DOMAINS = ["mailinator","tempmail","guerrilla","throwaway","yopmail","trashmail","fakeinbox"]
 
-export interface RiskSignals {
-  country_risk: number;
-  bin_risk: number;
-  amount_risk: number;
-  velocity_risk: number;
-  time_risk: number;
-  email_risk: number;
+export interface TransactionInput {
+  amount: number
+  country?: string
+  email?: string
+  disputed?: boolean
+  created_at?: string
+  ip_address?: string
 }
 
-export interface ScoreInput {
-  amount: number;
-  country?: string | null;
-  cardBin?: string | null;
-  email?: string | null;
-  ipVelocityCount?: number;
-  binVelocityCount?: number;
-  createdAt?: Date;
+export interface ScoredTransaction {
+  score: number
+  action: 'approve' | 'review' | 'block'
+  signals: string[]
 }
 
-export function scoreTransaction(input: ScoreInput) {
-  const signals: RiskSignals = {
-    country_risk: 0,
-    bin_risk: 0,
-    amount_risk: 0,
-    velocity_risk: 0,
-    time_risk: 0,
-    email_risk: 0
-  };
+export function scoreTransaction(tx: TransactionInput): ScoredTransaction {
+  let score = 0
+  const signals: string[] = []
 
-  if (input.country && HIGH_RISK_COUNTRIES.includes(input.country)) {
-    signals.country_risk = 24;
-  } else if (input.country && MEDIUM_RISK_COUNTRIES.includes(input.country)) {
-    signals.country_risk = 12;
+  if (tx.country && HIGH_RISK_COUNTRIES.includes(tx.country)) {
+    score += 25; signals.push("High-risk country")
+  } else if (tx.country && MED_RISK_COUNTRIES.includes(tx.country)) {
+    score += 12; signals.push("Medium-risk country")
   }
 
-  if (input.cardBin && KNOWN_FRAUD_BINS.includes(input.cardBin.slice(0, 6))) {
-    signals.bin_risk = 20;
-  } else if (input.cardBin && PREPAID_BINS.includes(input.cardBin.slice(0, 6))) {
-    signals.bin_risk = 15;
-  } else if (input.cardBin && VIRTUAL_BINS.includes(input.cardBin.slice(0, 6))) {
-    signals.bin_risk = 10;
+  if (tx.amount > 5000) { score += 15; signals.push("Very high amount") }
+  else if (tx.amount > 2500) { score += 12; signals.push("High amount") }
+  else if (tx.amount > 1000) { score += 8; signals.push("Above average amount") }
+
+  if (tx.email && DISPOSABLE_EMAIL_DOMAINS.some(d => tx.email!.includes(d))) {
+    score += 10; signals.push("Disposable email domain")
   }
 
-  if (input.amount > 5000) signals.amount_risk = 15;
-  else if (input.amount > 2500) signals.amount_risk = 12;
-  else if (input.amount > 1000) signals.amount_risk = 8;
-
-  if ((input.binVelocityCount || 0) >= 3) signals.velocity_risk += 15;
-  if ((input.ipVelocityCount || 0) >= 5) signals.velocity_risk += 20;
-  signals.velocity_risk = Math.min(signals.velocity_risk, 20);
-
-  const hour = (input.createdAt || new Date()).getUTCHours();
-  if (hour <= 5 || hour >= 23) {
-    signals.time_risk = 8;
+  if (tx.created_at) {
+    const hour = new Date(tx.created_at).getHours()
+    if (hour >= 1 && hour <= 5) { score += 8; signals.push("Unusual transaction hour") }
   }
 
-  const emailDomain = input.email?.split("@")[1]?.toLowerCase();
-  if (emailDomain && DISPOSABLE_EMAIL_DOMAINS.includes(emailDomain)) {
-    signals.email_risk = 10;
-  }
+  if (tx.disputed) { score += 20; signals.push("Previously disputed") }
 
-  const riskScore = Object.values(signals).reduce((sum, value) => sum + value, 0);
-  const action = riskScore >= 80 ? "block" : riskScore >= 50 ? "review" : "approve";
-  const reason = action === "block"
-    ? "Risk exceeds automated acceptance threshold."
-    : action === "review"
-      ? "Transaction requires manual review."
-      : "Risk remains inside approval range.";
+  score = Math.min(100, Math.max(0, score))
 
-  return { riskScore, action, signals, reason };
+  let action: 'approve' | 'review' | 'block' = 'approve'
+  if (score >= 80) action = 'block'
+  else if (score >= 50) action = 'review'
+
+  return { score, action, signals }
+}
+
+export function calcMidHealthScore(chargebackRate: number, highRiskCount: number): number {
+  return Math.max(0, Math.min(100, Math.round(100 - (chargebackRate * 100 * 30) - (highRiskCount * 2))))
 }

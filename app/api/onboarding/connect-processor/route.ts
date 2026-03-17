@@ -68,9 +68,8 @@ export async function POST(request: Request) {
           const scored = scoreTransaction({
             amount: tx.amount,
             country: tx.country,
-            cardBin: tx.cardBin,
             email: tx.email,
-            createdAt: tx.createdAt
+            created_at: tx.createdAt instanceof Date ? tx.createdAt.toISOString() : tx.createdAt
           });
           return {
             merchantId: merchant.id,
@@ -81,7 +80,7 @@ export async function POST(request: Request) {
             cardBin: tx.cardBin || "",
               processor: "stripe",
               status: tx.status || "approved",
-              riskScore: scored.riskScore,
+              riskScore: scored.score,
               riskSignals: scored.signals as any,
               email: tx.email,
               createdAt: tx.createdAt || new Date()
