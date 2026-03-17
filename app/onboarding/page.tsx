@@ -3,6 +3,7 @@ import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
+import ProcessorCredentialsForm from '@/components/onboarding/ProcessorCredentialsForm'
 
 type StepId = 1 | 2 | 3 | 4 | 5 | '5a' | '5b' | 6
 
@@ -106,6 +107,9 @@ export default function OnboardingPage() {
   const [analysisDone, setAnalysisDone] = useState(false)
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [syncResult, setSyncResult] = useState<{ transactions_synced?: number; chargeback_rate?: number; total_volume?: number } | null>(null)
 
   const stepIndex = step === 1 ? 0 : step === 2 ? 1 : step === 3 ? 2 : step === 4 ? 3 : 4
 
@@ -172,6 +176,27 @@ export default function OnboardingPage() {
     await new Promise(r => setTimeout(r, 600))
     setAnalysisResult(result)
     setAnalysisDone(true)
+  }
+
+  async function handleProcessorConnect(processor: string, processorCredentials: Record<string, string>) {
+    setLoading(true)
+    setError(null)
+    const res = await fetch('/api/processor/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ processor, credentials: processorCredentials })
+    })
+    const apiData = await res.json()
+    if (apiData.success) {
+      setSyncResult(apiData)
+      setSelectedProcessor(processor)
+      setCredentials(processorCredentials)
+      setData(d => ({ ...d, processor, credentials: processorCredentials }))
+      runAnalysis('api')
+    } else {
+      setError(apiData.error || 'Connection failed')
+    }
+    setLoading(false)
   }
 
   function renderStep() {
@@ -292,47 +317,15 @@ export default function OnboardingPage() {
           <div className="w-full max-w-[560px] mx-auto">
             <h1 className="text-3xl font-bold text-[#0A0A0A] mb-2">Select your processor.</h1>
             <p className="text-gray-500 text-sm mb-6">We&apos;ll validate your credentials and pull your transaction history.</p>
-            <div className="flex gap-2 flex-wrap mb-6">
-              {Object.keys(PROCESSOR_FIELDS).map(p => (
-                <button key={p} onClick={() => { setSelectedProcessor(p); setCredentials({}) }}
-                  className={`px-4 py-2 rounded-full border text-sm font-medium transition ${
-                    selectedProcessor === p ? 'bg-[#0A0A0A] text-white border-[#0A0A0A]' : 'bg-white text-[#0A0A0A] border-[#E5E7EB] hover:border-[#0A0A0A]'
-                  }`}>{p}</button>
-              ))}
-            </div>
-
-            <AnimatePresence>
-              {selectedProcessor && (
-                <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} className="space-y-3 mb-4">
-                  {PROCESSOR_FIELDS[selectedProcessor].map(field => (
-                    <div key={field.key}>
-                      <label className="block text-xs font-medium text-gray-500 mb-1">{field.label}</label>
-                      <input
-                        type={field.isPassword ? 'password' : 'text'}
-                        placeholder={field.placeholder}
-                        value={credentials[field.key] || ''}
-                        onChange={e => setCredentials(c => ({ ...c, [field.key]: e.target.value }))}
-                        className="w-full border border-[#E5E7EB] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#0A0A0A] font-mono"
-                      />
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {selectedProcessor && (
-              <p className="text-xs text-gray-400 mb-5">🔒 Your credentials are AES-256 encrypted before storage. Read-only access only. Revoke anytime.</p>
+            {error && (
+              <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
+                {error}
+              </div>
             )}
-
-            <button
-              onClick={() => {
-                setData(d => ({ ...d, processor: selectedProcessor, credentials }))
-                runAnalysis('api')
-              }}
-              disabled={!selectedProcessor}
-              className="w-full bg-[#0A0A0A] text-white rounded-full py-3 text-sm font-semibold hover:bg-gray-900 transition disabled:opacity-40">
-              Connect &amp; analyze →
-            </button>
+            <ProcessorCredentialsForm
+              onConnect={handleProcessorConnect}
+              loading={loading}
+            />
           </div>
         )
 
