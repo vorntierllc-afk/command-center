@@ -154,7 +154,7 @@ function ChatPanel({ merchant }: { merchant: Merchant | null }) {
         })
       })
       const data = await res.json()
-      setMessages(m => [...m, { role: 'assistant', content: data.reply || 'Unable to respond.' }])
+      setMessages(m => [...m, { role: 'assistant', content: data.response || data.reply || 'Unable to respond.' }])
     } catch {
       setMessages(m => [...m, { role: 'assistant', content: 'Connection error. Please try again.' }])
     } finally {
