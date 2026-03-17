@@ -1,7 +1,52 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts'
+
+const DEMO_PASSWORD = 'hri2026'
+
+function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
+  const [input, setInput] = useState('')
+  const [error, setError] = useState(false)
+
+  function attempt(e: React.FormEvent) {
+    e.preventDefault()
+    if (input === DEMO_PASSWORD) {
+      sessionStorage.setItem('demo_unlocked', '1')
+      onUnlock()
+    } else {
+      setError(true)
+      setInput('')
+      setTimeout(() => setError(false), 2000)
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center px-4">
+      <div className="w-full max-w-sm text-center">
+        <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mx-auto mb-6">
+          <span className="text-[#0A0A0A] font-bold text-lg">H</span>
+        </div>
+        <h1 className="text-white text-2xl font-bold mb-2">Private Demo</h1>
+        <p className="text-gray-500 text-sm mb-8">Enter the access code to continue</p>
+        <form onSubmit={attempt} className="space-y-3">
+          <input
+            type="password"
+            placeholder="Access code"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            autoFocus
+            className={`w-full bg-[#1A1A1A] border rounded-xl px-4 py-3 text-white text-sm outline-none text-center tracking-widest transition ${error ? 'border-red-500' : 'border-[#333] focus:border-white'}`}
+          />
+          {error && <p className="text-red-400 text-xs">Incorrect code</p>}
+          <button type="submit" className="w-full bg-white text-[#0A0A0A] font-semibold py-3 rounded-xl text-sm hover:bg-gray-100 transition">
+            Enter →
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
 
 const CHART_DATA = [
   { month: 'Sep', rate: 0.42 },
@@ -41,7 +86,7 @@ const RISK_FACTORS = [
 
 const TABS = ['Overview', 'Transactions', 'Risk', 'Alerts']
 
-export default function DemoPage() {
+function DashboardDemo() {
   const [tab, setTab] = useState('Overview')
 
   return (
@@ -342,4 +387,15 @@ export default function DemoPage() {
       </div>
     </div>
   )
+}
+
+export default function DemoPage() {
+  const [unlocked, setUnlocked] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('demo_unlocked') === '1') setUnlocked(true)
+  }, [])
+
+  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />
+  return <DashboardDemo />
 }
