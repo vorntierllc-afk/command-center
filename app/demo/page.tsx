@@ -57,31 +57,34 @@ const CHART_DATA = [
   { month: 'Feb', rate: 1.71 },
 ]
 
+// Sample client: PureForm Peptides — a peptide research store
+const CLIENT = { name: 'PureForm Peptides', industry: 'Research Peptides & Compounds' }
+
 const TRANSACTIONS = [
-  { id: 'ch_001', amount: 289.00, country: 'NG', email: 'k.adeyemi@mailinator.com', risk: 91, status: 'disputed', flag: '🇳🇬' },
-  { id: 'ch_002', amount: 4750.00, country: 'RU', email: 'ivan.petrov@yandex.ru', risk: 84, status: 'succeeded', flag: '🇷🇺' },
-  { id: 'ch_003', amount: 129.00, country: 'US', email: 'sarah.chen@gmail.com', risk: 12, status: 'succeeded', flag: '🇺🇸' },
-  { id: 'ch_004', amount: 899.00, country: 'UA', email: 'user@tempmail.com', risk: 78, status: 'disputed', flag: '🇺🇦' },
-  { id: 'ch_005', amount: 59.00, country: 'CA', email: 'mike.j@hotmail.com', risk: 8, status: 'succeeded', flag: '🇨🇦' },
-  { id: 'ch_006', amount: 3200.00, country: 'BR', email: 'compras@empresa.br', risk: 55, status: 'refunded', flag: '🇧🇷' },
-  { id: 'ch_007', amount: 199.00, country: 'US', email: 'james.w@gmail.com', risk: 14, status: 'succeeded', flag: '🇺🇸' },
-  { id: 'ch_008', amount: 1450.00, country: 'NG', email: 'test@guerrillamail.com', risk: 96, status: 'disputed', flag: '🇳🇬' },
+  { id: 'ch_4f2a', amount: 312.00, country: 'US', email: 'j.mitchell@gmail.com', risk: 11, status: 'succeeded', flag: '🇺🇸', product: 'BPC-157 + TB-500 Stack' },
+  { id: 'ch_8c3b', amount: 189.00, country: 'AU', email: 'r.harris@outlook.com', risk: 18, status: 'succeeded', flag: '🇦🇺', product: 'Ipamorelin 5mg x3' },
+  { id: 'ch_1d9e', amount: 540.00, country: 'RU', email: 'dmitri.v@mail.ru', risk: 82, status: 'disputed', flag: '🇷🇺', product: 'CJC-1295 + GHRP-6' },
+  { id: 'ch_7a1c', amount: 95.00, country: 'US', email: 'kyle.b@gmail.com', risk: 9, status: 'succeeded', flag: '🇺🇸', product: 'Selank 5mg' },
+  { id: 'ch_2e8f', amount: 720.00, country: 'NG', email: 'test@tempmail.com', risk: 94, status: 'disputed', flag: '🇳🇬', product: 'Sermorelin 10mg x5' },
+  { id: 'ch_5b4d', amount: 268.00, country: 'CA', email: 'sarah.t@icloud.com', risk: 13, status: 'succeeded', flag: '🇨🇦', product: 'Epithalon 10mg' },
+  { id: 'ch_9f2e', amount: 415.00, country: 'UA', email: 'user@guerrillamail.com', risk: 79, status: 'disputed', flag: '🇺🇦', product: 'GHK-Cu 50mg' },
+  { id: 'ch_3c7a', amount: 149.00, country: 'GB', email: 'mark.w@hotmail.co.uk', risk: 16, status: 'refunded', flag: '🇬🇧', product: 'Hexarelin 2mg x4' },
 ]
 
 const ALERTS = [
-  { id: 1, type: 'critical', message: 'Chargeback rate hit 1.71% — above Visa\'s 1.0% early warning threshold', time: '2h ago' },
-  { id: 2, type: 'critical', message: '3 high-risk transactions detected from Nigeria — recommend immediate review', time: '4h ago' },
-  { id: 3, type: 'warning', message: '2 disposable email addresses used in last 24 hours', time: '6h ago' },
-  { id: 4, type: 'warning', message: 'Unusual transaction volume spike detected between 2–4 AM', time: '1d ago' },
-  { id: 5, type: 'info', message: 'Monthly risk report generated — February 2026', time: '2d ago' },
+  { id: 1, type: 'critical', message: 'Chargeback rate reached 1.71% — above Visa\'s 1.0% early warning threshold. 3 peptide orders from RU/UA/NG are flagged.', time: '2h ago' },
+  { id: 2, type: 'critical', message: '3 high-risk orders totaling $1,675 — disposable emails + high-risk countries. Refund before they dispute.', time: '4h ago' },
+  { id: 3, type: 'warning', message: '2 international orders over $500 placed at 3 AM — unusual pattern for research compound purchases.', time: '7h ago' },
+  { id: 4, type: 'warning', message: 'Repeat customer email flagged: same card used for 4 orders in 48 hours across 2 email addresses.', time: '1d ago' },
+  { id: 5, type: 'info', message: 'Monthly risk report generated — February 2026. Avg order value: $268. Top product disputed: CJC-1295.', time: '2d ago' },
 ]
 
 const RISK_FACTORS = [
-  { label: 'High-risk country exposure', pct: 38, color: '#DC2626' },
-  { label: 'Disposable email addresses', pct: 22, color: '#F97316' },
-  { label: 'Large transaction amounts', pct: 19, color: '#EAB308' },
-  { label: 'Off-hours transactions', pct: 13, color: '#3B82F6' },
-  { label: 'Repeat dispute customers', pct: 8, color: '#8B5CF6' },
+  { label: 'International high-risk orders', pct: 41, color: '#DC2626' },
+  { label: 'Disposable email addresses', pct: 24, color: '#F97316' },
+  { label: 'High-value single orders (>$500)', pct: 18, color: '#EAB308' },
+  { label: 'Off-hours transactions (1–5 AM)', pct: 11, color: '#3B82F6' },
+  { label: 'Repeat dispute customers', pct: 6, color: '#8B5CF6' },
 ]
 
 const TABS = ['Overview', 'Transactions', 'Risk', 'Alerts']
@@ -91,13 +94,10 @@ function DashboardDemo() {
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] font-sans">
-      {/* Demo banner */}
+      {/* Client banner */}
       <div className="bg-[#0A0A0A] text-white text-center py-2.5 px-4 text-sm flex items-center justify-center gap-3">
-        <span className="text-yellow-400 font-semibold">Demo Mode</span>
-        <span className="text-gray-400">This is sample data. Sign up to see your real risk profile.</span>
-        <Link href="/signup" className="bg-white text-[#0A0A0A] text-xs font-semibold px-3 py-1 rounded-full hover:bg-gray-100 transition">
-          Get started free →
-        </Link>
+        <span className="text-yellow-400 font-semibold">Client Preview</span>
+        <span className="text-gray-400">{CLIENT.name} · {CLIENT.industry}</span>
       </div>
 
       {/* Header */}
@@ -133,8 +133,8 @@ function DashboardDemo() {
         {tab === 'Overview' && (
           <div className="space-y-6">
             <div>
-              <p className="text-gray-500 text-sm">Good afternoon, Demo</p>
-              <h1 className="text-2xl font-bold text-[#0A0A0A]">Your Risk Dashboard</h1>
+              <p className="text-gray-500 text-sm">Good afternoon, {CLIENT.name}</p>
+              <h1 className="text-2xl font-bold text-[#0A0A0A]">Risk Dashboard</h1>
             </div>
 
             {/* KPI row */}
@@ -193,15 +193,15 @@ function DashboardDemo() {
                 </div>
                 <div className="flex-1 p-4 space-y-3 overflow-y-auto">
                   <div className="bg-gray-50 rounded-xl rounded-tl-sm px-3 py-2.5 text-xs text-gray-700 leading-relaxed">
-                    Your chargeback rate is at <strong>1.71%</strong> — you're 7 days from Visa's termination threshold at this trajectory. Your biggest exposure is Nigeria: 3 disputed transactions totaling $1,439 in the last 30 days.
+                    PureForm's CB rate is <strong>1.71%</strong> — 7 days from Visa's termination threshold. 3 peptide orders from RU, UA, NG account for $1,675 of disputed revenue in 30 days.
                   </div>
                   <div className="flex justify-end">
                     <div className="bg-[#0A0A0A] text-white rounded-xl rounded-tr-sm px-3 py-2.5 text-xs max-w-[80%]">
-                      What should I do first?
+                      Which orders should I refund?
                     </div>
                   </div>
                   <div className="bg-gray-50 rounded-xl rounded-tl-sm px-3 py-2.5 text-xs text-gray-700 leading-relaxed">
-                    Refund the 3 Nigeria transactions immediately — $1,439 in refunds now prevents ~$4,300 in chargeback fees. Then block card-not-present transactions from NG and UA for 30 days.
+                    Refund ch_1d9e ($540 RU) and ch_2e8f ($720 NG) now — both used high-risk countries + disposable emails. That drops your projected CB rate to 0.94%.
                   </div>
                 </div>
                 <div className="p-3 border-t border-[#F3F4F6]">
@@ -264,7 +264,7 @@ function DashboardDemo() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-[#F3F4F6]">
-                    {['Transaction', 'Amount', 'Country', 'Risk Score', 'Status', 'Action'].map(h => (
+                    {['Transaction', 'Product', 'Amount', 'Country', 'Risk Score', 'Status', 'Action'].map(h => (
                       <th key={h} className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wide">{h}</th>
                     ))}
                   </tr>
@@ -273,6 +273,7 @@ function DashboardDemo() {
                   {TRANSACTIONS.map(tx => (
                     <tr key={tx.id} className="border-b border-[#F9FAFB] hover:bg-[#F9FAFB] transition">
                       <td className="px-4 py-3 text-xs text-gray-500 font-mono">{tx.id}</td>
+                      <td className="px-4 py-3 text-xs text-gray-600">{tx.product}</td>
                       <td className="px-4 py-3 font-semibold text-[#0A0A0A]">${tx.amount.toFixed(2)}</td>
                       <td className="px-4 py-3 text-sm">{tx.flag} {tx.country}</td>
                       <td className="px-4 py-3">
@@ -375,13 +376,10 @@ function DashboardDemo() {
           </div>
         )}
 
-        {/* CTA footer */}
+        {/* Footer note */}
         <div className="mt-10 bg-[#0A0A0A] rounded-2xl p-8 text-center">
-          <p className="text-white font-bold text-xl mb-2">Ready to see your real risk profile?</p>
-          <p className="text-gray-400 text-sm mb-6">Connect your processor or upload statements — get your analysis in under 2 minutes.</p>
-          <Link href="/signup" className="inline-block bg-white text-[#0A0A0A] font-semibold px-8 py-3 rounded-full hover:bg-gray-100 transition text-sm">
-            Start for free →
-          </Link>
+          <p className="text-white font-bold text-xl mb-2">This is {CLIENT.name}'s live risk profile</p>
+          <p className="text-gray-400 text-sm">Data pulled from their Stripe account · Updated daily · Powered by HighRiskIntel</p>
         </div>
 
       </div>
