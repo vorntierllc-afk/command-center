@@ -985,13 +985,13 @@ export function LandingPage() {
           </div>
           <div style={s.footerCols} className="footer-cols">
             {[
-              { title:"Product", links:["Overview","Features","Integrations","API Docs","Changelog"] },
-              { title:"Company", links:["About","Blog","Careers","Privacy Policy","Terms of Service"] },
-              { title:"Support", links:["Help Center","Contact Us","Status Page","Onboarding Guide","Security"] },
+              { title:"Product", links:[["Overview","/#features"],["Features","/#features"],["Integrations","/#integrations"],["Pricing","/pricing"],["Changelog","#"]] },
+              { title:"Company", links:[["About","#"],["Blog","#"],["Careers","#"],["Privacy Policy","/privacy"],["Terms of Service","/terms"]] },
+              { title:"Support", links:[["Help Center","#"],["Contact Us","mailto:support@highriskintel.com"],["Status Page","#"],["Onboarding Guide","#"],["Security","#"]] },
             ].map(col => (
               <div key={col.title} style={s.footerCol}>
                 <p style={s.footerColTitle}>{col.title}</p>
-                {col.links.map(l => <a key={l} href="#" style={s.footerColLink} className="nav-lnk">{l}</a>)}
+                {col.links.map(([l, h]) => <a key={l} href={h} style={s.footerColLink} className="nav-lnk">{l}</a>)}
               </div>
             ))}
           </div>

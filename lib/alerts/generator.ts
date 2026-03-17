@@ -1,38 +1,50 @@
-import type { AlertLevel } from "@/lib/server/types";
+import { createClient } from "@supabase/supabase-js"
 
-export function generateAlerts(input: {
-  chargebackRate: number;
-  riskScoreSpike: number;
-  midHealth: number;
-  reserveRatio: number;
-  highRiskClusterCount: number;
-  disputeTrendUp: boolean;
-}) {
-  const alerts: { type: AlertLevel; message: string }[] = [];
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
-  if (input.chargebackRate > 1.5) {
-    alerts.push({ type: "critical", message: "Chargeback ratio moved above 1.5%." });
-  } else if (input.chargebackRate > 1.0) {
-    alerts.push({ type: "warning", message: "Chargeback ratio moved above 1.0%." });
-  }
+export async function generateAlerts(userId: string, chargebackRate: number, transactions: Array<{ risk_score?: number; country?: string }>) {
+  const alerts: Array<{ user_id: string; type: string; message: string; read: boolean }> = []
 
-  if (input.riskScoreSpike >= 20) {
-    alerts.push({ type: "warning", message: "Average risk score increased by 20+ points." });
-  }
-  if (input.midHealth < 40) {
-    alerts.push({ type: "critical", message: "MID health dropped below 40." });
-  } else if (input.midHealth < 60) {
-    alerts.push({ type: "warning", message: "MID health dropped below 60." });
-  }
-  if (input.highRiskClusterCount >= 3) {
-    alerts.push({ type: "warning", message: "Three or more high-risk transactions appeared within one hour." });
-  }
-  if (input.reserveRatio > 15) {
-    alerts.push({ type: "info", message: "Rolling reserve exceeds 15% of monthly volume." });
-  }
-  if (input.disputeTrendUp) {
-    alerts.push({ type: "critical", message: "Dispute velocity increased three weeks in a row." });
+  if (chargebackRate >= 1.8) {
+    alerts.push({
+      user_id: userId,
+      type: 'critical',
+      message: `Your chargeback rate is ${chargebackRate.toFixed(2)}% — above Visa's 1.8% termination threshold. Immediate action required.`,
+      read: false
+    })
+  } else if (chargebackRate >= 1.0) {
+    alerts.push({
+      user_id: userId,
+      type: 'warning',
+      message: `Your chargeback rate is ${chargebackRate.toFixed(2)}% — approaching the 1.0% early warning threshold.`,
+      read: false
+    })
   }
 
-  return alerts;
+  const highRiskTxns = transactions.filter(t => (t.risk_score ?? 0) >= 80)
+  if (highRiskTxns.length >= 3) {
+    alerts.push({
+      user_id: userId,
+      type: 'critical',
+      message: `${highRiskTxns.length} high-risk transactions detected. Recommended: review and refund immediately.`,
+      read: false
+    })
+  }
+
+  const ngRu = transactions.filter(t => ["NG","RU","UA"].includes(t.country ?? ""))
+  if (ngRu.length >= 2) {
+    alerts.push({
+      user_id: userId,
+      type: 'warning',
+      message: `${ngRu.length} transactions from high-risk countries detected. Monitor closely.`,
+      read: false
+    })
+  }
+
+  if (alerts.length > 0) {
+    await supabase.from('alerts').insert(alerts)
+  }
 }

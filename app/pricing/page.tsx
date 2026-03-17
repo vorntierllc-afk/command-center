@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Pricing — Starter $250/mo, Professional $600/mo, Enterprise",
+  title: "Pricing — Basic $30/mo, Pro $50/mo, Agency $200/mo",
   description:
-    "Simple, transparent pricing for high-risk merchants. Starter at $250/mo, Professional at $600/mo, and custom Enterprise plans. Plus a 10% performance fee only on disputes we prevent.",
+    "Simple, transparent pricing for high-risk merchants. Basic at $30/mo, Pro at $50/mo, and Agency at $200/mo. Plus a 10% performance fee only on disputes we prevent.",
   alternates: { canonical: "https://highriskintel.com/pricing" },
   openGraph: {
     url: "https://highriskintel.com/pricing",
-    title: "HighRiskIntel Pricing — From $250/mo",
+    title: "HighRiskIntel Pricing — From $30/mo",
     description:
       "No setup fees. No hidden charges. Cancel anytime. Plus a 10% performance fee only on disputes we actually prevent."
   }
@@ -16,58 +16,55 @@ export const metadata: Metadata = {
 
 const PLANS = [
   {
-    name: "Starter",
-    price: "$250",
+    name: "Basic",
+    price: "$30",
     period: "/mo",
-    desc: "For merchants under $50k/mo getting started with risk management.",
+    desc: "Up to $50k monthly volume",
     features: [
-      "Up to $50k monthly volume",
-      "AI risk scoring on all transactions",
-      "EDR alerts via Chargebacks911",
-      "Dispute ratio monitoring",
-      "Weekly branded reports",
-      "Dispute reason code analysis",
-      "Email support"
+      "AI risk scoring",
+      "Statement analysis",
+      "Weekly reports",
+      "Email alerts",
+      "Email support",
     ],
     cta: "Get started",
-    highlight: false
+    href: "/signup",
+    highlight: false,
   },
   {
-    name: "Professional",
-    price: "$600",
+    name: "Pro",
+    price: "$50",
     period: "/mo",
-    desc: "Full intelligence suite for established high-risk merchants.",
+    desc: "Up to $500k monthly volume",
     features: [
-      "Up to $500k monthly volume",
-      "Everything in Starter",
-      "12hr human review cycle",
+      "Everything in Basic",
+      "AI chat analyst",
+      "Real-time processor sync",
       "MID termination prediction",
-      "Rolling reserve forecasting",
-      "Authorization health monitoring",
-      "Automation rules builder",
-      "Priority support + analyst access"
+      "Priority support",
     ],
     cta: "Get started",
-    highlight: true
+    href: "/signup",
+    highlight: true,
   },
   {
-    name: "Enterprise",
-    price: "Custom",
-    period: "",
-    desc: "For high-volume merchants, ISOs, and payment facilitators.",
+    name: "Agency",
+    price: "$200",
+    period: "/mo",
+    desc: "Unlimited volume",
     features: [
-      "Unlimited volume",
-      "Everything in Professional",
-      "Dedicated risk analyst",
-      "Custom API integrations",
-      "SLA guarantee",
-      "White-glove onboarding",
-      "Direct acquirer relationships"
+      "Everything in Pro",
+      "Multiple MIDs",
+      "White-label reports",
+      "Dedicated support",
+      "Custom integrations",
     ],
-    cta: "Contact sales",
-    highlight: false
-  }
+    cta: "Contact us",
+    href: "/signup",
+    highlight: false,
+  },
 ];
+// All plans: + 10% performance fee on disputes prevented
 
 export default function PricingPage() {
   return (
@@ -139,7 +136,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               <Link
-                href={plan.name === "Enterprise" ? "mailto:sales@highriskintel.com" : "/signup"}
+                href={"href" in plan ? (plan as { href: string }).href : "/signup"}
                 style={{
                   display: "block",
                   textAlign: "center",
