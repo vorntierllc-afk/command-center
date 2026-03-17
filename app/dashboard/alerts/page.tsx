@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { AnimatePresence, motion } from 'framer-motion'
 
 interface Alert {
   id: string
@@ -10,8 +11,8 @@ interface Alert {
   created_at: string
 }
 
-function Skeleton({ className }: { className?: string }) {
-  return <div className={`bg-gray-100 dark:bg-[#1A1A1A] rounded animate-pulse ${className}`} />
+function Skeleton({ className = '' }: { className?: string }) {
+  return <div className={`animate-pulse bg-gray-100 rounded-lg ${className}`} />
 }
 
 function timeAgo(dateStr: string): string {
@@ -26,16 +27,50 @@ function timeAgo(dateStr: string): string {
   return `${days} days ago`
 }
 
+type FilterTab = 'all' | 'critical' | 'warning' | 'info' | 'unread'
+
+const TABS: { key: FilterTab; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'critical', label: 'Critical' },
+  { key: 'warning', label: 'Warning' },
+  { key: 'info', label: 'Info' },
+  { key: 'unread', label: 'Unread' },
+]
+
+function alertBorderColor(type: string) {
+  if (type === 'critical') return 'border-l-[#EF4444]'
+  if (type === 'warning') return 'border-l-[#F59E0B]'
+  return 'border-l-blue-400'
+}
+
+function alertIconBg(type: string) {
+  if (type === 'critical') return 'bg-red-50 text-[#EF4444]'
+  if (type === 'warning') return 'bg-amber-50 text-[#F59E0B]'
+  return 'bg-blue-50 text-blue-500'
+}
+
+function alertIcon(type: string) {
+  if (type === 'critical') return '⚠️'
+  if (type === 'warning') return '⚡'
+  return 'ℹ'
+}
+
+function severityClass(type: string) {
+  if (type === 'critical') return 'bg-red-50 text-[#EF4444] border border-red-100'
+  if (type === 'warning') return 'bg-amber-50 text-[#F59E0B] border border-amber-100'
+  return 'bg-blue-50 text-blue-600 border border-blue-100'
+}
+
 export default function AlertsPage() {
   const supabase = createClient()
   const [alerts, setAlerts] = useState<Alert[]>([])
+  const [dismissed, setDismissed] = useState<Set<string>>(new Set())
   const [loading, setLoading] = useState(true)
-  const [userId, setUserId] = useState<string | null>(null)
+  const [tab, setTab] = useState<FilterTab>('all')
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (!user) return
-      setUserId(user.id)
       const { data } = await supabase
         .from('alerts')
         .select('*')
@@ -47,96 +82,116 @@ export default function AlertsPage() {
   }, [])
 
   async function markRead(id: string) {
-    setAlerts(a => a.map(alert => alert.id === id ? { ...alert, read: true } : alert))
+    setAlerts(prev => prev.map(a => a.id === id ? { ...a, read: true } : a))
     await supabase.from('alerts').update({ read: true }).eq('id', id)
   }
 
   async function markAllRead() {
-    if (!userId) return
-    setAlerts(a => a.map(alert => ({ ...alert, read: true })))
-    await supabase.from('alerts').update({ read: true }).eq('user_id', userId).eq('read', false)
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return
+    setAlerts(prev => prev.map(a => ({ ...a, read: true })))
+    await supabase.from('alerts').update({ read: true }).eq('user_id', user.id).eq('read', false)
   }
 
-  const unread = alerts.filter(a => !a.read).length
+  function dismiss(id: string) {
+    setDismissed(prev => new Set([...prev, id]))
+  }
 
-  const groups = [
-    {
-      label: 'Critical',
-      borderColor: 'border-[#DC2626]',
-      items: alerts.filter(a => a.type === 'critical')
-    },
-    {
-      label: 'Warning',
-      borderColor: 'border-[#D97706]',
-      items: alerts.filter(a => a.type === 'warning')
-    },
-    {
-      label: 'Info',
-      borderColor: 'border-blue-400',
-      items: alerts.filter(a => a.type === 'info')
-    },
-  ]
+  const visible = alerts.filter(a => !dismissed.has(a.id))
+  const unreadCount = visible.filter(a => !a.read).length
+
+  const filtered = visible.filter(a => {
+    if (tab === 'all') return true
+    if (tab === 'unread') return !a.read
+    return a.type === tab
+  })
 
   return (
-    <div className="p-6 md:p-8 pb-24 md:pb-10">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-[#0A0A0A] dark:text-white">Alerts</h1>
-          {!loading && unread > 0 && (
-            <p className="text-sm text-gray-500 mt-0.5">{unread} unread</p>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#111827]">Alerts</h1>
+          {!loading && unreadCount > 0 && (
+            <span className="text-sm bg-[#EF4444] text-white px-2.5 py-0.5 rounded-full font-bold">{unreadCount}</span>
           )}
         </div>
-        {!loading && unread > 0 && (
-          <button onClick={markAllRead} className="text-sm text-gray-500 hover:text-[#0A0A0A] dark:hover:text-white transition">
+        {!loading && unreadCount > 0 && (
+          <button onClick={markAllRead} className="text-sm text-[#4F46E5] hover:text-indigo-700 transition font-medium">
             Mark all read
           </button>
         )}
       </div>
 
+      {/* Filter tabs */}
+      <div className="flex items-center gap-1 bg-[#F3F4F6] p-1 rounded-xl w-fit">
+        {TABS.map(t => (
+          <button key={t.key} onClick={() => setTab(t.key)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+              tab === t.key ? 'bg-white text-[#111827] shadow-sm' : 'text-[#6B7280] hover:text-[#111827]'
+            }`}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
       {loading ? (
         <div className="space-y-3">
-          {Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-20 rounded-xl" />)}
+          {[1, 2, 3, 4, 5].map(i => <Skeleton key={i} className="h-20 rounded-xl" />)}
         </div>
-      ) : alerts.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <div className="text-center py-24">
-          <div className="text-4xl mb-4">✓</div>
-          <p className="text-gray-400 text-lg font-medium">You&apos;re all clear.</p>
-          <p className="text-gray-400 text-sm mt-1">No alerts yet. We&apos;ll notify you when something needs attention.</p>
+          <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span className="text-[#10B981] text-2xl">✓</span>
+          </div>
+          <p className="text-[#374151] text-lg font-semibold mb-1">You&apos;re all clear</p>
+          <p className="text-[#9CA3AF] text-sm">No alerts in the last 7 days</p>
         </div>
       ) : (
-        <>
-          {unread === 0 && (
-            <div className="text-center py-8 mb-6">
-              <div className="text-3xl mb-2">✓</div>
-              <p className="text-gray-400 text-sm">All caught up — no unread alerts.</p>
-            </div>
-          )}
-
-          <div className="space-y-8">
-            {groups.map(group => group.items.length > 0 && (
-              <div key={group.label}>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">{group.label}</p>
-                <div className="space-y-2">
-                  {group.items.map(alert => (
-                    <div
-                      key={alert.id}
-                      onClick={() => !alert.read && markRead(alert.id)}
-                      className={`flex items-start gap-4 p-4 bg-white dark:bg-[#111111] rounded-xl border-l-4 cursor-pointer hover:shadow-sm transition ${group.borderColor} ${!alert.read ? 'shadow-sm' : ''}`}
-                    >
-                      <div className="flex-1">
-                        <p className={`text-sm leading-snug ${alert.read ? 'text-gray-500 dark:text-gray-500' : 'text-[#0A0A0A] dark:text-white font-medium'}`}>
-                          {alert.message}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">{timeAgo(alert.created_at)}</p>
-                      </div>
-                      {!alert.read && <div className="w-2 h-2 bg-[#0A0A0A] dark:bg-white rounded-full mt-1.5 flex-shrink-0" />}
-                    </div>
-                  ))}
+        <div className="space-y-2">
+          <AnimatePresence>
+            {filtered.map(alert => (
+              <motion.div
+                key={alert.id}
+                initial={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: 40, transition: { duration: 0.2 } }}
+                className={`flex items-start gap-4 p-4 bg-white rounded-xl border-l-4 border border-[#E5E7EB] shadow-[0_1px_3px_rgba(0,0,0,0.08)] transition ${
+                  alertBorderColor(alert.type)
+                } ${!alert.read ? 'bg-[#EEF2FF]' : ''}`}
+              >
+                {/* Icon */}
+                <div className={`w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 text-sm ${alertIconBg(alert.type)}`}>
+                  {alertIcon(alert.type)}
                 </div>
-              </div>
+
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm leading-snug ${alert.read ? 'text-[#6B7280]' : 'text-[#111827] font-medium'}`}>
+                    {alert.message}
+                  </p>
+                  <p className="text-xs text-[#9CA3AF] mt-1">{timeAgo(alert.created_at)}</p>
+                </div>
+
+                {/* Right */}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${severityClass(alert.type)}`}>
+                    {alert.type}
+                  </span>
+                  {!alert.read && (
+                    <button onClick={() => markRead(alert.id)}
+                      className="text-xs text-[#4F46E5] hover:text-indigo-700 border border-indigo-100 bg-indigo-50 px-2.5 py-1 rounded-lg transition">
+                      Mark Read
+                    </button>
+                  )}
+                  <button onClick={() => dismiss(alert.id)}
+                    className="text-xs text-[#9CA3AF] hover:text-[#6B7280] border border-[#E5E7EB] px-2.5 py-1 rounded-lg hover:bg-gray-50 transition">
+                    Dismiss
+                  </button>
+                </div>
+              </motion.div>
             ))}
-          </div>
-        </>
+          </AnimatePresence>
+        </div>
       )}
     </div>
   )
