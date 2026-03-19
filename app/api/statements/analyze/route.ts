@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { generateAlerts } from '@/lib/alerts/generator'
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
 async function extractText(file: File): Promise<string> {
   if (file.name.endsWith('.csv') || file.type === 'text/csv') {
@@ -62,7 +62,6 @@ export async function POST(request: Request) {
 
     const combinedText = allText.join('\n\n').slice(0, 12000)
 
-    // Call Anthropic for analysis
     const prompt = `You are a payment risk analyst. Analyze this merchant processing statement.
 Return ONLY valid JSON with no markdown wrapper:
 
@@ -87,12 +86,12 @@ ${combinedText}`
 
     let parsedAnalysis: Record<string, unknown> = {}
     try {
-      const resp = await anthropic.messages.create({
-        model: 'claude-sonnet-4-5',
+      const resp = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
         max_tokens: 2000,
-        messages: [{ role: 'user', content: prompt }]
+        messages: [{ role: 'user', content: prompt }],
       })
-      const text = resp.content[0].type === 'text' ? resp.content[0].text : ''
+      const text = resp.choices[0]?.message?.content ?? ''
       const firstBrace = text.indexOf('{')
       const lastBrace = text.lastIndexOf('}')
       if (firstBrace !== -1 && lastBrace !== -1) {
