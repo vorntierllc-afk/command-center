@@ -2,7 +2,10 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const openai = new OpenAI({
+  baseURL: 'http://localhost:11434/v1',
+  apiKey: 'ollama',
+})
 
 export async function POST(request: Request) {
   try {
@@ -70,7 +73,7 @@ Recent transactions (last 5): ${JSON.stringify(recentTxns ?? [])}`
       }))
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'llama3',
       max_tokens: 400,
       messages: [
         { role: 'system', content: systemPrompt },

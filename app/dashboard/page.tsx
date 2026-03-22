@@ -580,6 +580,130 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* RDR / CDRN Status + Chargeback Rate */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Chargeback Rate */}
+        <div className={`rounded-xl border p-5 ${
+          cbRate >= 0.018 ? 'border-red-300 bg-red-50' :
+          cbRate >= 0.01 ? 'border-amber-300 bg-amber-50' :
+          'border-green-200 bg-green-50'
+        }`}>
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Chargeback Rate</p>
+          <p className={`text-3xl font-bold ${cbRate >= 0.018 ? 'text-red-700' : cbRate >= 0.01 ? 'text-amber-700' : 'text-green-700'}`}>
+            {loading ? '–' : `${(cbRate * 100).toFixed(2)}%`}
+          </p>
+          <p className="text-xs mt-1 text-gray-500">
+            {cbRate >= 0.018 ? '🚨 CRITICAL — above Visa 1.8% termination threshold' :
+             cbRate >= 0.01 ? '⚠️ WARNING — above Visa 1.0% early warning threshold' :
+             cbRate >= 0.0065 ? '⚠️ Watch — above Visa 0.65% early warning' :
+             cbRate > 0 ? '✓ Healthy — within safe thresholds' :
+             'No data yet — add transactions to calculate'}
+          </p>
+        </div>
+
+        {/* Visa RDR Status */}
+        <div className={`rounded-xl border p-5 ${cbRate >= 0.009 ? 'border-orange-300 bg-orange-50' : 'border-gray-200 bg-white'}`}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm font-bold text-gray-800">Visa RDR</span>
+            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+              cbRate >= 0.018 ? 'bg-red-100 text-red-700' :
+              cbRate >= 0.009 ? 'bg-orange-100 text-orange-700' :
+              'bg-green-100 text-green-700'
+            }`}>
+              {cbRate >= 0.018 ? 'ENROLLED — Critical' : cbRate >= 0.009 ? 'At Risk' : 'Safe'}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            {cbRate >= 0.009
+              ? `Your Visa rate (${(cbRate * 100).toFixed(2)}%) exceeds the 0.9% standard threshold. You may be enrolled in Visa's RDR program. Disputes are auto-resolved — refunds issued without chargeback.`
+              : 'Your Visa chargeback rate is within safe limits. RDR enrollment not triggered.'}
+          </p>
+          <p className="text-xs text-gray-400 mt-2">Threshold: 0.9% standard / 1.8% termination</p>
+        </div>
+
+        {/* Mastercard CDRN Status */}
+        <div className={`rounded-xl border p-5 ${cbRate >= 0.01 ? 'border-orange-300 bg-orange-50' : 'border-gray-200 bg-white'}`}>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-sm font-bold text-gray-800">Mastercard CDRN</span>
+            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
+              cbRate >= 0.015 ? 'bg-red-100 text-red-700' :
+              cbRate >= 0.01 ? 'bg-orange-100 text-orange-700' :
+              'bg-green-100 text-green-700'
+            }`}>
+              {cbRate >= 0.015 ? 'ENROLLED — Excessive' : cbRate >= 0.01 ? 'At Risk' : 'Safe'}
+            </span>
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            {cbRate >= 0.01
+              ? `Your rate (${(cbRate * 100).toFixed(2)}%) has crossed the 1.0% Mastercard threshold. CDRN dispute alerts are sent to you within 24–72hrs before chargebacks are filed.`
+              : 'Your Mastercard chargeback rate is within safe limits. CDRN enrollment not triggered.'}
+          </p>
+          <p className="text-xs text-gray-400 mt-2">Threshold: 1.0% (100 disputes/month)</p>
+        </div>
+      </div>
+
+      {/* High Risk Transactions */}
+      {!loading && transactions.filter(t => t.risk_score >= 75).length > 0 && (
+        <div className="bg-white border border-red-200 rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.08)]">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <span className="text-red-500 text-lg">🚨</span>
+              <h3 className="text-sm font-bold text-[#111827]">High Risk Transactions</h3>
+              <span className="bg-red-100 text-red-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+                {transactions.filter(t => t.risk_score >= 75).length} flagged
+              </span>
+            </div>
+            <a href="/dashboard/transactions?filter=high" className="text-xs text-[#4F46E5] hover:underline">View all →</a>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-[#9CA3AF] border-b border-[#F3F4F6]">
+                  <th className="text-left py-2 font-medium">Amount</th>
+                  <th className="text-left py-2 font-medium">Country</th>
+                  <th className="text-left py-2 font-medium">Email</th>
+                  <th className="text-left py-2 font-medium">Risk Score</th>
+                  <th className="text-left py-2 font-medium">Status</th>
+                  <th className="text-left py-2 font-medium">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions
+                  .filter(t => t.risk_score >= 75)
+                  .slice(0, 8)
+                  .map((t, i) => (
+                    <tr key={i} className="border-b border-[#F9FAFB] last:border-0">
+                      <td className="py-2 font-semibold text-[#111827]">${t.amount?.toFixed(2)}</td>
+                      <td className="py-2">
+                        <span className={`font-medium ${HIGH_RISK_COUNTRIES.includes((t.country || '').toUpperCase()) ? 'text-red-600' : 'text-[#374151]'}`}>
+                          {t.country || '—'}
+                          {HIGH_RISK_COUNTRIES.includes((t.country || '').toUpperCase()) && ' ⚠'}
+                        </span>
+                      </td>
+                      <td className="py-2 text-[#6B7280] truncate max-w-[140px]">{t.email || '—'}</td>
+                      <td className="py-2">
+                        <span className={`px-2 py-0.5 rounded-full font-bold ${
+                          t.risk_score >= 85 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
+                        }`}>
+                          {t.risk_score}
+                        </span>
+                      </td>
+                      <td className="py-2">
+                        <span className={`px-2 py-0.5 rounded-full ${t.disputed ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>
+                          {t.disputed ? 'Disputed' : 'High Risk'}
+                        </span>
+                      </td>
+                      <td className="py-2 text-[#9CA3AF]">
+                        {new Date(t.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* AI Analyst */}
       <AIAnalystCard merchant={merchant ?? null} transactions={transactions} />
 

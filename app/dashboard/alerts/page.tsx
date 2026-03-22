@@ -7,6 +7,7 @@ interface Alert {
   id: string
   type: string
   message: string
+  ai_explanation: string | null
   read: boolean
   created_at: string
 }
@@ -169,6 +170,11 @@ export default function AlertsPage() {
                   <p className={`text-sm leading-snug ${alert.read ? 'text-[#6B7280]' : 'text-[#111827] font-medium'}`}>
                     {alert.message}
                   </p>
+                  {alert.ai_explanation && (
+                    <p className="text-xs text-[#4B5563] mt-2 leading-relaxed bg-gray-50 rounded-lg px-3 py-2 border border-gray-100">
+                      🤖 {alert.ai_explanation}
+                    </p>
+                  )}
                   <p className="text-xs text-[#9CA3AF] mt-1">{timeAgo(alert.created_at)}</p>
                 </div>
 

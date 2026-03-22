@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({
+  baseURL: 'http://localhost:11434/v1',
+  apiKey: 'ollama',
+});
 
 const ANALYSIS_PROMPT = `You are a payment risk analyst. Analyze this merchant processing statement and return ONLY a JSON object with these fields: total_volume, chargeback_rate, dispute_count, high_risk_transactions (array of {id, amount, reason}), top_risk_factors (array of strings), country_breakdown (object), recommended_actions (array of strings ordered by priority), summary (2-3 sentence plain English overview of their risk situation).`;
 
@@ -22,7 +25,7 @@ async function extractText(file: File): Promise<string> {
 
 async function analyzeWithAI(text: string): Promise<Record<string, unknown>> {
   const response = await openai.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "llama3",
     max_tokens: 1024,
     messages: [
       {
@@ -113,9 +116,11 @@ export async function POST(request: Request) {
 
     // Update merchant record
     if (aiAnalysis) {
+      // AI returns chargeback_rate as percentage (1.84), store as fraction (0.0184)
+      const cbPercent = (aiAnalysis.chargeback_rate as number) ?? 0
       await supabase.from("merchants").update({
         ai_analysis: aiAnalysis,
-        chargeback_rate: (aiAnalysis.chargeback_rate as number) ?? 0,
+        chargeback_rate: cbPercent / 100,
         onboard_method: "upload",
         status: "active",
       }).eq("user_id", user.id);

@@ -3,7 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 import OpenAI from 'openai'
 import { generateAlerts } from '@/lib/alerts/generator'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const openai = new OpenAI({
+  baseURL: 'http://localhost:11434/v1',
+  apiKey: 'ollama',
+})
 
 async function extractText(file: File): Promise<string> {
   if (file.name.endsWith('.csv') || file.type === 'text/csv') {
@@ -87,7 +90,7 @@ ${combinedText}`
     let parsedAnalysis: Record<string, unknown> = {}
     try {
       const resp = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
+        model: 'llama3',
         max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }],
       })
@@ -108,7 +111,9 @@ ${combinedText}`
       }
     }
 
-    const chargebackRate = (parsedAnalysis.chargeback_rate as number) ?? 0
+    // AI returns chargeback_rate as percentage (e.g. 1.84), store as fraction (0.0184)
+    const chargebackRatePercent = (parsedAnalysis.chargeback_rate as number) ?? 0
+    const chargebackRate = chargebackRatePercent / 100
     const midRiskLevel = (parsedAnalysis.mid_risk_level as string) ?? 'unknown'
     const biggestThreat = (parsedAnalysis.biggest_threat as string) ?? null
     const topRiskFactors = (parsedAnalysis.top_risk_factors as string[]) ?? []
@@ -118,7 +123,7 @@ ${combinedText}`
     // Update merchants table
     await supabase.from('merchants').update({
       ai_analysis: parsedAnalysis,
-      chargeback_rate: chargebackRate,
+      chargeback_rate: chargebackRate,  // stored as fraction 0.0184
       mid_risk_level: midRiskLevel,
       biggest_threat: biggestThreat,
       top_risk_factors: topRiskFactors,
@@ -130,7 +135,7 @@ ${combinedText}`
 
     // Generate alerts
     const highRiskTxns = (parsedAnalysis.high_risk_transactions as Array<{ amount: number; reason: string; date: string }>) ?? []
-    await generateAlerts(user.id, chargebackRate, highRiskTxns.map((tx, i) => ({
+    await generateAlerts(user.id, chargebackRatePercent, highRiskTxns.map((tx, i) => ({
       risk_score: i < 3 ? 85 : 70,
       country: 'US',
     })))

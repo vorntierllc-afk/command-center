@@ -34,6 +34,28 @@ function RiskPill({ score }: { score: number }) {
 
 const PAGE_SIZE = 25
 
+const HIGH_RISK_COUNTRIES = ['NG', 'RU', 'UA', 'BY', 'IR', 'KP', 'SY', 'VE']
+
+interface AddTxForm {
+  amount: string
+  country: string
+  email: string
+  disputed: boolean
+  card_network: string
+  description: string
+  currency: string
+}
+
+const EMPTY_FORM: AddTxForm = {
+  amount: '',
+  country: 'US',
+  email: '',
+  disputed: false,
+  card_network: '',
+  description: '',
+  currency: 'USD',
+}
+
 export default function TransactionsPage() {
   const supabase = createClient()
   const [transactions, setTransactions] = useState<Transaction[]>([])
@@ -45,6 +67,10 @@ export default function TransactionsPage() {
   const [merchantId, setMerchantId] = useState<string | null>(null)
   const [actionLoading, setActionLoading] = useState<string | null>(null)
   const [confirmModal, setConfirmModal] = useState<{ txId: string; action: string } | null>(null)
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [addForm, setAddForm] = useState<AddTxForm>(EMPTY_FORM)
+  const [addLoading, setAddLoading] = useState(false)
+  const [addError, setAddError] = useState('')
 
   useEffect(() => {
     supabase.auth.getUser().then(async ({ data: { user } }) => {
@@ -90,6 +116,40 @@ export default function TransactionsPage() {
     )
   })
 
+  async function addTransaction(e: React.FormEvent) {
+    e.preventDefault()
+    if (!addForm.amount || Number(addForm.amount) <= 0) {
+      setAddError('Amount must be greater than 0')
+      return
+    }
+    setAddLoading(true)
+    setAddError('')
+    try {
+      const res = await fetch('/api/transactions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: Number(addForm.amount),
+          country: addForm.country,
+          email: addForm.email,
+          disputed: addForm.disputed,
+          card_network: addForm.card_network,
+          description: addForm.description,
+          currency: addForm.currency,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Failed to add transaction')
+      setShowAddModal(false)
+      setAddForm(EMPTY_FORM)
+      if (merchantId) fetchTransactions()
+    } catch (err) {
+      setAddError(err instanceof Error ? err.message : 'Failed to add transaction')
+    } finally {
+      setAddLoading(false)
+    }
+  }
+
   async function executeAction(txId: string, action: string) {
     setActionLoading(txId)
     const updates: Partial<Transaction> = {}
@@ -112,6 +172,12 @@ export default function TransactionsPage() {
           <h1 className="text-2xl font-bold text-[#0A0A0A] dark:text-white">Transactions</h1>
           {!loading && <p className="text-sm text-gray-500 mt-0.5">{total.toLocaleString()} total transactions</p>}
         </div>
+        <button
+          onClick={() => { setShowAddModal(true); setAddError('') }}
+          className="bg-[#4F46E5] text-white rounded-full px-5 py-2.5 text-sm font-semibold hover:bg-indigo-700 transition flex items-center gap-2"
+        >
+          + Add Transaction
+        </button>
       </div>
 
       {/* Filters */}
@@ -259,6 +325,107 @@ export default function TransactionsPage() {
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Add Transaction Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="font-bold text-[#0A0A0A] text-lg">Add Transaction</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-[#0A0A0A] text-xl">×</button>
+            </div>
+            <form onSubmit={addTransaction} className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-1 block">Amount *</label>
+                  <input
+                    type="number" step="0.01" min="0.01" placeholder="0.00"
+                    value={addForm.amount}
+                    onChange={e => setAddForm(f => ({ ...f, amount: e.target.value }))}
+                    className="w-full border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5]"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-1 block">Currency</label>
+                  <select
+                    value={addForm.currency}
+                    onChange={e => setAddForm(f => ({ ...f, currency: e.target.value }))}
+                    className="w-full border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5]"
+                  >
+                    {['USD', 'EUR', 'GBP', 'CAD', 'AUD'].map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-600 mb-1 block">Customer Email</label>
+                <input
+                  type="email" placeholder="customer@example.com"
+                  value={addForm.email}
+                  onChange={e => setAddForm(f => ({ ...f, email: e.target.value }))}
+                  className="w-full border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-1 block">Country (ISO)</label>
+                  <input
+                    type="text" placeholder="US" maxLength={2}
+                    value={addForm.country}
+                    onChange={e => setAddForm(f => ({ ...f, country: e.target.value.toUpperCase() }))}
+                    className={`w-full border rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5] uppercase ${
+                      HIGH_RISK_COUNTRIES.includes(addForm.country) ? 'border-red-400 bg-red-50' : 'border-[#E5E7EB]'
+                    }`}
+                  />
+                  {HIGH_RISK_COUNTRIES.includes(addForm.country) && (
+                    <p className="text-xs text-red-500 mt-1">⚠ High-risk country</p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-medium text-gray-600 mb-1 block">Card Network</label>
+                  <select
+                    value={addForm.card_network}
+                    onChange={e => setAddForm(f => ({ ...f, card_network: e.target.value }))}
+                    className="w-full border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5]"
+                  >
+                    <option value="">Unknown</option>
+                    {['Visa', 'Mastercard', 'Amex', 'Discover'].map(n => <option key={n}>{n}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-600 mb-1 block">Description (optional)</label>
+                <input
+                  type="text" placeholder="Product/service description"
+                  value={addForm.description}
+                  onChange={e => setAddForm(f => ({ ...f, description: e.target.value }))}
+                  className="w-full border border-[#E5E7EB] rounded-xl px-3 py-2.5 text-sm outline-none focus:border-[#4F46E5]"
+                />
+              </div>
+              <label className="flex items-center gap-3 cursor-pointer">
+                <div
+                  onClick={() => setAddForm(f => ({ ...f, disputed: !f.disputed }))}
+                  className={`w-10 h-6 rounded-full transition-colors flex items-center px-1 ${addForm.disputed ? 'bg-red-500' : 'bg-gray-200'}`}
+                >
+                  <div className={`w-4 h-4 bg-white rounded-full transition-transform ${addForm.disputed ? 'translate-x-4' : 'translate-x-0'}`} />
+                </div>
+                <span className="text-sm text-gray-700">Mark as <strong>Disputed / Chargeback</strong></span>
+              </label>
+              {addError && <p className="text-red-500 text-xs">{addError}</p>}
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={() => setShowAddModal(false)}
+                  className="flex-1 border border-[#E5E7EB] rounded-full py-2.5 text-sm font-medium hover:bg-gray-50 transition">
+                  Cancel
+                </button>
+                <button type="submit" disabled={addLoading}
+                  className="flex-1 bg-[#4F46E5] text-white rounded-full py-2.5 text-sm font-semibold hover:bg-indigo-700 transition disabled:opacity-50">
+                  {addLoading ? 'Saving...' : 'Add Transaction'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 

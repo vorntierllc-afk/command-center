@@ -24,14 +24,29 @@ export default function SignupPage() {
       options: { data: { full_name: fullName } }
     })
     if (authError) { setError(authError.message); setLoading(false); return }
-    if (data.user) {
-      await supabase.from('merchants').insert({
-        user_id: data.user.id,
-        business_name: fullName,
-        status: 'onboarding'
-      })
+
+    // If session exists (email confirmation disabled), ensure merchant row exists
+    if (data.session && data.user) {
+      const { data: existing } = await supabase
+        .from('merchants')
+        .select('id')
+        .eq('user_id', data.user.id)
+        .single()
+      if (!existing) {
+        await supabase.from('merchants').insert({
+          user_id: data.user.id,
+          business_name: fullName,
+          status: 'onboarding',
+        })
+      }
+      router.push('/onboarding')
+    } else if (data.user && !data.session) {
+      // Email confirmation required — show message instead of redirecting
+      setError('Check your email and click the confirmation link to continue.')
+      setLoading(false)
+    } else {
+      router.push('/onboarding')
     }
-    router.push('/onboarding')
   }
 
   async function handleGoogle() {
