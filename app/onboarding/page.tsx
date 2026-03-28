@@ -143,7 +143,7 @@ export default function OnboardingPage() {
   async function skipOnboarding() {
     const { data: { user } } = await supabase.auth.getUser()
     if (user) {
-      await supabase.from('merchants').update({ onboard_method: 'skipped', onboarding_data: data }).eq('user_id', user.id)
+      await supabase.from('merchants').update({ onboard_method: 'skipped', status: 'active' }).eq('user_id', user.id)
     }
     router.push('/dashboard')
   }
@@ -192,6 +192,9 @@ export default function OnboardingPage() {
     setAnalyzeStepIdx(stepsToAnimate.length - 1)
     await new Promise(r => setTimeout(r, 600))
     setAnalysisResult(result)
+
+    // Always mark merchant as active so dashboard is accessible
+    await supabase.from('merchants').update({ status: 'active' }).eq('user_id', user.id)
     setAnalysisDone(true)
   }
 

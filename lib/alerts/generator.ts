@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js"
 import OpenAI from "openai"
+import { sendCriticalAlertEmail } from "@/lib/email/sender"
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -60,5 +61,31 @@ export async function generateAlerts(userId: string, chargebackRate: number, tra
 
   if (alerts.length > 0) {
     await supabase.from('alerts').insert(alerts)
+
+    // Send email for critical alerts if user has email
+    if (process.env.RESEND_API_KEY) {
+      const criticalAlert = alerts.find(a => a.type === 'critical')
+      if (criticalAlert) {
+        const { data: { user } } = await createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!
+        ).auth.admin.getUserById(userId)
+        if (user?.email) {
+          const name = user.user_metadata?.full_name || 'Merchant'
+          const { data: merchant } = await supabase
+            .from('merchants')
+            .select('biggest_threat, recommended_actions')
+            .eq('user_id', userId)
+            .single()
+          await sendCriticalAlertEmail(
+            user.email,
+            name,
+            chargebackRate,
+            merchant?.biggest_threat || 'High chargeback rate',
+            (merchant?.recommended_actions as string[])?.[0] || 'Review your high-risk transactions immediately'
+          ).catch(() => {}) // fail silently
+        }
+      }
+    }
   }
 }

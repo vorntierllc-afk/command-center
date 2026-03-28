@@ -72,17 +72,28 @@ Recent transactions (last 5): ${JSON.stringify(recentTxns ?? [])}`
         content: m.content,
       }))
 
-    const response = await openai.chat.completions.create({
-      model: 'llama3',
-      max_tokens: 400,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...history,
-        { role: 'user', content: message },
-      ],
-    })
-
-    const assistantReply = response.choices[0]?.message?.content ?? ''
+    let assistantReply = ''
+    try {
+      const response = await openai.chat.completions.create({
+        model: 'llama3',
+        max_tokens: 400,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...history,
+          { role: 'user', content: message },
+        ],
+      })
+      assistantReply = response.choices[0]?.message?.content ?? ''
+    } catch (aiErr) {
+      // Ollama not running — return a helpful static response
+      const cbRate = merchant?.chargeback_rate ?? 0
+      const cbPct = (cbRate * 100).toFixed(2)
+      assistantReply = cbRate >= 0.018
+        ? `Your chargeback rate is ${cbPct}% — this is above Visa's 1.8% termination threshold. Immediately refund your highest-risk transactions and contact your processor. (AI analyst offline — start Ollama locally to enable full responses.)`
+        : cbRate >= 0.01
+        ? `Your chargeback rate is ${cbPct}% — approaching the 1.0% warning threshold. Review your high-risk transactions and consider implementing 3DS2 authentication. (AI analyst offline — start Ollama locally to enable full responses.)`
+        : `I can see your account data but the AI analyst is currently offline. Start Ollama locally with "ollama run llama3" to enable full AI responses.`
+    }
 
     // Save to chat_history table
     try {

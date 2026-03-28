@@ -46,7 +46,7 @@ export default function SettingsPage() {
 
       const { data: m } = await supabase
         .from('merchants')
-        .select('id, business_name, processor, onboarding_data')
+        .select('id, business_name, processor')
         .eq('user_id', user.id)
         .single()
       if (m) {
@@ -97,7 +97,6 @@ export default function SettingsPage() {
         auto_refund_threshold: thresholds.autoRefund,
         cb_warning_level: thresholds.cbWarning,
         cb_critical_level: thresholds.cbCritical,
-        updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' })
     }
     setSaving(false)
