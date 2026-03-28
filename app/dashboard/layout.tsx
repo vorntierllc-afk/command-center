@@ -6,6 +6,8 @@ import { createClient } from '@/lib/supabase/client'
 
 const NAV_ITEMS = [
   { label: 'Dashboard', href: '/dashboard' },
+  { label: 'Transactions', href: '/dashboard/transactions' },
+  { label: 'Analytics', href: '/dashboard/analytics' },
   { label: 'Prevent', href: '/dashboard/prevent', badge: 'BETA' },
   { label: 'Disputes', href: '/dashboard/disputes' },
   { label: 'Alerts', href: '/dashboard/alerts' },

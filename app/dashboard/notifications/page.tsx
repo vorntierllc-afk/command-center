@@ -92,7 +92,6 @@ export default function NotificationsPage() {
       await supabase.from('user_preferences').upsert({
         user_id: user.id,
         ...prefs,
-        updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' })
     }
     setSaving(false)
