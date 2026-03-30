@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { label: 'Alerts', href: '/dashboard/alerts' },
   { label: 'Integrations', href: '/dashboard/integrations' },
   { label: 'Notifications', href: '/dashboard/notifications' },
-  { label: 'Billing', href: '/dashboard/billing' },
+  { label: 'Contact', href: '/dashboard/billing' },
   { label: 'Settings', href: '/dashboard/settings' },
 ]
 

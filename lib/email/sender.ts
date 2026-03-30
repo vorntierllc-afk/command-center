@@ -1,9 +1,12 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  if (!process.env.RESEND_API_KEY) throw new Error('RESEND_API_KEY not set')
+  return new Resend(process.env.RESEND_API_KEY)
+}
 
 export async function sendCriticalAlertEmail(to: string, name: string, chargebackRate: number, biggestThreat: string, recommendedAction: string) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'alerts@highriskintel.com',
     to,
     subject: `\u26a0\ufe0f Your chargeback rate needs attention \u2014 HighRiskIntel`,
@@ -24,7 +27,7 @@ export async function sendCriticalAlertEmail(to: string, name: string, chargebac
 }
 
 export async function sendWeeklyReportEmail(to: string, name: string, chargebackRate: number, totalVolume: number, alertCount: number) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'reports@highriskintel.com',
     to,
     subject: `Your weekly risk report \u2014 HighRiskIntel`,
