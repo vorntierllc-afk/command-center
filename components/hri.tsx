@@ -599,7 +599,7 @@ export function LandingPage() {
           </div>
           <div style={s.navActions} className="nav-actions">
             <button style={s.navSignIn} className="nav-lnk" onClick={() => router.push("/signin")}>Sign in</button>
-            <button style={s.navCta} className="btn-p nav-cta" onClick={() => router.push("/dashboard/billing")}>Get started →</button>
+            <button style={s.navCta} className="btn-p nav-cta" onClick={() => router.push("/contact")}>Get started →</button>
           </div>
         </div>
       </nav>
@@ -627,7 +627,7 @@ export function LandingPage() {
             </p>
 
             <div className="fu d3" style={s.heroBtns}>
-              <button style={s.btnPrimary} className="btn-p" onClick={() => router.push("/signup")}>Start free trial</button>
+              <button style={s.btnPrimary} className="btn-p" onClick={() => router.push("/contact")}>Get started →</button>
               <button style={s.btnOutline} className="btn-o" onClick={() => router.push("/demo")}>See live demo →</button>
             </div>
 
@@ -915,7 +915,7 @@ export function LandingPage() {
                 <button
                   style={{ ...(p.highlight ? s.btnPrimaryFull : s.btnOutlineFull) }}
                   className={p.highlight ? "btn-p" : "btn-o"}
-                  onClick={() => router.push("/signup")}
+                  onClick={() => router.push("/contact")}
                 >{p.cta}</button>
               </div>
             ))}
@@ -956,7 +956,7 @@ export function LandingPage() {
             Start monitoring before they make the first move. Free trial, no card required.
           </p>
           <div style={{ display:"flex", gap:14, justifyContent:"center", marginBottom:32 }}>
-            <button style={s.btnPrimary} className="btn-p" onClick={() => router.push("/signup")}>Start free trial</button>
+            <button style={s.btnPrimary} className="btn-p" onClick={() => router.push("/contact")}>Get started →</button>
             <button style={s.btnGhost} onClick={() => router.push("/signin")}>Sign in →</button>
           </div>
           <div style={{ display:"flex", gap:24, justifyContent:"center", flexWrap:"wrap" }}>
