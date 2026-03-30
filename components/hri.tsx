@@ -599,7 +599,7 @@ export function LandingPage() {
           </div>
           <div style={s.navActions} className="nav-actions">
             <button style={s.navSignIn} className="nav-lnk" onClick={() => router.push("/signin")}>Sign in</button>
-            <button style={s.navCta} className="btn-p nav-cta" onClick={() => router.push("/signup")}>Get started →</button>
+            <button style={s.navCta} className="btn-p nav-cta" onClick={() => router.push("/dashboard/billing")}>Get started →</button>
           </div>
         </div>
       </nav>
@@ -641,7 +641,6 @@ export function LandingPage() {
 
             <div className="fu d4 stats-row" style={s.statsRow}>
               {[
-                { v:"$2.4B+", l:"Protected in merchant volume" },
                 { v:"30 days", l:"MID termination prediction" },
                 { v:"98.6%", l:"Dispute prevention rate" },
                 { v:"12 hrs", l:"Human review cycle" },
