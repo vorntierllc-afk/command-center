@@ -1,0 +1,15 @@
+.git
+.next
+node_modules
+.env
+.env.local
+*.log
+tsconfig.tsbuildinfo
+
+# Unrelated local experiments/assets that should not be uploaded with HighRiskIntel.
+command.html
+migration.sql
+migration2.sql
+nazbeauty
+nazbeauty-theme
+supabase/.temp

@@ -283,6 +283,59 @@ async function syncNMI(securityKey: string): Promise<SyncResult> {
 }
 
 // ---------------------------------------------------------------------------
+// CREDENTIAL VALIDATORS — fast ping before full sync
+// ---------------------------------------------------------------------------
+async function validateStripe(secretKey: string): Promise<void> {
+  const Stripe = (await import('stripe')).default
+  const stripe = new Stripe(secretKey, { apiVersion: '2025-08-27.basil' as any })
+  await stripe.balance.retrieve() // throws if key is invalid
+}
+
+async function validatePayPal(clientId: string, clientSecret: string): Promise<void> {
+  const res = await fetch('https://api-m.paypal.com/v1/oauth2/token', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
+  })
+  const json = await res.json()
+  if (!json.access_token) throw new Error('Invalid PayPal credentials')
+}
+
+async function validateAuthorizeNet(apiLoginId: string, transactionKey: string): Promise<void> {
+  const res = await fetch('https://api.authorize.net/xml/v1/request.api', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      authenticateTestRequest: {
+        merchantAuthentication: { name: apiLoginId, transactionKey },
+      },
+    }),
+  })
+  const data = await res.json()
+  if (data.messages?.resultCode !== 'Ok') throw new Error('Invalid Authorize.net credentials')
+}
+
+async function validateSquare(accessToken: string): Promise<void> {
+  const res = await fetch('https://connect.squareup.com/v2/merchants/me', {
+    headers: { 'Authorization': `Bearer ${accessToken}`, 'Square-Version': '2024-11-20' },
+  })
+  if (!res.ok) throw new Error('Invalid Square access token')
+}
+
+async function validateNMI(securityKey: string): Promise<void> {
+  const res = await fetch('https://secure.nmi.com/api/query.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ security_key: securityKey, report_type: 'transaction', result_limit: '1' }).toString(),
+  })
+  const text = await res.text()
+  if (text.includes('Authentication Failed') || text.includes('Invalid')) throw new Error('Invalid NMI security key')
+}
+
+// ---------------------------------------------------------------------------
 // MAIN POST HANDLER
 // ---------------------------------------------------------------------------
 export async function POST(request: Request) {
@@ -292,6 +345,30 @@ export async function POST(request: Request) {
 
   const body = await request.json() as { processor: string; credentials: Record<string, string> }
   const { processor, credentials } = body
+
+  // Validate credentials first — fast check before committing to full sync
+  try {
+    switch (processor) {
+      case 'stripe':
+        await validateStripe(credentials.secret_key)
+        break
+      case 'paypal':
+        await validatePayPal(credentials.client_id, credentials.client_secret)
+        break
+      case 'authorize_net':
+        await validateAuthorizeNet(credentials.api_login_id, credentials.transaction_key)
+        break
+      case 'square':
+        await validateSquare(credentials.access_token)
+        break
+      case 'nmi':
+        await validateNMI(credentials.security_key)
+        break
+      // Braintree validation happens implicitly during sync
+    }
+  } catch (e: any) {
+    return NextResponse.json({ error: `Invalid credentials: ${e.message}` }, { status: 400 })
+  }
 
   let rawTransactions: SyncResult = []
 
@@ -319,7 +396,7 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: `Unsupported processor: ${processor}` }, { status: 400 })
     }
   } catch (e: any) {
-    return NextResponse.json({ error: `Failed to connect to ${processor}: ${e.message}` }, { status: 400 })
+    return NextResponse.json({ error: `Sync failed for ${processor}: ${e.message}` }, { status: 400 })
   }
 
   // Score each transaction

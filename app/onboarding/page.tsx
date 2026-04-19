@@ -111,18 +111,26 @@ export default function OnboardingPage() {
   const [error, setError] = useState<string | null>(null)
   const [syncResult, setSyncResult] = useState<{ transactions_synced?: number; chargeback_rate?: number; total_volume?: number } | null>(null)
 
-  // If merchant already completed onboarding, skip straight to dashboard
+  // Restore progress or redirect if already onboarded
   useEffect(() => {
     async function checkStatus() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) return
       const { data: merchant } = await supabase
         .from('merchants')
-        .select('status')
+        .select('status, onboarding_data')
         .eq('user_id', user.id)
         .single()
-      if (merchant && merchant.status === 'active') {
+      if (merchant?.status === 'active') {
         router.replace('/dashboard')
+        return
+      }
+      // Restore saved progress so user doesn't start over
+      if (merchant?.onboarding_data) {
+        const saved = merchant.onboarding_data as OnboardingData & { current_step?: StepId }
+        const { current_step, ...savedData } = saved
+        setData(savedData)
+        if (current_step && current_step !== 6) setStep(current_step)
       }
     }
     checkStatus()
@@ -136,8 +144,17 @@ export default function OnboardingPage() {
     : ['Uploading your statements securely...', 'Extracting transaction data...', 'Running AI analysis on your statements...', 'Calculating your chargeback rate...', 'Identifying high-risk patterns...', 'Generating your first report...', 'Analysis complete.']
 
   function pick(key: keyof OnboardingData, value: string, next: StepId) {
-    setData(d => ({ ...d, [key]: value }))
+    const newData = { ...data, [key]: value }
+    setData(newData)
     setStep(next)
+    // Save progress so user can resume if they leave
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        supabase.from('merchants').update({
+          onboarding_data: { ...newData, current_step: next }
+        }).eq('user_id', user.id)
+      }
+    })
   }
 
   async function skipOnboarding() {
@@ -170,15 +187,9 @@ export default function OnboardingPage() {
 
     let result: AnalysisResult = {}
     try {
-      if (method === 'api') {
-        const res = await fetch('/api/processor/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ processor: selectedProcessor, credentials })
-        })
-        const json = await res.json()
-        result = json.analysis || {}
-      } else {
+      // API sync was already done in handleProcessorConnect — don't call it again.
+      // Only the upload path needs to call its API here.
+      if (method === 'upload') {
         const formData = new FormData()
         files.forEach(f => formData.append('files', f))
         const res = await fetch('/api/statements/analyze', { method: 'POST', body: formData })
@@ -209,14 +220,13 @@ export default function OnboardingPage() {
     const apiData = await res.json()
     if (apiData.success) {
       setSyncResult(apiData)
-      setSelectedProcessor(processor)
-      setCredentials(processorCredentials)
       setData(d => ({ ...d, processor, credentials: processorCredentials }))
+      setLoading(false)
       runAnalysis('api')
     } else {
       setError(apiData.error || 'Connection failed')
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   function renderStep() {

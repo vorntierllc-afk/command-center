@@ -1,12 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import OpenAI from 'openai'
+import Anthropic from '@anthropic-ai/sdk'
 import { generateAlerts } from '@/lib/alerts/generator'
+import { checkRateLimit } from '@/lib/server/rate-limit'
 
-const openai = new OpenAI({
-  baseURL: 'http://localhost:11434/v1',
-  apiKey: 'ollama',
-})
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 async function extractText(file: File): Promise<string> {
   if (file.name.endsWith('.csv') || file.type === 'text/csv') {
@@ -28,6 +26,12 @@ export async function POST(request: Request) {
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+    // Rate limit: 3 statement analyses per user per day (expensive operation)
+    const { allowed } = checkRateLimit(`statements:${user.id}`, 3, 24 * 60 * 60 * 1000)
+    if (!allowed) {
+      return NextResponse.json({ error: 'Statement analysis limit reached. Try again tomorrow.' }, { status: 429 })
+    }
+
     const formData = await request.formData()
     const files = formData.getAll('files').filter((v): v is File => v instanceof File)
 
@@ -48,7 +52,6 @@ export async function POST(request: Request) {
           url: path,
           type: file.name.endsWith('.csv') ? 'csv' : 'pdf',
         })
-        // Insert into statement_uploads table
         await supabase.from('statement_uploads').insert({
           user_id: user.id,
           file_name: file.name,
@@ -63,7 +66,7 @@ export async function POST(request: Request) {
       allText.push(`--- ${file.name} ---\n${text}`)
     }
 
-    const combinedText = allText.join('\n\n').slice(0, 12000)
+    const combinedText = allText.join('\n\n').slice(0, 6000)
 
     const prompt = `You are a payment risk analyst. Analyze this merchant processing statement.
 Return ONLY valid JSON with no markdown wrapper:
@@ -89,12 +92,12 @@ ${combinedText}`
 
     let parsedAnalysis: Record<string, unknown> = {}
     try {
-      const resp = await openai.chat.completions.create({
-        model: 'llama3',
-        max_tokens: 2000,
+      const response = await anthropic.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1000,
         messages: [{ role: 'user', content: prompt }],
       })
-      const text = resp.choices[0]?.message?.content ?? ''
+      const text = response.content[0].type === 'text' ? response.content[0].text : ''
       const firstBrace = text.indexOf('{')
       const lastBrace = text.lastIndexOf('}')
       if (firstBrace !== -1 && lastBrace !== -1) {
@@ -120,10 +123,9 @@ ${combinedText}`
     const recommendedActions = (parsedAnalysis.recommended_actions as string[]) ?? []
     const totalVolume = (parsedAnalysis.total_volume as number) ?? 0
 
-    // Update merchants table
     await supabase.from('merchants').update({
       ai_analysis: parsedAnalysis,
-      chargeback_rate: chargebackRate,  // stored as fraction 0.0184
+      chargeback_rate: chargebackRate,
       mid_risk_level: midRiskLevel,
       biggest_threat: biggestThreat,
       top_risk_factors: topRiskFactors,
@@ -133,7 +135,6 @@ ${combinedText}`
       status: 'active',
     }).eq('user_id', user.id)
 
-    // Generate alerts
     const highRiskTxns = (parsedAnalysis.high_risk_transactions as Array<{ amount: number; reason: string; date: string }>) ?? []
     await generateAlerts(user.id, chargebackRatePercent, highRiskTxns.map((tx, i) => ({
       risk_score: i < 3 ? 85 : 70,

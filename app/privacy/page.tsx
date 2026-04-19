@@ -1,9 +1,18 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { DEFAULT_OG_IMAGE, absoluteUrl } from '@/lib/seo'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — HighRiskIntel',
   description: 'Privacy Policy for HighRiskIntel payment risk monitoring platform.',
+  alternates: { canonical: absoluteUrl('/privacy') },
+  openGraph: {
+    type: 'website',
+    url: absoluteUrl('/privacy'),
+    title: 'Privacy Policy — HighRiskIntel',
+    description: 'Privacy Policy for HighRiskIntel payment risk monitoring platform.',
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: 'HighRiskIntel Privacy Policy' }],
+  },
 }
 
 export default function PrivacyPage() {
