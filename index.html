@@ -1642,8 +1642,10 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
         <div class="view on" id="v-dash">
 
           <div class="metrics">
-            <div class="metric"><div class="metric-lbl">Current MRR</div><div class="metric-val v-amber" id="d-daily">$3,989</div><div class="metric-foot">Merchant Arbitrage anchor</div></div>
+            <div class="metric"><div class="metric-lbl">Current MRR</div><div class="metric-val v-amber" id="d-daily">$3,989</div><div class="metric-foot">monthly recurring revenue</div></div>
+            <div class="metric"><div class="metric-lbl">Current ARR</div><div class="metric-val v-amber" id="d-arr">$47,868</div><div class="metric-foot">annualized · MRR × 12</div></div>
             <div class="metric"><div class="metric-lbl">MRR Target</div><div class="metric-val v-emerald" id="d-mrr">$40,000</div><div class="metric-foot" id="d-mrr-f">35-day sprint · Jun 18</div></div>
+            <div class="metric"><div class="metric-lbl">ARR Target</div><div class="metric-val v-emerald" id="d-arr-target">$480,000</div><div class="metric-foot">$40K MRR × 12</div></div>
             <div class="metric"><div class="metric-lbl">Pending Tasks</div><div class="metric-val v-sapphire" id="d-pending">0</div><div class="metric-foot" id="d-pf">this week</div></div>
             <div class="metric"><div class="metric-lbl">Active Businesses</div><div class="metric-val v-violet">8</div><div class="metric-foot">Warehousing is the anchor</div></div>
             <div class="metric"><div class="metric-lbl">Days Remaining</div><div class="metric-val v-paper2" id="d-days">35</div><div class="metric-foot">to Jun 18, 2026</div></div>
@@ -2223,8 +2225,10 @@ function renderDash(){
   const daily=Math.round(totalMRR/30);
   const end=new Date('2026-06-18'); const days=Math.max(0,Math.round((end-new Date())/86400000));
 
-  document.getElementById('d-daily').textContent='$'+daily.toLocaleString();
-  document.getElementById('d-mrr').textContent='$'+totalMRR.toLocaleString();
+  document.getElementById('d-daily').textContent='$'+totalMRR.toLocaleString();
+  document.getElementById('d-arr').textContent='$'+(totalMRR*12).toLocaleString();
+  document.getElementById('d-mrr').textContent='$40,000';
+  document.getElementById('d-arr-target').textContent='$480,000';
   document.getElementById('d-mrr-f').textContent=pct+'% of $40K target';
   document.getElementById('d-pending').textContent=pending;
   document.getElementById('d-pf').textContent='pending this week ('+wk+')';
