@@ -1834,7 +1834,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
 <div class="overlay" id="mo-rev">
   <div class="modal" style="max-width:420px">
     <div class="modal-title">Edit Revenue</div>
-    <div class="modal-sub">ENTER ARR — CONVERTS TO MRR AUTOMATICALLY</div>
+    <div class="modal-sub">MRR + ARR ARE INDEPENDENT — SET EACH SEPARATELY</div>
     <div class="f-lbl" style="margin-top:16px">Business</div>
     <select class="f-inp" id="rev-biz-select" onchange="revSelectChange()">
       <option value="">— select a business —</option>
@@ -1851,11 +1851,17 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
         </div>
       </div>
     </div>
-    <div class="f-lbl">New ARR (Annual Revenue)</div>
-    <input class="f-inp" id="rev-arr-input" type="number" placeholder="e.g. 48000" oninput="revArrPreview()" style="font-size:16px;font-weight:600">
-    <div id="rev-preview" style="display:none;margin-top:8px;padding:8px 12px;background:var(--amberg);border:1px solid var(--amberb);border-radius:8px;font-family:var(--fm);font-size:11px;color:var(--amber)">
-      MRR preview: <strong id="rev-mrr-preview">$0</strong> / month
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px">
+      <div>
+        <div class="f-lbl">New MRR (this month)</div>
+        <input class="f-inp" id="rev-mrr-input" type="number" placeholder="e.g. 3989" style="font-size:15px;font-weight:600">
+      </div>
+      <div>
+        <div class="f-lbl">New ARR (annual — independent)</div>
+        <input class="f-inp" id="rev-arr-input" type="number" placeholder="e.g. 55000" style="font-size:15px;font-weight:600">
+      </div>
     </div>
+    <div style="margin-top:6px;font-family:var(--fm);font-size:9px;color:var(--paper3)">Leave either field blank to keep the current value unchanged.</div>
     <div class="modal-actions" style="margin-top:20px">
       <button class="btn btn-ghost btn-sm" onclick="close('mo-rev')">Cancel</button>
       <button class="btn btn-amber btn-sm" onclick="saveRevenue()">Save Revenue</button>
@@ -1949,17 +1955,17 @@ const dbClear = (s) => new Promise((r,f) => { const q=TX(s,'readwrite').clear();
 
 /* ═══ BUSINESS DATA ═══ */
 const BIZ = [
-  {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:3989,  target:5000,  color:'#D4954E', desc:'MX + Auth.net accounts live. eBay processing active. Monitor daily for holds/disputes.', action:'Check MX + Auth.net dashboards — flag any holds immediately', ceiling:'$5K/mo target'},
-  {id:'urban',  name:'Urban Sells',          status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Urban Sells. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
-  {id:'retro',  name:'Retro Shop',           status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Retro Shop. Manager 1 oversight. Daily listings + order monitoring.', action:'Manager 1 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
-  {id:'redr',   name:'REDR Sellers',         status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — REDR Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
-  {id:'vorn',   name:'Vorn Sellers',         status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Vorn Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
-  {id:'3pl',    name:'Warehousing (3PL)',    status:'live',    mrr:0,     target:20000, color:'#3DAF78', desc:'Primary revenue anchor. Cold outreach daily to land warehousing clients. Receive + repackage.', action:'5+ cold outreach calls/emails to businesses needing storage TODAY', ceiling:'$20K/mo at 8-10 clients'},
-  {id:'ads',    name:'Ads Manager',          status:'live',    mrr:0,     target:2000,  color:'#8B68C4', desc:'Daily posting + creative management. Run ads for warehouse acquisition + Lawyergist.', action:'Post 1-2 ads today, check performance metrics, adjust targeting', ceiling:'$2K/mo'},
-  {id:'law',    name:'Lawyergist',           status:'live',    mrr:0,     target:10000, color:'#5888C4', desc:'Lawyer marketing agency. 200K attorney database. Daily outreach + content. Target 6-8 retainer clients.', action:'3 lawyer outreach messages + 1 content piece today', ceiling:'$10K/mo at 6-8 retainers'},
-  {id:'hri',    name:'HighRiskIntel',        status:'build',   mrr:0,     target:3000,  color:'#C45858', desc:'Full redesign in progress. New brand, landing page, AI agent backend. Personal brand content.', action:'Work the redesign: writing, posting, building — ship something daily', ceiling:'$3K/mo soft launch'},
-  {id:'dsi',    name:'DSI Portal',           status:'pending', mrr:0,     target:8750,  color:'#7c3aed', desc:'AT&T reseller. PENDING — weekly go/no-go review. Up to $1,500/activation.', action:'Weekly check: move forward or kill decision by EOW', ceiling:'$8.75K/mo if activated'},
-  {id:'amzn',   name:'Amazon / Walmart',     status:'pending', mrr:0,     target:5000,  color:'#C45858', desc:'PENDING — weekly prep + research. Go/no-go decision by end of W1.', action:'Weekly check: research + prep, go/no-go decision by May 20', ceiling:'$5K/mo if activated'},
+  {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:3989,  arr:0, target:5000,  color:'#D4954E', desc:'MX + Auth.net accounts live. eBay processing active. Monitor daily for holds/disputes.', action:'Check MX + Auth.net dashboards — flag any holds immediately', ceiling:'$5K/mo target'},
+  {id:'urban',  name:'Urban Sells',          status:'live',    mrr:0,     arr:0, target:1250,  color:'#5888C4', desc:'eBay store — Urban Sells. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'retro',  name:'Retro Shop',           status:'live',    mrr:0,     arr:0, target:1250,  color:'#5888C4', desc:'eBay store — Retro Shop. Manager 1 oversight. Daily listings + order monitoring.', action:'Manager 1 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'redr',   name:'REDR Sellers',         status:'live',    mrr:0,     arr:0, target:1250,  color:'#5888C4', desc:'eBay store — REDR Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'vorn',   name:'Vorn Sellers',         status:'live',    mrr:0,     arr:0, target:1250,  color:'#5888C4', desc:'eBay store — Vorn Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'3pl',    name:'Warehousing (3PL)',    status:'live',    mrr:0,     arr:0, target:20000, color:'#3DAF78', desc:'Primary revenue anchor. Cold outreach daily to land warehousing clients. Receive + repackage.', action:'5+ cold outreach calls/emails to businesses needing storage TODAY', ceiling:'$20K/mo at 8-10 clients'},
+  {id:'ads',    name:'Ads Manager',          status:'live',    mrr:0,     arr:0, target:2000,  color:'#8B68C4', desc:'Daily posting + creative management. Run ads for warehouse acquisition + Lawyergist.', action:'Post 1-2 ads today, check performance metrics, adjust targeting', ceiling:'$2K/mo'},
+  {id:'law',    name:'Lawyergist',           status:'live',    mrr:0,     arr:0, target:10000, color:'#5888C4', desc:'Lawyer marketing agency. 200K attorney database. Daily outreach + content. Target 6-8 retainer clients.', action:'3 lawyer outreach messages + 1 content piece today', ceiling:'$10K/mo at 6-8 retainers'},
+  {id:'hri',    name:'HighRiskIntel',        status:'build',   mrr:0,     arr:0, target:3000,  color:'#C45858', desc:'Full redesign in progress. New brand, landing page, AI agent backend. Personal brand content.', action:'Work the redesign: writing, posting, building — ship something daily', ceiling:'$3K/mo soft launch'},
+  {id:'dsi',    name:'DSI Portal',           status:'pending', mrr:0,     arr:0, target:8750,  color:'#7c3aed', desc:'AT&T reseller. PENDING — weekly go/no-go review. Up to $1,500/activation.', action:'Weekly check: move forward or kill decision by EOW', ceiling:'$8.75K/mo if activated'},
+  {id:'amzn',   name:'Amazon / Walmart',     status:'pending', mrr:0,     arr:0, target:5000,  color:'#C45858', desc:'PENDING — weekly prep + research. Go/no-go decision by end of W1.', action:'Weekly check: research + prep, go/no-go decision by May 20', ceiling:'$5K/mo if activated'},
 ];
 
 const MANAGERS = [
@@ -2258,7 +2264,8 @@ function renderDash(){
   const end=new Date('2026-06-18'); const days=Math.max(0,Math.round((end-new Date())/86400000));
 
   document.getElementById('d-daily').textContent='$'+totalMRR.toLocaleString();
-  document.getElementById('d-arr').textContent='$'+(totalMRR*12).toLocaleString();
+  const totalARR=BIZ.reduce((s,b)=>s+(b.arr||0),0);
+  document.getElementById('d-arr').textContent='$'+totalARR.toLocaleString();
   document.getElementById('d-mrr').textContent='$40,000';
   document.getElementById('d-arr-target').textContent='$480,000';
   document.getElementById('d-mrr-f').textContent=pct+'% of $40K target';
@@ -2519,7 +2526,7 @@ function renderBiz(){
         <span class="badge ${scls[b.status]}">${b.status.toUpperCase()}</span>
       </div>
       <div class="bc-rev" style="color:${b.color}">$${b.mrr.toLocaleString()}<span style="font-size:11px;color:var(--paper3);font-family:var(--fm);margin-left:8px">MRR</span></div>
-      <div style="font-size:11px;color:var(--paper3);margin-bottom:6px;font-family:var(--fm)">ARR <span style="color:${b.color};font-weight:600">$${(b.mrr*12).toLocaleString()}</span> &nbsp;·&nbsp; TARGET <span style="color:var(--paper2)">$${b.target.toLocaleString()}/mo</span></div>
+      <div style="font-size:11px;color:var(--paper3);margin-bottom:6px;font-family:var(--fm)">ARR <span style="color:${b.color};font-weight:600">$${b.arr.toLocaleString()}</span> &nbsp;·&nbsp; TARGET <span style="color:var(--paper2)">$${b.target.toLocaleString()}/mo</span></div>
       <div class="bc-bar-wrap"><div class="bc-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${b.color},${b.color}bb)"></div></div>
       <div class="bc-desc">${b.desc}</div>
       <div class="bc-action">→ ${b.action}</div>
@@ -2530,9 +2537,9 @@ function renderBiz(){
 function updateMRR(){
   const sel = document.getElementById('rev-biz-select');
   sel.innerHTML = '<option value="">— select a business —</option>' +
-    BIZ.map(b=>`<option value="${b.id}">${b.name} · ARR $${(b.mrr*12).toLocaleString()}</option>`).join('');
+    BIZ.map(b=>`<option value="${b.id}">${b.name} · MRR $${b.mrr.toLocaleString()} · ARR $${b.arr.toLocaleString()}</option>`).join('');
   document.getElementById('rev-current-display').style.display='none';
-  document.getElementById('rev-preview').style.display='none';
+  document.getElementById('rev-mrr-input').value='';
   document.getElementById('rev-arr-input').value='';
   open('mo-rev');
 }
@@ -2542,25 +2549,22 @@ function revSelectChange(){
   const disp = document.getElementById('rev-current-display');
   if(!b){ disp.style.display='none'; return; }
   document.getElementById('rev-cur-mrr').textContent='$'+b.mrr.toLocaleString();
-  document.getElementById('rev-cur-arr').textContent='$'+(b.mrr*12).toLocaleString();
+  document.getElementById('rev-cur-arr').textContent='$'+b.arr.toLocaleString();
+  document.getElementById('rev-mrr-input').value=b.mrr||'';
+  document.getElementById('rev-arr-input').value=b.arr||'';
   disp.style.display='block';
-}
-function revArrPreview(){
-  const val = parseInt(document.getElementById('rev-arr-input').value)||0;
-  const mrr = Math.round(val/12);
-  document.getElementById('rev-mrr-preview').textContent='$'+mrr.toLocaleString();
-  document.getElementById('rev-preview').style.display = val>0?'block':'none';
 }
 function saveRevenue(){
   const id = document.getElementById('rev-biz-select').value;
-  const arr = parseInt(document.getElementById('rev-arr-input').value);
   if(!id){ toast('Select a business','err'); return; }
-  if(!arr||isNaN(arr)){ toast('Enter a valid ARR','err'); return; }
   const b = BIZ.find(x=>x.id===id);
-  b.mrr = Math.round(arr/12);
+  const mrrVal = document.getElementById('rev-mrr-input').value;
+  const arrVal = document.getElementById('rev-arr-input').value;
+  if(mrrVal!=='' && !isNaN(mrrVal)) b.mrr = parseInt(mrrVal);
+  if(arrVal!=='' && !isNaN(arrVal)) b.arr = parseInt(arrVal);
   close('mo-rev');
   refresh();
-  toast(b.name+' → ARR $'+arr.toLocaleString()+' · MRR $'+b.mrr.toLocaleString(),'ok');
+  toast(b.name+' updated · MRR $'+b.mrr.toLocaleString()+' · ARR $'+b.arr.toLocaleString(),'ok');
 }
 
 /* ═══ MANAGERS ═══ */
@@ -2629,7 +2633,7 @@ function renderAnalytics(){
       <td><strong>${b.name}</strong></td>
       <td style="font-family:var(--fm);font-size:9.5px;${sc[b.status]}">${b.status.toUpperCase()}</td>
       <td style="font-family:var(--fm);font-size:11px;color:var(--amber)">$${b.mrr.toLocaleString()}</td>
-      <td style="font-family:var(--fm);font-size:11px;color:${b.color};font-weight:600">$${(b.mrr*12).toLocaleString()}</td>
+      <td style="font-family:var(--fm);font-size:11px;color:${b.color};font-weight:600">$${b.arr.toLocaleString()}</td>
       <td style="font-family:var(--fm);font-size:11px;color:var(--paper3)">$${b.target.toLocaleString()}</td>
       <td>
         <div style="height:3px;background:var(--z4);width:80px;overflow:hidden">
