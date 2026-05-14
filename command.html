@@ -58,7 +58,7 @@
   --line4: rgba(255,255,255,0.24);
   --paper: #e6edf3;
   --paper2: #8b949e;
-  --paper3: #6e7681;
+  --paper3: #a0aab4;
   --paper4: #484f58;
   --shadow-sm: 0 10px 30px rgba(0,0,0,0.3);
   --shadow-md: 0 24px 60px rgba(0,0,0,0.5);
@@ -72,6 +72,19 @@
   background: linear-gradient(rgba(99,91,255,0.05) 1px, transparent 1px),
               linear-gradient(90deg, rgba(99,91,255,0.05) 1px, transparent 1px);
 }
+.dark .hdr { background: rgba(22,27,34,0.92); border-bottom-color: rgba(255,255,255,0.08); }
+.dark .sb { background: rgba(16,21,27,0.95); border-right-color: rgba(255,255,255,0.06); }
+.dark .panel { background: var(--z1); border-color: var(--line2); }
+.dark .metric { background: var(--z1); border-color: var(--line2); }
+.dark .biz-card { background: var(--z1); border-color: var(--line2); }
+.dark .mgr-card { background: var(--z1); border-color: var(--line2); }
+.dark table { background: var(--z1); }
+.dark th { background: var(--z2); border-color: var(--line2); }
+.dark td { border-color: var(--line); }
+.dark .modal { background: var(--z1); }
+.dark .f-inp { background: var(--z2); border-color: var(--line2); color: var(--paper); }
+.dark .target-chip { background: var(--amberg); }
+.dark .live-pill { background: var(--z2); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; font-size: 13px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
@@ -1568,20 +1581,20 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       </div>
       <div class="auth-stats">
         <div class="auth-stat">
-          <div class="auth-stat-val">16</div>
-          <div class="auth-stat-lbl">Active Streams</div>
+          <div class="auth-stat-val">8</div>
+          <div class="auth-stat-lbl">Active Businesses</div>
         </div>
         <div class="auth-stat">
           <div class="auth-stat-val">$40K</div>
           <div class="auth-stat-lbl">MRR Target</div>
         </div>
         <div class="auth-stat">
-          <div class="auth-stat-val">120</div>
-          <div class="auth-stat-lbl">Day Plan</div>
+          <div class="auth-stat-val">35</div>
+          <div class="auth-stat-lbl">Day Sprint</div>
         </div>
         <div class="auth-stat">
-          <div class="auth-stat-val">Aug '26</div>
-          <div class="auth-stat-lbl">Target Window</div>
+          <div class="auth-stat-val">Jun '26</div>
+          <div class="auth-stat-lbl">Deadline</div>
         </div>
       </div>
     </div>
@@ -1589,9 +1602,8 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       <div class="auth-form-title">Access system</div>
       <div class="auth-form-sub">PRIVATE OPERATING DASHBOARD</div>
       <label class="f-lbl">Access Code</label>
-      <input id="ac" class="f-inp" type="password" placeholder="Enter code" value="ops2026">
+      <input id="ac" class="f-inp" type="password" placeholder="Enter access code">
       <button class="btn-enter" onclick="login()">Enter dashboard</button>
-      <div class="auth-hint">Demo access code: ops2026</div>
     </div>
   </div>
 </div>
