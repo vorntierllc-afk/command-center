@@ -1577,7 +1577,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
     <nav class="hdr-nav">
       <button class="hn on"  onclick="go('dash',this)">Overview</button>
       <button class="hn"     onclick="go('gameplan',this)">Game Plan</button>
-      <button class="hn"     onclick="go('calendar',this)">120-Day Calendar</button>
+      <button class="hn"     onclick="go('calendar',this)">35-Day Calendar</button>
       <button class="hn"     onclick="go('tasks',this)">Tasks</button>
       <button class="hn"     onclick="go('biz',this)">Businesses</button>
       <button class="hn"     onclick="go('managers',this)">Managers</button>
@@ -1604,7 +1604,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       <div class="sb-section">
         <div class="sb-heading">Strategy</div>
         <div class="sb-row" onclick="sbgo(this,'gameplan')"><div class="sb-row-l"><span class="sb-ico">▣</span><span class="sb-txt">Game Plan</span></div></div>
-        <div class="sb-row" onclick="sbgo(this,'calendar')"><div class="sb-row-l"><span class="sb-ico">⬡</span><span class="sb-txt">120-Day Calendar</span></div></div>
+        <div class="sb-row" onclick="sbgo(this,'calendar')"><div class="sb-row-l"><span class="sb-ico">⬡</span><span class="sb-txt">35-Day Calendar</span></div></div>
       </div>
       <div class="sb-section">
         <div class="sb-heading">Execution</div>
@@ -1614,15 +1614,15 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       </div>
       <div class="sb-section">
         <div class="sb-heading">Portfolio</div>
-        <div class="sb-row" onclick="sbgo(this,'biz')"><div class="sb-row-l"><span class="sb-ico">≡</span><span class="sb-txt">All Businesses</span></div><span class="sb-num">16</span></div>
+        <div class="sb-row" onclick="sbgo(this,'biz')"><div class="sb-row-l"><span class="sb-ico">≡</span><span class="sb-txt">All Businesses</span></div><span class="sb-num">8</span></div>
         <div class="sb-row" onclick="sbgo(this,'managers')"><div class="sb-row-l"><span class="sb-ico">◐</span><span class="sb-txt">Managers</span></div><span class="sb-num">4</span></div>
       </div>
       <div class="sb-foot">
         <div class="mrr-block">
           <div class="mrr-eyebrow">CURRENT MRR</div>
-          <div class="mrr-val" id="sb-mrr">$2,589</div>
+          <div class="mrr-val" id="sb-mrr">$3,989</div>
           <div class="mrr-sub" id="sb-mrr-pct">10% of $40K goal</div>
-          <div class="mrr-bar"><div class="mrr-fill" id="sb-mrr-fill" style="width:1.7%"></div></div>
+          <div class="mrr-bar"><div class="mrr-fill" id="sb-mrr-fill" style="width:10%"></div></div>
         </div>
       </div>
     </aside>
@@ -1896,7 +1896,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
 /* ═══ DB ═══ */
 let idb;
 const openDB = () => new Promise((res,rej) => {
-  const r = indexedDB.open('CommandV5', 2);
+  const r = indexedDB.open('CommandV6', 1);
   r.onupgradeneeded = e => {
     const d = e.target.result;
     ['tasks','settings'].forEach(s => {
@@ -2185,7 +2185,7 @@ const PM = {
   gameplan: ['The Game Plan',           '$40,000 MRR IN 35 DAYS · MAY 14 – JUN 18'],
   calendar: ['35-Day Calendar',         'WEEK-BY-WEEK EXECUTION · MAY 14 – JUN 18, 2026'],
   tasks:    ['All Tasks',               'EXECUTION CHECKLIST · SYNCED TO CALENDAR'],
-  biz:      ['All Businesses',          '15 REVENUE STREAMS · CURRENT STATUS'],
+  biz:      ['All Businesses',          '8 REVENUE STREAMS · CURRENT STATUS'],
   managers: ['Team Overview',           '4 MANAGERS · TASKS + KPIs'],
   analytics:['Analytics',               'REVENUE + PERFORMANCE METRICS'],
 };
@@ -2221,7 +2221,7 @@ function renderDash(){
   const wk=curWeek(); const wkTasks=tasks.filter(t=>t.wk===wk);
   const pending=wkTasks.filter(t=>!t.done).length;
   const totalMRR=calcMRR();
-  const pct=Math.min(Math.round(totalMRR/150000*100),100);
+  const pct=Math.min(Math.round(totalMRR/40000*100),100);
   const daily=Math.round(totalMRR/30);
   const end=new Date('2026-06-18'); const days=Math.max(0,Math.round((end-new Date())/86400000));
 
@@ -2236,8 +2236,8 @@ function renderDash(){
   document.getElementById('rev-meta').textContent='Current: $'+totalMRR.toLocaleString();
 
   // Trajectory chart
-  const weekTargets=[2589,4000,8000,15000,20000,30000,40000,50000,65000,80000,90000,100000,115000,125000,135000,145000,150000];
-  const maxV=150000; const h=120;
+  const weekTargets=[3989,6000,12000,25000,40000];
+  const maxV=40000; const h=120;
   document.getElementById('traj-chart').innerHTML=weekTargets.map((v,i)=>{
     const th=Math.max(Math.round(v/maxV*h),2);
     const actual=i===0?totalMRR:0;
@@ -2533,8 +2533,8 @@ function renderAnalytics(){
   document.getElementById('an3f').textContent=done+' of '+total+' done';
 
   // 17-week projection
-  const proj=[2589,4000,8000,15000,20000,30000,40000,50000,65000,80000,90000,100000,115000,125000,135000,145000,150000];
-  const maxV=150000;
+  const proj=[3989,6000,12000,25000,40000];
+  const maxV=40000;
   document.getElementById('a-traj').innerHTML=proj.map((v,i)=>{
     const h=Math.max(Math.round(v/maxV*130),2);
     const clr=i===0?'var(--amber)':v>=100000?'var(--emerald)':v>=50000?'var(--sapphire)':'var(--z4)';
@@ -2603,8 +2603,8 @@ function updateSB(){
   document.getElementById('sb-high').textContent=allH;
   const mrr=calcMRR();
   document.getElementById('sb-mrr').textContent='$'+mrr.toLocaleString();
-  const pct=Math.min(Math.round(mrr/150000*100),100);
-  document.getElementById('sb-mrr-pct').textContent=pct+'% of $150K goal';
+  const pct=Math.min(Math.round(mrr/40000*100),100);
+  document.getElementById('sb-mrr-pct').textContent=pct+'% of $40K goal';
   document.getElementById('sb-mrr-fill').style.width=pct+'%';
 }
 
