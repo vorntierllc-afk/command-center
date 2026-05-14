@@ -1830,6 +1830,39 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
   </div><!-- /layout -->
 </div><!-- /app -->
 
+<!-- REVENUE EDIT MODAL -->
+<div class="overlay" id="mo-rev">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-title">Edit Revenue</div>
+    <div class="modal-sub">ENTER ARR — CONVERTS TO MRR AUTOMATICALLY</div>
+    <div class="f-lbl" style="margin-top:16px">Business</div>
+    <select class="f-inp" id="rev-biz-select" onchange="revSelectChange()">
+      <option value="">— select a business —</option>
+    </select>
+    <div id="rev-current-display" style="display:none;margin:12px 0;padding:10px 14px;background:var(--z2);border:1px solid var(--line);border-radius:10px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:2px">CURRENT MRR</div>
+          <div style="font-size:18px;font-weight:700;color:var(--amber)" id="rev-cur-mrr">$0</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:2px">CURRENT ARR</div>
+          <div style="font-size:18px;font-weight:700;color:var(--emerald)" id="rev-cur-arr">$0</div>
+        </div>
+      </div>
+    </div>
+    <div class="f-lbl">New ARR (Annual Revenue)</div>
+    <input class="f-inp" id="rev-arr-input" type="number" placeholder="e.g. 48000" oninput="revArrPreview()" style="font-size:16px;font-weight:600">
+    <div id="rev-preview" style="display:none;margin-top:8px;padding:8px 12px;background:var(--amberg);border:1px solid var(--amberb);border-radius:8px;font-family:var(--fm);font-size:11px;color:var(--amber)">
+      MRR preview: <strong id="rev-mrr-preview">$0</strong> / month
+    </div>
+    <div class="modal-actions" style="margin-top:20px">
+      <button class="btn btn-ghost btn-sm" onclick="close('mo-rev')">Cancel</button>
+      <button class="btn btn-amber btn-sm" onclick="saveRevenue()">Save Revenue</button>
+    </div>
+  </div>
+</div>
+
 <!-- TASK MODAL -->
 <div class="overlay" id="mo-task">
   <div class="modal">
@@ -2199,7 +2232,7 @@ function go(v, btn){
   document.getElementById('pg-sub').textContent=s;
   const pa=document.getElementById('pg-actions'); pa.innerHTML='';
   if (v==='tasks') pa.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="omt()">+ Add Task</button><button class="btn btn-ghost btn-sm" onclick="resetWeek()">Reset This Week</button><button class="btn btn-amber btn-sm" onclick="rebuildTasks()">Rebuild All Tasks</button>`;
-  if (v==='biz')   pa.innerHTML=`<button class="btn btn-amber btn-sm" onclick="updateMRR()">Update Revenue</button>`;
+  if (v==='biz')   pa.innerHTML=`<button class="btn btn-amber btn-sm" onclick="updateMRR()">Edit Revenue (ARR)</button>`;
   if (v==='analytics') renderAnalytics();
   if (v==='dash')  renderDash();
 }
@@ -2495,14 +2528,39 @@ function renderBiz(){
 }
 
 function updateMRR(){
-  const name=prompt('Business name (partial ok):');
-  if(!name) return;
-  const found=BIZ.find(b=>b.name.toLowerCase().includes(name.toLowerCase()));
-  if(!found){toast('Not found','err');return;}
-  const val=prompt(`New monthly revenue for "${found.name}" ($):`);
-  if(!val||isNaN(val)) return;
-  found.mrr=parseInt(val);
-  refresh(); toast(found.name+' → $'+parseInt(val).toLocaleString()+'/mo','ok');
+  const sel = document.getElementById('rev-biz-select');
+  sel.innerHTML = '<option value="">— select a business —</option>' +
+    BIZ.map(b=>`<option value="${b.id}">${b.name} · ARR $${(b.mrr*12).toLocaleString()}</option>`).join('');
+  document.getElementById('rev-current-display').style.display='none';
+  document.getElementById('rev-preview').style.display='none';
+  document.getElementById('rev-arr-input').value='';
+  open('mo-rev');
+}
+function revSelectChange(){
+  const id = document.getElementById('rev-biz-select').value;
+  const b = BIZ.find(x=>x.id===id);
+  const disp = document.getElementById('rev-current-display');
+  if(!b){ disp.style.display='none'; return; }
+  document.getElementById('rev-cur-mrr').textContent='$'+b.mrr.toLocaleString();
+  document.getElementById('rev-cur-arr').textContent='$'+(b.mrr*12).toLocaleString();
+  disp.style.display='block';
+}
+function revArrPreview(){
+  const val = parseInt(document.getElementById('rev-arr-input').value)||0;
+  const mrr = Math.round(val/12);
+  document.getElementById('rev-mrr-preview').textContent='$'+mrr.toLocaleString();
+  document.getElementById('rev-preview').style.display = val>0?'block':'none';
+}
+function saveRevenue(){
+  const id = document.getElementById('rev-biz-select').value;
+  const arr = parseInt(document.getElementById('rev-arr-input').value);
+  if(!id){ toast('Select a business','err'); return; }
+  if(!arr||isNaN(arr)){ toast('Enter a valid ARR','err'); return; }
+  const b = BIZ.find(x=>x.id===id);
+  b.mrr = Math.round(arr/12);
+  close('mo-rev');
+  refresh();
+  toast(b.name+' → ARR $'+arr.toLocaleString()+' · MRR $'+b.mrr.toLocaleString(),'ok');
 }
 
 /* ═══ MANAGERS ═══ */
