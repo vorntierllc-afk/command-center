@@ -1847,7 +1847,6 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
           <option value="General">General</option>
           <option value="Merchant Arbitrage">Merchant Arbitrage</option>
           <option value="eBay">eBay</option>
-          <option value="Shopify">Shopify</option>
           <option value="Amazon/Walmart">Amazon/Walmart</option>
           <option value="HighRiskIntel">HighRiskIntel</option>
           <option value="SocialRework">SocialRework</option>
@@ -1855,8 +1854,6 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
           <option value="DSI Portal">DSI Portal</option>
           <option value="3PL Broward">3PL Broward</option>
           <option value="Personal Brand">Personal Brand</option>
-          <option value="Liquidation">Liquidation</option>
-          <option value="High Dispute Merch">High Dispute Merch</option>
         </select>
       </div>
       <div><div class="f-lbl">Priority</div>
@@ -1870,7 +1867,6 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
         <select class="f-inp" id="mt-w">
           <option value="me">Hishaam (Me)</option>
           <option value="eBay Manager">eBay Manager</option>
-          <option value="Shopify Team">Shopify Team</option>
           <option value="3PL Team">3PL Team</option>
         </select>
       </div>
@@ -1934,7 +1930,6 @@ const dbClear = (s) => new Promise((r,f) => { const q=TX(s,'readwrite').clear();
 const BIZ = [
   {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:1500,  target:13000, color:'#D4954E', desc:'High-risk processing, 12-13% net margin. 1 processor live $50/day.',  action:'Send Vortier LLC to Chargebacks911 TODAY', ceiling:'$13K/mo at $80K vol'},
   {id:'ebay',   name:'eBay (3 Accounts)',     status:'live',    mrr:1089,  target:8000,  color:'#5888C4', desc:'Acc 2 crushing: $1,089/28d at 66% margin. Acc 1 in loss. Acc 3 pending bank.', action:'Get Acc 3 bank account approved THIS WEEK', ceiling:'$8K/mo at scale'},
-  {id:'shopify',name:'Shopify Stores',        status:'build',   mrr:0,     target:15000, color:'#8B68C4', desc:'3 stores live. 500-1.5K views/day. Zero sales. Funnel broken.',       action:'Diagnose why Store 1 gets views but no sales', ceiling:'$15K/mo all 3'},
   {id:'amzn',   name:'Amazon / Walmart',      status:'pending', mrr:0,     target:20000, color:'#C45858', desc:'3 LLCs ready. One disabled. One ready to file. Walmart pending.',       action:'File Amazon application under clean LLC TODAY', ceiling:'$20K/mo combined'},
   {id:'hri',    name:'HighRiskIntel SaaS',    status:'build',   mrr:0,     target:10000, color:'#D4954E', desc:'App live. Zero users. 4 slideshows posted — 15 views. Needs video.',   action:'Record a 3-minute explainer video THIS WEEK', ceiling:'$10K/mo at 50 users'},
   {id:'smma',   name:'SocialRework (SMMA)',   status:'paused',  mrr:0,     target:10000, color:'#3DAF78', desc:'5yr experience. Team + community ready. 30 videos recorded, none posted.', action:'Post 2 videos this week. No excuses.', ceiling:'$10K/mo 5 clients'},
@@ -1942,18 +1937,12 @@ const BIZ = [
   {id:'dsi',    name:'DSI Portal',             status:'build',   mrr:0,     target:8750,  color:'#8B68C4', desc:'AT&T reseller. Up to $1,500/activation. Portal needs in-person visit.', action:'VISIT DSI OFFICE IN PERSON — Broward County', ceiling:'$8.75K/mo 50 activations'},
   {id:'3pl',    name:'3PL Broward',            status:'live',    mrr:0,     target:8000,  color:'#D4954E', desc:'4 clients ready. Website live. You are the labor currently.',           action:'ONBOARD ALL 4 CLIENTS THIS WEEK — instant cash', ceiling:'$8K/mo at capacity'},
   {id:'brand',  name:'Personal Brand',         status:'build',   mrr:0,     target:5000,  color:'#3DAF78', desc:'30 videos recorded. 2 correct format. 0 posted. 0 edited.',           action:'Edit + post the 2 correct videos NOW', ceiling:'$5K/mo brand deals + funnels'},
-  {id:'liq',    name:'Liquidation Inventory',  status:'pending', mrr:0,     target:5000,  color:'#8B68C4', desc:'50% off retail. Pay after selling. Zero capital required.',             action:'Source first pallet — electronics or tools', ceiling:'$5K/mo with scale'},
-  {id:'hdm',    name:'High Dispute Merchants', status:'build',   mrr:0,     target:15000, color:'#C45858', desc:'4-5 parties. $50-100K volume. 18-39% cut. Feeds HighRiskIntel.',       action:'Onboard first merchant via HighRiskIntel', ceiling:'$15K/mo max'},
-  {id:'credit', name:'Credit Line (Uncle)',    status:'live',    mrr:0,     target:10000, color:'#D4954E', desc:'Pay back 60% of credit in 15-30 days. Net 40% before team.',           action:'Identify proven fast-movers from eBay Acc 2', ceiling:'$10K/mo at scale'},
 ];
 
 const MANAGERS = [
   {id:'m1', name:'eBay Manager',     role:'eBay Dropshipping',  color:'#5888C4', colorDim:'rgba(88,136,196,0.12)',
    tasks:['Scale Acc 2 to 40+ listings daily','Clear all Acc 1 disputes ($200 remaining)','Activate Acc 3 the day bank account approves','Report daily: orders, revenue, disputes'],
    done:1, rev:1089, target:3000},
-  {id:'m2', name:'Shopify Team',     role:'Content & Stores',   color:'#8B68C4', colorDim:'rgba(139,104,196,0.12)',
-   tasks:['Post 1 video daily across 4 platforms','Fix Store 1 conversion funnel (find drop-off point)','Activate Stores 2 and 3 this month','Weekly report: views, click rate, sales'],
-   done:1, rev:0, target:5000},
   {id:'m4', name:'3PL Team',         role:'Fulfillment Ops',    color:'#D4954E', colorDim:'rgba(212,149,78,0.12)',
    tasks:['Onboard all 4 clients this week','Set up intake and tracking process','Handle all shipping and receiving','Weekly billing report to Hishaam'],
    done:0, rev:0, target:2000},
@@ -1977,8 +1966,6 @@ const TASK_DEFAULTS = [
   {t:'Post first 2 personal brand videos (already recorded)',b:'Personal Brand',p:'high',w:'me',wk:'W2',note:'2 correct format videos exist on your phone. Edit and post. That is all.',done:false},
   {t:'eBay Acc 3 goes live — first listings day 1',b:'eBay',p:'high',w:'eBay Manager',wk:'W2',note:'The moment bank account is approved.',done:false},
   {t:'Onboard 3PL Broward clients 2 and 3',b:'3PL Broward',p:'high',w:'me',wk:'W2',note:'4 clients total. Get 3 on by end of week 2.',done:false},
-  {t:'Diagnose Shopify Store 1 funnel drop-off',b:'Shopify',p:'med',w:'Shopify Team',wk:'W2',note:'Why are 1,000 people viewing but not buying? Product page? Price? Shipping? Find the answer.',done:false},
-  {t:'Source first liquidation pallet (electronics or tools)',b:'Liquidation',p:'med',w:'me',wk:'W2',note:'Pay after selling model. Zero risk. Test the channel.',done:false},
   {t:'Send first Lawyergist email batch — 100 attorneys',b:'Lawyergist',p:'med',w:'me',wk:'W2',note:'Use the database. Personal subject line. Track open rates.',done:false},
   {t:'Pakistan clothing brand: set up Cash App + Zelle (30 min task)',b:'Pakistan Clothing',p:'high',w:'me',wk:'W3',note:'$5-8K/month volume already there. 30 minutes of setup. $1,000-1,600/month passive once live.',done:false},
 
@@ -1988,7 +1975,6 @@ const TASK_DEFAULTS = [
   {t:'Record HighRiskIntel explainer video (3-5 mins)',b:'HighRiskIntel',p:'high',w:'me',wk:'W3',note:'"If your chargeback ratio hits 1%, your processor terminates you. Here is how to stop it." Post immediately.',done:false},
   {t:'File Walmart Seller Central application',b:'Amazon/Walmart',p:'med',w:'me',wk:'W3',note:'After Amazon is filed. Walmart has less competition.',done:false},
   {t:'Send Lawyergist batch 2 — 200 attorneys',b:'Lawyergist',p:'med',w:'me',wk:'W3',note:'Follow up on batch 1 opens. Send fresh outreach to 200 more.',done:false},
-  {t:'Shopify: implement funnel fix based on week 2 diagnosis',b:'Shopify',p:'med',w:'Shopify Team',wk:'W3',note:'Fix the one thing causing 0% conversion.',done:false},
   {t:'3PL: onboard 4th client (complete set)',b:'3PL Broward',p:'med',w:'me',wk:'W3',note:'4 clients = ~$8,000/month potential.',done:false},
   {t:'DSI portal: follow up on activation status',b:'DSI Portal',p:'med',w:'me',wk:'W3',note:'After the in-person visit last week.',done:false},
   {t:'Close first SocialRework retainer ($2K+ minimum)',b:'SocialRework',p:'high',w:'me',wk:'W3',note:'Content should be live. Use it as proof. Close the first client.',done:false},
@@ -1996,8 +1982,6 @@ const TASK_DEFAULTS = [
   {t:'eBay: all 3 accounts on daily payout',b:'eBay',p:'med',w:'eBay Manager',wk:'W3',note:'Confirm all accounts are set to daily settlement.',done:false},
 
   // W4 — FIRST REVENUE STACK
-  {t:'Onboard first high-dispute merchant via HighRiskIntel',b:'High Dispute Merchants',p:'high',w:'me',wk:'W4',note:'4-5 parties ready. 18-39% of their volume. Stack this on top of existing processing.',done:false},
-  {t:'Uncle credit line: place first bulk order on proven SKUs',b:'Credit Line (Uncle)',p:'med',w:'me',wk:'W4',note:'Only use for products already proven on eBay Acc 2. Fast-moving only.',done:false},
   {t:'Post HighRiskIntel video — drive first 10 users',b:'HighRiskIntel',p:'high',w:'me',wk:'W4',note:'Post on LinkedIn, Twitter, relevant Facebook groups. Tag high-risk merchant communities.',done:false},
   {t:'Monthly W1-W4 review — did we hit $15K?',b:'General',p:'high',w:'me',wk:'W4',note:'Review every business. What worked. What did not. Adjust.',done:false},
   {t:'Amazon: first product listings should be live',b:'Amazon/Walmart',p:'high',w:'me',wk:'W4',note:'',done:false},
@@ -2009,11 +1993,9 @@ const TASK_DEFAULTS = [
   {t:'Merchant arbitrage: 3 processors live simultaneously',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W5',note:'$150/day = $4,500/month. Phase 1 of payment empire.',done:false},
   {t:'Activate crypto backend processing',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W5',note:'Bypass credit requirements. Open new merchant categories.',done:false},
   {t:'DSI portal: first customer activations',b:'DSI Portal',p:'high',w:'me',wk:'W5',note:'Each AT&T activation = up to $1,500 commission.',done:false},
-  {t:'Shopify Store 2: activate and post daily content',b:'Shopify',p:'med',w:'Shopify Team',wk:'W5',note:'',done:false},
   {t:'HighRiskIntel: push to 25 paying users',b:'HighRiskIntel',p:'high',w:'me',wk:'W6',note:'25 users × $200/month = $5,000 MRR. Pure software margin.',done:false},
   {t:'SocialRework: 3 clients on retainer = $6K MRR',b:'SocialRework',p:'high',w:'me',wk:'W6',note:'',done:false},
   {t:'Amazon: 50+ ASINs listed and optimizing',b:'Amazon/Walmart',p:'med',w:'me',wk:'W6',note:'',done:false},
-  {t:'Onboard 2nd high-dispute merchant',b:'High Dispute Merchants',p:'med',w:'me',wk:'W7',note:'',done:false},
   {t:'3PL: hire first staff member (exit labor role)',b:'3PL Broward',p:'med',w:'me',wk:'W7',note:'You should not be doing the physical work forever.',done:false},
   {t:'Month 2 review — did we hit $50K?',b:'General',p:'high',w:'me',wk:'W8',note:'',done:false},
 
@@ -2022,7 +2004,6 @@ const TASK_DEFAULTS = [
   {t:'HighRiskIntel: 50 users = $10K MRR',b:'HighRiskIntel',p:'high',w:'me',wk:'W10',note:'Pure software. No team costs.',done:false},
   {t:'Merchant arbitrage: $80K/month processing volume',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W10',note:'= $9,600-10,400/month net.',done:false},
   {t:'SocialRework: 5 clients = $10K MRR',b:'SocialRework',p:'high',w:'me',wk:'W11',note:'',done:false},
-  {t:'Shopify: first $10K/month store',b:'Shopify',p:'med',w:'Shopify Team',wk:'W11',note:'',done:false},
   {t:'Month 3 review — approaching $100K?',b:'General',p:'high',w:'me',wk:'W12',note:'',done:false},
 
   // W13-W17 — FINAL PUSH
@@ -2060,12 +2041,12 @@ const GAME_PLAN = [
       {name:'HighRiskIntel',rev:'$0 → $5,000',pct:0,action:'25 users at $200/month. Video content driving organic growth.'},
       {name:'DSI Portal',rev:'$0 → $3,000',pct:0,action:'Portal approved after office visit. First 20 activations.'},
       {name:'SocialRework',rev:'$2,000 → $6,000',pct:20,action:'3 retainer clients. AI automation differentiation closing deals.'},
-      {name:'Amazon/Walmart',rev:'$0 → $5,000',pct:0,action:'50+ ASINs. Using uncle credit line for inventory.'},
+      {name:'Amazon/Walmart',rev:'$0 → $5,000',pct:0,action:'50+ ASINs. Scaling product catalog.'},
     ],
     milestones:[
       {week:'Week 5',title:'Three Processors',desc:'$150/day from processing. Crypto backend goes live. DSI first activations.'},
       {week:'Week 6',title:'SaaS + Agency',desc:'HighRiskIntel 25 users. SMMA 3 clients. Amazon scaling.'},
-      {week:'Week 7',title:'Compounding',desc:'2nd high-dispute merchant. 3PL hires staff. Credit line bulk order placed.'},
+      {week:'Week 7',title:'Compounding',desc:'3PL hires staff. Amazon scaling. All active streams compounding.'},
       {week:'Week 8',title:'Second Stack',desc:'Monthly review. Target: $50K MRR.'},
     ]
   },
@@ -2076,13 +2057,11 @@ const GAME_PLAN = [
       {name:'Merchant Arbitrage',rev:'$9,000 → $13,000',pct:69,action:'$80K/month volume. 5+ merchants. Crypto backend fully live.'},
       {name:'DSI Portal',rev:'$3,000 → $8,750',pct:34,action:'50+ activations/month. Recurring commissions.'},
       {name:'HighRiskIntel',rev:'$5,000 → $15,000',pct:50,action:'100 users × $150-200/month = $15-20K MRR.'},
-      {name:'Amazon/Walmart',rev:'$5,000 → $20,000',pct:50,action:'Uncle credit line + liquidation = massive inventory.'},
-      {name:'High Dispute Merch',rev:'$0 → $15,000',pct:0,action:'5 parties × $20K avg volume × 18-39% = $15K+.'},
-      {name:'Shopify',rev:'$0 → $15,000',pct:0,action:'3 stores converting. AI content system. 3,000 videos/month.'},
+      {name:'Amazon/Walmart',rev:'$5,000 → $20,000',pct:50,action:'Scale product catalog. Walmart + Amazon combined push.'},
     ],
     milestones:[
       {week:'Weeks 9-10',title:'6-Figure Approach',desc:'DSI 50 activations. HighRiskIntel 50 users. Merchant $80K volume. Approaching $100K.'},
-      {week:'Weeks 11-12',title:'Stack Complete',desc:'SMMA 5 clients. Shopify $10K. Amazon $20K. All streams firing.'},
+      {week:'Weeks 11-12',title:'Stack Complete',desc:'SMMA 5 clients. Amazon $20K. DSI 50+ activations. All streams firing.'},
       {week:'Weeks 13-15',title:'Final Optimization',desc:'All 16 streams contributing. Remove bottlenecks. Push every number higher.'},
       {week:'Weeks 16-17',title:'$150K Target',desc:'Final audit. Every stream at target. $150,000 MRR achieved.'},
     ]
@@ -2116,13 +2095,11 @@ const CAL_MONTHS = [
         {t:'Close first SMMA retainer ($2K+)',b:'SMMA',pri:'high'},
         {t:'Trading: push cousin on $3.5K recovery',b:'Trading',pri:'high'},
         {t:'File Walmart Seller application',b:'Amazon',pri:'med'},
-        {t:'Shopify: implement funnel fix',b:'Shopify',pri:'med'},
         {t:'Onboard 3PL client 4',b:'3PL',pri:'med'},
         {t:'Lawyergist batch 2 (200 emails)',b:'Law',pri:'med'},
         {t:'Apply to 2 new merchant processors',b:'Merch',pri:'med'},
       ]},
       {wk:'W4',dates:'May 5–11',revenue:'$15,000',tasks:[
-        {t:'Onboard first high-dispute merchant',b:'HDM',pri:'high'},
         {t:'HighRiskIntel: push for 10 users',b:'HRI',pri:'high'},
         {t:'Amazon: first listings live',b:'Amazon',pri:'high'},
         {t:'Close SMMA client 2',b:'SMMA',pri:'med'},
@@ -2139,9 +2116,6 @@ const CAL_MONTHS = [
         {t:'3 processors live simultaneously',b:'Merch',pri:'high'},
         {t:'Crypto backend processing — activate',b:'Merch',pri:'high'},
         {t:'DSI: first customer activations',b:'DSI',pri:'high'},
-        {t:'Shopify Store 2 — activate',b:'Shopify',pri:'med'},
-        {t:'Uncle credit line: first bulk order',b:'Credit',pri:'med'},
-        {t:'Liquidation: list pallet on eBay',b:'Liq',pri:'med'},
       ]},
       {wk:'W6',dates:'May 19–25',revenue:'$30,000',tasks:[
         {t:'HighRiskIntel: 25 paying users',b:'HRI',pri:'high'},
@@ -2151,9 +2125,7 @@ const CAL_MONTHS = [
         {t:'DSI: 10+ activations done',b:'DSI',pri:'med'},
       ]},
       {wk:'W7',dates:'May 26–Jun 1',revenue:'$40,000',tasks:[
-        {t:'Onboard 2nd high-dispute merchant',b:'HDM',pri:'med'},
         {t:'3PL: hire first staff member',b:'3PL',pri:'med'},
-        {t:'Shopify Store 3 — activate',b:'Shopify',pri:'med'},
         {t:'Personal brand: weekly posting schedule',b:'Brand',pri:'med'},
         {t:'Review all manager KPIs',b:'General',pri:'high'},
       ]},
@@ -2163,7 +2135,6 @@ const CAL_MONTHS = [
         {t:'DSI: 20+ activations/month',b:'DSI',pri:'high'},
         {t:'Amazon: first $5K month',b:'Amazon',pri:'high'},
         {t:'HighRiskIntel: product roadmap',b:'HRI',pri:'med'},
-        {t:'Onboard 3rd high-dispute merchant',b:'HDM',pri:'med'},
       ]},
     ]
   },
@@ -2173,7 +2144,6 @@ const CAL_MONTHS = [
       {wk:'W9',dates:'Jun 9–15',revenue:'$65,000',tasks:[
         {t:'DSI: 50 activations/month target',b:'DSI',pri:'high'},
         {t:'5th merchant processor live',b:'Merch',pri:'high'},
-        {t:'Shopify: first $10K/month store',b:'Shopify',pri:'high'},
         {t:'HighRiskIntel: 50 users',b:'HRI',pri:'high'},
         {t:'Amazon + Walmart: $10K combined',b:'Amazon',pri:'med'},
       ]},
@@ -2187,7 +2157,6 @@ const CAL_MONTHS = [
       {wk:'W11',dates:'Jun 23–29',revenue:'$90,000',tasks:[
         {t:'Pakistan clothing: confirm payment volumes + scale',b:'Clothing',pri:'med'},
         {t:'Amazon: $20K/month target',b:'Amazon',pri:'high'},
-        {t:'4th-5th high-dispute merchant',b:'HDM',pri:'med'},
         {t:'3PL: expand capacity',b:'3PL',pri:'med'},
         {t:'Personal brand: monetization plan',b:'Brand',pri:'low'},
       ]},
@@ -2215,7 +2184,6 @@ const CAL_MONTHS = [
       ]},
       {wk:'W15',dates:'Jul 21–27',revenue:'$135,000',tasks:[
         {t:'HighRiskIntel: 100 users = $20K MRR',b:'HRI',pri:'high'},
-        {t:'High dispute merchants: $15K total',b:'HDM',pri:'high'},
         {t:'Final gap analysis — what is left?',b:'General',pri:'high'},
         {t:'Double down on top 3 earners',b:'General',pri:'high'},
       ]},
@@ -2674,7 +2642,7 @@ function renderAnalytics(){
 }
 
 function getBlocker(id){
-  const blockers={merch:'EDR not active',trade:'Challenge not cleared',ebay:'Acc 3 bank pending',shopify:'Zero conversion',amzn:'Account disabled / pending',hri:'Zero users / no video',smma:'No content posted',law:'No emails sent',dsi:'Office visit not done',
+  const blockers={merch:'EDR not active',trade:'Challenge not cleared',ebay:'Acc 3 bank pending',amzn:'Account disabled / pending',hri:'Zero users / no video',smma:'No content posted',law:'No emails sent',dsi:'Office visit not done',
   '3pl':'Clients not onboarded',brand:'Nothing posted',cloth:'No payment setup',liq:'No pallet sourced',hdm:'No merchants onboarded',credit:'No bulk order placed'};
   return blockers[id]||'—';
 }
