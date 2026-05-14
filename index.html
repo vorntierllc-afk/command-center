@@ -1544,7 +1544,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
           <div class="auth-stat-lbl">Active Streams</div>
         </div>
         <div class="auth-stat">
-          <div class="auth-stat-val">$150K</div>
+          <div class="auth-stat-val">$40K</div>
           <div class="auth-stat-lbl">MRR Target</div>
         </div>
         <div class="auth-stat">
@@ -1585,7 +1585,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
     </nav>
     <div class="hdr-r">
       <div class="live-pill"><div class="live-dot"></div><span style="font-family:var(--fm);font-size:9px;color:var(--paper3);letter-spacing:0.08em" id="hdr-date"></span></div>
-      <div class="target-chip">$150K TARGET · AUG 2026</div>
+      <div class="target-chip">$40K TARGET · JUN 18, 2026 · 35 DAYS</div>
       <div class="usr-btn" onclick="logout()">
         <div class="usr-av">HN</div>
         <span class="usr-nm">Hishaam</span>
@@ -1621,7 +1621,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
         <div class="mrr-block">
           <div class="mrr-eyebrow">CURRENT MRR</div>
           <div class="mrr-val" id="sb-mrr">$2,589</div>
-          <div class="mrr-sub" id="sb-mrr-pct">1.7% of $150K goal</div>
+          <div class="mrr-sub" id="sb-mrr-pct">10% of $40K goal</div>
           <div class="mrr-bar"><div class="mrr-fill" id="sb-mrr-fill" style="width:1.7%"></div></div>
         </div>
       </div>
@@ -1631,7 +1631,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       <div class="page-hdr">
         <div class="page-hdr-l">
           <div class="page-title" id="pg-title">Operating Overview</div>
-          <div class="page-eyebrow" id="pg-sub">ALL STREAMS · APR 14 TO AUG 12, 2026</div>
+          <div class="page-eyebrow" id="pg-sub">8 BUSINESSES · MAY 14 TO JUN 18, 2026 · $40K TARGET</div>
         </div>
         <div class="page-actions" id="pg-actions"></div>
       </div>
@@ -1642,11 +1642,11 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
         <div class="view on" id="v-dash">
 
           <div class="metrics">
-            <div class="metric"><div class="metric-lbl">Daily Revenue</div><div class="metric-val v-amber" id="d-daily">$86</div><div class="metric-foot">$50 merch + 4 eBay stores</div></div>
-            <div class="metric"><div class="metric-lbl">Monthly Run Rate</div><div class="metric-val v-emerald" id="d-mrr">$2,589</div><div class="metric-foot" id="d-mrr-f">1.7% of $150K</div></div>
+            <div class="metric"><div class="metric-lbl">Current MRR</div><div class="metric-val v-amber" id="d-daily">$3,989</div><div class="metric-foot">Merchant Arbitrage anchor</div></div>
+            <div class="metric"><div class="metric-lbl">MRR Target</div><div class="metric-val v-emerald" id="d-mrr">$40,000</div><div class="metric-foot" id="d-mrr-f">35-day sprint · Jun 18</div></div>
             <div class="metric"><div class="metric-lbl">Pending Tasks</div><div class="metric-val v-sapphire" id="d-pending">0</div><div class="metric-foot" id="d-pf">this week</div></div>
-            <div class="metric"><div class="metric-lbl">Live Streams</div><div class="metric-val v-violet">3</div><div class="metric-foot">of 15 total</div></div>
-            <div class="metric"><div class="metric-lbl">Days Remaining</div><div class="metric-val v-paper2" id="d-days">120</div><div class="metric-foot">to Aug 12, 2026</div></div>
+            <div class="metric"><div class="metric-lbl">Active Businesses</div><div class="metric-val v-violet">8</div><div class="metric-foot">Warehousing is the anchor</div></div>
+            <div class="metric"><div class="metric-lbl">Days Remaining</div><div class="metric-val v-paper2" id="d-days">35</div><div class="metric-foot">to Jun 18, 2026</div></div>
           </div>
 
           <div class="panel" style="margin-bottom:16px">
@@ -1654,39 +1654,34 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
             <div class="p-body">
               <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">EBAY MANAGER</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">Orders + Revenue Report</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Acc 2: 40+ listings. Acc 1: disputes cleared. Acc 3: when live.</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">EBAY — DAILY</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Manager Check-In by 9am</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Text both managers. Get: order count, revenue, flags. No response in 1hr = call.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">MERCHANT</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">Verify $50+ Daily Volume</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Check processor dashboard. Flag any holds immediately.</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">WAREHOUSING — DAILY</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">5+ Cold Outreach Calls/Emails</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Target: e-comm brands, importers, distributors. Follow up pipeline every day.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">CONTENT</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">1 Post Across All Platforms</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">SMMA + Brand. TikTok, IG, YouTube Shorts. Every day.</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">ADS — DAILY</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Post 1-2 Ads + Check Metrics</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Morning: check yesterday. Post new creative. Pause CTR under 0.5%. Scale winners.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">OUTREACH</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">10+ Lawyergist Emails</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Use LeadFlow CRM. Track open rates. Follow up on opens.</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">MERCHANT — DAILY</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Check MX + Auth.net Dashboards</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Volume, holds, chargebacks. Flag anything unusual immediately. Both accounts.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">3PL BROWARD</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">Inbound Requests + Billing</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Client updates, incoming freight, send daily status.</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">LAWYERGIST — DAILY</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">3 Outreach + 1 Content Piece</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Personalized LinkedIn DM or email to attorneys. 1 LinkedIn post or case study.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">HIGH RISK INTEL</div>
-                  <div style="font-size:11px;color:var(--paper);font-weight:600">Signups + Support Check</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">New users? Cancellations? Any support tickets open?</div>
-                </div>
-                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
-                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">DEALS</div>
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">DEALS — RULE</div>
                   <div style="font-size:11px;color:var(--paper);font-weight:600">2-Hour Response Rule</div>
-                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Merchants, clients, prospects. No message goes 2h+ unanswered.</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Every prospect, client, pipeline contact. No message goes 2h+ unanswered. Ever.</div>
                 </div>
                 <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
                   <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">CLOTHING BRAND</div>
@@ -1736,7 +1731,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
           <div style="background:var(--z1);border:1px solid var(--line);padding:22px 26px;margin-bottom:16px;position:relative;overflow:hidden">
             <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:0.6"></div>
             <div style="font-family:var(--fm);font-size:9px;letter-spacing:0.18em;color:var(--paper3);margin-bottom:8px">STRATEGIC THESIS</div>
-            <div style="font-family:var(--fg);font-size:28px;font-weight:300;font-style:italic;color:var(--paper);margin-bottom:12px;letter-spacing:-0.01em">$0 to $150,000 MRR in 120 Days</div>
+            <div style="font-family:var(--fg);font-size:28px;font-weight:300;font-style:italic;color:var(--paper);margin-bottom:12px;letter-spacing:-0.01em">$40,000 MRR in 35 Days</div>
             <div style="font-family:var(--fm);font-size:11px;color:var(--paper3);line-height:2;max-width:780px">
               You currently run 15 revenue streams across payment processing, ecommerce, SaaS, SMMA, logistics and content.<br>
               The plan is simple: <span style="color:var(--amber)">activate what's paused, scale what's working, add what's ready.</span><br>
@@ -1800,7 +1795,7 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
             <div class="metric"><div class="metric-lbl">Open Rate (Lawyergist)</div><div class="metric-val v-amber" id="an1">—</div><div class="metric-foot">emails not sent yet</div></div>
             <div class="metric"><div class="metric-lbl">eBay Stores Active</div><div class="metric-val v-emerald">4</div><div class="metric-foot">Urban · Retro · REDR · Vorn</div></div>
             <div class="metric"><div class="metric-lbl">Task Completion</div><div class="metric-val v-sapphire" id="an3">0%</div><div class="metric-foot" id="an3f">0 of 0 done</div></div>
-            <div class="metric"><div class="metric-lbl">MRR Growth Needed</div><div class="metric-val v-violet">58×</div><div class="metric-foot">to hit $150K</div></div>
+            <div class="metric"><div class="metric-lbl">MRR Growth Needed</div><div class="metric-val v-violet">10×</div><div class="metric-foot">to hit $40K</div></div>
             <div class="metric"><div class="metric-lbl">Streams Activated</div><div class="metric-val v-ruby">3</div><div class="metric-foot">of 16 possible</div></div>
           </div>
           <div class="col-2" style="margin-bottom:14px">
@@ -1845,18 +1840,18 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       <div><div class="f-lbl">Business</div>
         <select class="f-inp" id="mt-b">
           <option value="General">General</option>
+          <option value="Warehousing (3PL)">Warehousing (3PL)</option>
+          <option value="Lawyergist">Lawyergist</option>
           <option value="Merchant Arbitrage">Merchant Arbitrage</option>
+          <option value="eBay">eBay</option>
           <option value="Urban Sells">Urban Sells</option>
           <option value="Retro Shop">Retro Shop</option>
           <option value="REDR Sellers">REDR Sellers</option>
           <option value="Vorn Sellers">Vorn Sellers</option>
-          <option value="Amazon/Walmart">Amazon/Walmart</option>
           <option value="HighRiskIntel">HighRiskIntel</option>
-          <option value="SocialRework">SocialRework</option>
-          <option value="Lawyergist">Lawyergist</option>
+          <option value="Ads Manager">Ads Manager</option>
           <option value="DSI Portal">DSI Portal</option>
-          <option value="3PL Broward">3PL Broward</option>
-          <option value="Personal Brand">Personal Brand</option>
+          <option value="Amazon / Walmart">Amazon / Walmart</option>
         </select>
       </div>
       <div><div class="f-lbl">Priority</div>
@@ -1871,28 +1866,16 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
           <option value="me">Hishaam (Me)</option>
           <option value="eBay Manager 1">eBay Manager 1</option>
           <option value="eBay Manager 2">eBay Manager 2</option>
-          <option value="3PL Team">3PL Team</option>
+          <option value="Ads Manager">Ads Manager</option>
         </select>
       </div>
       <div><div class="f-lbl">Week</div>
         <select class="f-inp" id="mt-wk">
-          <option value="W1">W1 · Apr 14–20</option>
-          <option value="W2">W2 · Apr 21–27</option>
-          <option value="W3">W3 · Apr 28–May 4</option>
-          <option value="W4">W4 · May 5–11</option>
-          <option value="W5">W5 · May 12–18</option>
-          <option value="W6">W6 · May 19–25</option>
-          <option value="W7">W7 · May 26–Jun 1</option>
-          <option value="W8">W8 · Jun 2–8</option>
-          <option value="W9">W9 · Jun 9–15</option>
-          <option value="W10">W10 · Jun 16–22</option>
-          <option value="W11">W11 · Jun 23–29</option>
-          <option value="W12">W12 · Jun 30–Jul 6</option>
-          <option value="W13">W13 · Jul 7–13</option>
-          <option value="W14">W14 · Jul 14–20</option>
-          <option value="W15">W15 · Jul 21–27</option>
-          <option value="W16">W16 · Jul 28–Aug 3</option>
-          <option value="W17">W17 · Aug 4–12</option>
+          <option value="W1">W1 · May 14–20 · Foundation</option>
+          <option value="W2">W2 · May 21–27 · Activation</option>
+          <option value="W3">W3 · May 28–Jun 3 · Scale</option>
+          <option value="W4">W4 · Jun 4–10 · Push</option>
+          <option value="W5">W5 · Jun 11–18 · Close</option>
         </select>
       </div>
     </div>
@@ -1932,42 +1915,232 @@ const dbClear = (s) => new Promise((r,f) => { const q=TX(s,'readwrite').clear();
 
 /* ═══ BUSINESS DATA ═══ */
 const BIZ = [
-  {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:3989,  target:13000, color:'#D4954E', desc:'High-risk processing, 12-13% net margin. 1 processor live $50/day.',  action:'Send Vortier LLC to Chargebacks911 TODAY', ceiling:'$13K/mo at $80K vol'},
-  {id:'urban',  name:'Urban Sells',           status:'live',    mrr:0,     target:2000,  color:'#5888C4', desc:'eBay store — Urban Sells. Managed by eBay team.', action:'Scale daily listings and optimize pricing', ceiling:'$2K/mo'},
-  {id:'retro',  name:'Retro Shop',            status:'live',    mrr:0,     target:2000,  color:'#5888C4', desc:'eBay store — Retro Shop. Managed by eBay team.', action:'Scale daily listings and optimize pricing', ceiling:'$2K/mo'},
-  {id:'redr',   name:'REDR Sellers',          status:'live',    mrr:0,     target:2000,  color:'#5888C4', desc:'eBay store — REDR Sellers. Managed by eBay team.', action:'Scale daily listings and optimize pricing', ceiling:'$2K/mo'},
-  {id:'vorn',   name:'Vorn Sellers',          status:'live',    mrr:0,     target:2000,  color:'#5888C4', desc:'eBay store — Vorn Sellers. Managed by eBay team.', action:'Scale daily listings and optimize pricing', ceiling:'$2K/mo'},
-  {id:'amzn',   name:'Amazon / Walmart',      status:'pending', mrr:0,     target:20000, color:'#C45858', desc:'3 LLCs ready. One disabled. One ready to file. Walmart pending.',       action:'File Amazon application under clean LLC TODAY', ceiling:'$20K/mo combined'},
-  {id:'hri',    name:'HighRiskIntel SaaS',    status:'build',   mrr:0,     target:10000, color:'#D4954E', desc:'App live. Zero users. 4 slideshows posted — 15 views. Needs video.',   action:'Record a 3-minute explainer video THIS WEEK', ceiling:'$10K/mo at 50 users'},
-  {id:'smma',   name:'SocialRework (SMMA)',   status:'paused',  mrr:0,     target:10000, color:'#3DAF78', desc:'5yr experience. Team + community ready. 30 videos recorded, none posted.', action:'Post 2 videos this week. No excuses.', ceiling:'$10K/mo 5 clients'},
-  {id:'law',    name:'Lawyergist',             status:'build',   mrr:0,     target:3000,  color:'#5888C4', desc:'200K attorney database. Owner friendly. Email approach confirmed.',    action:'Write + send first 100 emails THIS WEEK', ceiling:'$3K/mo 50-50 split'},
-  {id:'dsi',    name:'DSI Portal',             status:'build',   mrr:0,     target:8750,  color:'#8B68C4', desc:'AT&T reseller. Up to $1,500/activation. Portal needs in-person visit.', action:'VISIT DSI OFFICE IN PERSON — Broward County', ceiling:'$8.75K/mo 50 activations'},
-  {id:'3pl',    name:'3PL Broward',            status:'live',    mrr:0,     target:8000,  color:'#D4954E', desc:'4 clients ready. Website live. You are the labor currently.',           action:'ONBOARD ALL 4 CLIENTS THIS WEEK — instant cash', ceiling:'$8K/mo at capacity'},
-  {id:'brand',  name:'Personal Brand',         status:'build',   mrr:0,     target:5000,  color:'#3DAF78', desc:'30 videos recorded. 2 correct format. 0 posted. 0 edited.',           action:'Edit + post the 2 correct videos NOW', ceiling:'$5K/mo brand deals + funnels'},
+  {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:3989,  target:5000,  color:'#D4954E', desc:'MX + Auth.net accounts live. eBay processing active. Monitor daily for holds/disputes.', action:'Check MX + Auth.net dashboards — flag any holds immediately', ceiling:'$5K/mo target'},
+  {id:'urban',  name:'Urban Sells',          status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Urban Sells. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'retro',  name:'Retro Shop',           status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Retro Shop. Manager 1 oversight. Daily listings + order monitoring.', action:'Manager 1 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'redr',   name:'REDR Sellers',         status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — REDR Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'vorn',   name:'Vorn Sellers',         status:'live',    mrr:0,     target:1250,  color:'#5888C4', desc:'eBay store — Vorn Sellers. Manager 2 oversight. Daily listings + order monitoring.', action:'Manager 2 check-in: listings count, orders, disputes', ceiling:'$1.25K/mo'},
+  {id:'3pl',    name:'Warehousing (3PL)',    status:'live',    mrr:0,     target:20000, color:'#3DAF78', desc:'Primary revenue anchor. Cold outreach daily to land warehousing clients. Receive + repackage.', action:'5+ cold outreach calls/emails to businesses needing storage TODAY', ceiling:'$20K/mo at 8-10 clients'},
+  {id:'ads',    name:'Ads Manager',          status:'live',    mrr:0,     target:2000,  color:'#8B68C4', desc:'Daily posting + creative management. Run ads for warehouse acquisition + Lawyergist.', action:'Post 1-2 ads today, check performance metrics, adjust targeting', ceiling:'$2K/mo'},
+  {id:'law',    name:'Lawyergist',           status:'live',    mrr:0,     target:10000, color:'#5888C4', desc:'Lawyer marketing agency. 200K attorney database. Daily outreach + content. Target 6-8 retainer clients.', action:'3 lawyer outreach messages + 1 content piece today', ceiling:'$10K/mo at 6-8 retainers'},
+  {id:'hri',    name:'HighRiskIntel',        status:'build',   mrr:0,     target:3000,  color:'#C45858', desc:'Full redesign in progress. New brand, landing page, AI agent backend. Personal brand content.', action:'Work the redesign: writing, posting, building — ship something daily', ceiling:'$3K/mo soft launch'},
+  {id:'dsi',    name:'DSI Portal',           status:'pending', mrr:0,     target:8750,  color:'#7c3aed', desc:'AT&T reseller. PENDING — weekly go/no-go review. Up to $1,500/activation.', action:'Weekly check: move forward or kill decision by EOW', ceiling:'$8.75K/mo if activated'},
+  {id:'amzn',   name:'Amazon / Walmart',     status:'pending', mrr:0,     target:5000,  color:'#C45858', desc:'PENDING — weekly prep + research. Go/no-go decision by end of W1.', action:'Weekly check: research + prep, go/no-go decision by May 20', ceiling:'$5K/mo if activated'},
 ];
 
 const MANAGERS = [
-  {id:'m1', name:'eBay Manager 1',   role:'Retro Shop', color:'#5888C4', colorDim:'rgba(88,136,196,0.12)',
-   tasks:['Scale Retro Shop to 40+ listings daily','Report daily: orders, revenue, disputes','Optimize pricing on slow-moving SKUs','Hit weekly revenue target'],
-   done:0, rev:0, target:2000},
-  {id:'m1b', name:'eBay Manager 2',  role:'Urban Sells + REDR Sellers + Vorn Sellers', color:'#3a7bd5', colorDim:'rgba(58,123,213,0.12)',
-   tasks:['Scale Urban Sells, REDR Sellers, Vorn Sellers daily','40+ listings per store per day','Report daily: orders, revenue, disputes','Optimize pricing on slow-moving SKUs'],
-   done:0, rev:0, target:6000},
-  {id:'m4', name:'3PL Team',         role:'Fulfillment Ops',    color:'#D4954E', colorDim:'rgba(212,149,78,0.12)',
-   tasks:['Onboard all 4 clients this week','Set up intake and tracking process','Handle all shipping and receiving','Weekly billing report to Hishaam'],
+  {id:'m1', name:'eBay Manager 1',  role:'Retro Shop', color:'#5888C4', colorDim:'rgba(88,136,196,0.12)',
+   tasks:['Retro Shop: 40+ new listings every single day','Send daily report: orders placed, revenue, any disputes','Identify and relist slow-moving SKUs with better titles/price','Flag any account warnings or policy issues immediately'],
+   done:0, rev:0, target:1250},
+  {id:'m1b', name:'eBay Manager 2', role:'Urban Sells · REDR Sellers · Vorn Sellers', color:'#3a7bd5', colorDim:'rgba(58,123,213,0.12)',
+   tasks:['All 3 stores: 40+ listings each per day (120+ total)','Daily report: revenue breakdown per store, order count, disputes','Rotate pricing strategy — test higher margins on best sellers','Alert immediately if any store gets flagged or restricted'],
+   done:0, rev:0, target:3750},
+  {id:'m_ads', name:'Ads Manager',  role:'Creatives + Campaign Management', color:'#8B68C4', colorDim:'rgba(139,104,196,0.12)',
+   tasks:['Post 1-2 ad creatives daily across platforms','Monitor CPC, CTR, and ROAS every morning','Pause underperforming ad sets, scale winners','Weekly report: spend, leads generated, cost per lead'],
    done:0, rev:0, target:2000},
 ];
 
 /* ═══ TASK MASTER LIST ═══ */
 const TASK_DEFAULTS = [
+  // ── DAILY RECURRING ──
+  {t:'eBay: Manager check-in — review overnight orders, revenue, flag issues',b:'eBay',p:'high',w:'me',wk:'W1',note:'Text both managers by 9am. Get order count, revenue, any flags. If no response in 1 hour, call.',done:false},
+  {t:'Warehousing: 5+ cold outreach calls/emails to businesses needing storage',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W1',note:'Target: e-commerce brands, importers, distributors, contractors. Use LinkedIn, Google Maps, local biz directories. Script: short, direct, pain-focused.',done:false},
+  {t:'Ads Manager: post 1-2 ads, check metrics, adjust targeting',b:'Ads Manager',p:'high',w:'Ads Manager',wk:'W1',note:'Morning: check yesterdays performance. Pause anything with CTR under 0.5%. Post new creative. End of day: screenshot metrics.',done:false},
+  {t:'Merchant Arbitrage: check MX + Auth.net dashboards, monitor transactions',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W1',note:'Log in to both dashboards. Check volume, any holds, chargeback notices. Flag anything unusual immediately.',done:false},
+  {t:'Lawyergist: 3 outreach messages + 1 content piece or post',b:'Lawyergist',p:'high',w:'me',w:'me',wk:'W1',note:'Outreach: personalized LinkedIn DM or email to specific attorney. Content: LinkedIn post, case study snippet, or tip for lawyers. Consistency beats volume.',done:false},
+
+  // ── WEEK 1: MAY 14-20 — FOUNDATION ──
+  {t:'Warehousing: build list of 50 local businesses that need storage or 3PL',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W1',note:'Use Google Maps (search warehousing tenants, distributors, e-comm brands in Broward/Miami). LinkedIn Sales Navigator. Chamber of commerce directory. Build in a spreadsheet: company, contact, phone, email, status.',done:false},
+  {t:'Warehousing: write cold call script + email template, send 20 emails day 1',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W1',note:'Script: "Hi [name], I run a warehousing and fulfillment operation in Broward. We have space available now and specialize in [their industry]. Are you currently storing product anywhere?" Keep it under 60 seconds.',done:false},
+  {t:'Warehousing: launch first client acquisition ad campaign via Ads Manager',b:'Warehousing (3PL)',p:'high',w:'Ads Manager',wk:'W1',note:'Target: business owners in South Florida. Ad copy: "Need warehouse space in Broward? Flexible month-to-month. Call today." Budget: $10-20/day. Track leads via form or direct call.',done:false},
+  {t:'HighRiskIntel: audit current product — document what stays, what goes, define new positioning',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'Go through every page of the current app. Write: what is the core value prop? Who is the exact customer? What is broken in the current design? Output: 1-page positioning document.',done:false},
+  {t:'Lawyergist: launch outreach sequence — set up 3 discovery calls this week',b:'Lawyergist',p:'high',w:'me',wk:'W1',note:'Send 20+ personalized outreach messages. Follow up on anyone who opened. Goal: 3 calls booked by Friday. Offer: free 15-min audit of their current online presence.',done:false},
+  {t:'DSI Portal: research week — pull up portal requirements, map activation process',b:'DSI Portal',p:'med',w:'me',wk:'W1',note:'Go/no-go decision by May 20. Questions to answer: how long to get first activation? What is the realistic monthly volume? Is the time investment worth it vs warehousing?',done:false},
+  {t:'Amazon/Walmart: research week — define product category, supplier sourcing plan',b:'Amazon / Walmart',p:'med',w:'me',wk:'W1',note:'Go/no-go by May 20. Questions: what category? What margins? How long to first sale? If not clear by Friday, kill it for now and focus.',done:false},
+  {t:'DSI + Amazon: make go/no-go decision by May 20 — write 1 sentence justification',b:'General',p:'high',w:'me',wk:'W1',note:'If go: define next 3 concrete actions. If no-go: officially shelve it, remove from mental load. No half-decisions.',done:false},
+
+  // ── WEEK 2: MAY 21-27 — ACTIVATION ──
+  {t:'Warehousing: close first 2-3 clients, sign contracts, start onboarding',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W2',note:'Pipeline from W1 should be warm. Send proposal to everyone who responded. Contract = simple 1-pager: storage rate per pallet/sqft, billing cycle, 30-day notice. Get signatures via DocuSign.',done:false},
+  {t:'Warehousing: follow up every single pipeline contact from W1 outreach',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W2',note:'No lead dies without 3 touchpoints. Day 1 follow-up: "Did you get my email?" Day 3: value add (price comparison vs public storage). Day 5: final nudge.',done:false},
+  {t:'HighRiskIntel: lock new brand identity — name, colors, positioning statement',b:'HighRiskIntel',p:'high',w:'me',wk:'W2',note:'Output: new logo direction, color palette, tagline, 1-paragraph positioning. Do not overthink. Ship something.',done:false},
+  {t:'HighRiskIntel: wireframe new landing page — sketch every section',b:'HighRiskIntel',p:'high',w:'me',wk:'W2',note:'Sections: hero (pain + solution), how it works, pricing, testimonials/social proof, CTA. Sketch on paper or Figma. Done beats perfect.',done:false},
+  {t:'HighRiskIntel: begin scoping AI agent backend — define first 3 use cases',b:'HighRiskIntel',p:'med',w:'me',wk:'W2',note:'What can an AI agent do for high-risk merchants? Dispute monitoring? Chargeback prediction? Alert system? Write 3 specific use cases with inputs and outputs.',done:false},
+  {t:'Lawyergist: convert 1-2 discovery calls to paying retainers',b:'Lawyergist',p:'high',w:'me',wk:'W2',note:'Calls from W1 should happen this week. Send proposal within 1 hour of every call. Follow up same day if no response. Target: $1,500-2,000/month per client.',done:false},
+  {t:'Lawyergist: launch targeted ad set via Ads Manager',b:'Lawyergist',p:'med',w:'Ads Manager',wk:'W2',note:'Target: solo attorneys and small firms. Ad: "Get 5 new client consultations in 30 days or we work for free." Landing page = simple booking form.',done:false},
+  {t:'eBay: scale all 4 store listings 20% — push managers hard',b:'eBay',p:'med',w:'me',wk:'W2',note:'Talk to both managers. Current baseline is the floor. Every store needs to increase listing count by 20% this week. Track daily.',done:false},
+  {t:'Merchant Arbitrage: review monthly volume — calculate actual MRR from MX + Auth.net',b:'Merchant Arbitrage',p:'med',w:'me',wk:'W2',note:'Pull reports from both processors. Calculate net after fees. Update dashboard MRR number.',done:false},
+
+  // ── WEEK 3: MAY 28-JUN 3 — SCALE ──
+  {t:'Warehousing: expand outreach to 100 businesses total — pitch second-tier clients',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W3',note:'Second tier = larger volume businesses: manufacturers, distributors, Amazon FBA sellers. Higher revenue per client. Pitch: "We handle 10-500 pallets, flexible contracts, same-day access."',done:false},
+  {t:'Warehousing: upsell existing clients on additional services (repackaging, labeling)',b:'Warehousing (3PL)',p:'med',w:'me',wk:'W3',note:'Every client = potential for more revenue. Services to add: kitting, poly-bagging, labeling, daily receiving updates. Charge per unit.',done:false},
+  {t:'HighRiskIntel: landing page live — deployed and indexed',b:'HighRiskIntel',p:'high',w:'me',wk:'W3',note:'Use existing hosting. Get it live even if not perfect. Collect email signups on day 1. Share link everywhere.',done:false},
+  {t:'HighRiskIntel: AI agent v1 prototype — first working demo',b:'HighRiskIntel',p:'high',w:'me',wk:'W3',note:'Pick the simplest use case from W2 scope. Build a basic working version. Does not need to be polished. Just functional enough to demo.',done:false},
+  {t:'HighRiskIntel: personal brand content — publish 3 posts this week',b:'HighRiskIntel',p:'high',w:'me',wk:'W3',note:'Topics: chargeback myth-busting, processor red flags, high-risk merchant survival tips. LinkedIn + Twitter. Show face. Build authority.',done:false},
+  {t:'Lawyergist: 5 active clients target — push hard on pipeline',b:'Lawyergist',p:'high',w:'me',wk:'W3',note:'Current clients + new closes this week. Each client = $1,500-2,500/month. 5 clients = $7,500-12,500 MRR. This is the $10K target.',done:false},
+  {t:'Lawyergist: upsell existing clients to higher tier (add content, SEO, or PPC)',b:'Lawyergist',p:'med',w:'me',wk:'W3',note:'Existing clients who are happy = easiest upsell. Pitch: "We have a higher tier that includes X — based on your growth it makes sense now."',done:false},
+  {t:'eBay: manager performance review — identify and optimize underperforming stores',b:'eBay',p:'med',w:'me',wk:'W3',note:'Pull weekly revenue per store. Which is lowest? Why? Talk to the responsible manager. Give them a specific fix for next week.',done:false},
+  {t:'Ads: scale budget on best-performing ad sets — cut losers',b:'Ads Manager',p:'med',w:'Ads Manager',wk:'W3',note:'Any ad set with positive ROAS gets 20-30% budget increase. Anything negative for 3+ days gets killed. Report results.',done:false},
+
+  // ── WEEK 4: JUN 4-10 — PUSH ──
+  {t:'Warehousing: lock in 5+ active contracts — upsell additional services',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W4',note:'5 clients at $3,000-4,000/month average = $15-20K. This week is the anchor week. Every contract signed = progress toward $40K.',done:false},
+  {t:'Warehousing: send proposals to all remaining warm pipeline contacts',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W4',note:'Anyone who responded in W1-W3 and has not signed yet gets a final proposal with urgency: "We have limited space available — can we get this locked in this week?"',done:false},
+  {t:'HighRiskIntel: soft launch new product to warm audience — collect feedback',b:'HighRiskIntel',p:'high',w:'me',wk:'W4',note:'Email your list, post on LinkedIn, DM 20 people personally. Ask: "Would you pay $X for this?" Collect 20+ responses. Use feedback to refine before public launch.',done:false},
+  {t:'Lawyergist: collect case studies + testimonials from current clients',b:'Lawyergist',p:'high',w:'me',wk:'W4',note:'Email every active client: "Can I get a 2-sentence quote about working with us?" Use these on the website, ads, and outreach. Social proof = sales.',done:false},
+  {t:'Lawyergist: launch referral push — ask every client for 1 introduction',b:'Lawyergist',p:'high',w:'me',wk:'W4',note:"Script: 'Hey [name], do you know any other attorneys who struggle with getting clients online? I'd love to help them the same way I'm helping you.' One intro per client = 5 new leads.",done:false},
+  {t:'DSI + Amazon: full activation if green-lit, or officially close',b:'General',p:'high',w:'me',wk:'W4',note:'If activated: execute first 3 steps this week. If closed: remove from the plan, stop thinking about it, focus energy on the working businesses.',done:false},
+  {t:'Merchant Arbitrage: push eBay volume hard — max out all 4 stores this week',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W4',note:'Both managers need to know this is a push week. More listings = more transactions = more processing volume. Coordinate.',done:false},
+
+  // ── WEEK 5: JUN 11-18 — CLOSE ──
+  {t:'Warehousing: 8-10 active clients locked — follow up every outstanding proposal',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W5',note:'8 clients at $2,500 avg = $20K. 10 clients = $25K. This week is closing week. No proposal left untouched. Call everyone.',done:false},
+  {t:'Lawyergist: 6-8 active retainers locked — final push on pipeline',b:'Lawyergist',p:'high',w:'me',wk:'W5',note:'6 clients at $1,500 = $9K. 8 clients at $1,500 = $12K. Send "last chance" offer to anyone still undecided.',done:false},
+  {t:'HighRiskIntel: public launch or waitlist push',b:'HighRiskIntel',p:'high',w:'me',wk:'W5',note:'Either launch publicly (if product is ready) or build waitlist aggressively. Goal: 20+ signups this week. Post daily. DM directly.',done:false},
+  {t:'Final MRR review — total all 8 businesses, calculate actual MRR vs $40K target',b:'General',p:'high',w:'me',wk:'W5',note:'Warehousing + Lawyergist + Merch/eBay + HRI + Ads. Add it up. What is the number? What is the gap? What can be closed in the next 48 hours?',done:false},
+  {t:'Cut anything not contributing — remove dead weight from focus',b:'General',p:'high',w:'me',wk:'W5',note:'Any business that has generated $0 and has no clear path in 30 days = deprioritize. Double energy on what is working.',done:false},
+  {t:'Week 5 win log — document every deal closed, client signed, revenue unlocked',b:'General',p:'med',w:'me',wk:'W5',note:'Write down every win from the 35 days. Use it as proof for the next sprint. Share nothing publicly until $40K is locked.',done:false},
 ];
 
 /* ═══ GAME PLAN DATA ═══ */
 const GAME_PLAN = [
+  {
+    num:'WEEK 1', title:'Foundation', period:'May 14 – May 20', target:'$0 → Pipeline Built',
+    desc:'No revenue this week — but every deal that closes in weeks 2-5 starts here. Build the outreach machine.',
+    streams:[
+      {name:'Warehousing',rev:'Build list of 50 targets, send 20 emails, launch ad',pct:0,action:'Cold call script written. 20 emails sent day 1. Ad live by day 2.'},
+      {name:'Lawyergist',rev:'20+ outreach messages, 3 discovery calls booked',pct:0,action:'Send personalized messages daily. Book 3 calls by Friday.'},
+      {name:'HighRiskIntel',rev:'Audit done, new positioning defined',pct:0,action:'1-page positioning doc. Document what stays and what goes.'},
+      {name:'DSI + Amazon',rev:'Research week — go/no-go by May 20',pct:0,action:'Answer the key questions. Make a decision by Friday.'},
+    ],
+    milestones:[
+      {week:'Day 1',title:'Launch',desc:'Outreach list built. First 20 emails sent. Ads Manager briefed. Both eBay managers confirmed on daily check-in.'},
+      {week:'Day 3',title:'First Calls',desc:'First warm responses from outreach. Discovery calls starting to book. HighRiskIntel audit complete.'},
+      {week:'Day 7',title:'Decision Day',desc:'DSI and Amazon go/no-go made. 3 Lawyergist calls booked. Warehouse pipeline has 10+ warm contacts.'},
+    ]
+  },
+  {
+    num:'WEEK 2', title:'Activation', period:'May 21 – May 27', target:'First Revenue Hits',
+    desc:'Convert pipeline to paying. First warehouse contracts signed. First Lawyergist retainers closed.',
+    streams:[
+      {name:'Warehousing',rev:'Close 2-3 clients, contracts signed',pct:10,action:'Send proposals to all warm leads. Follow up every 24 hours. Sign or kill.'},
+      {name:'Lawyergist',rev:'1-2 discovery calls → retainers',pct:5,action:'Proposal within 1 hour of every call. Same-day follow-up.'},
+      {name:'HighRiskIntel',rev:'Brand locked, landing page wireframed',pct:2,action:'New identity done. Wireframe every section. Start building.'},
+      {name:'eBay',rev:'All 4 stores +20% listing count',pct:20,action:'Push both managers. 20% more listings across all stores this week.'},
+    ],
+    milestones:[
+      {week:'Day 8-10',title:'First Contracts',desc:'First 1-2 warehouse clients sign. Lawyergist discovery calls complete.'},
+      {week:'Day 12-14',title:'First Retainers',desc:'1-2 Lawyergist retainers paid. Warehouse pipeline at 5+ warm contacts.'},
+    ]
+  },
+  {
+    num:'WEEK 3', title:'Scale', period:'May 28 – Jun 3', target:'$10K-15K MRR',
+    desc:'Double down on what is working. Warehouse expands to 100 targets. Lawyergist hits 5 clients.',
+    streams:[
+      {name:'Warehousing',rev:'Expand to 100 targets, pitch larger clients',pct:30,action:'Tier 2 outreach begins. Manufacturers, distributors, FBA sellers.'},
+      {name:'Lawyergist',rev:'5 active clients = $7.5-10K MRR',pct:50,action:'Close hard. Every call gets same-day proposal. Push referrals.'},
+      {name:'HighRiskIntel',rev:'Landing page live, AI agent v1, 3 content posts',pct:10,action:'Ship the page. Post daily. Build in public.'},
+      {name:'Ads',rev:'Scale winning ad sets, cut losers',pct:50,action:'20-30% budget increase on positive ROAS. Kill negatives.'},
+    ],
+    milestones:[
+      {week:'Day 15-17',title:'Landing Page Live',desc:'HighRiskIntel new page deployed. First signups collected.'},
+      {week:'Day 21',title:'5 Client Mark',desc:'Lawyergist at 5 active retainers. Warehouse at 3-4 signed contracts.'},
+    ]
+  },
+  {
+    num:'WEEK 4', title:'Push', period:'Jun 4 – Jun 10', target:'$25K-30K MRR',
+    desc:'Final sprint before close week. Lock in remaining warehouse contracts. Max out all processors.',
+    streams:[
+      {name:'Warehousing',rev:'5+ active contracts, upsell services',pct:60,action:'Every proposal sent. Urgency: limited space. Close or lose.'},
+      {name:'Lawyergist',rev:'Case studies collected, referral push',pct:70,action:'Ask every client for a testimonial and 1 introduction.'},
+      {name:'HighRiskIntel',rev:'Soft launch to warm audience',pct:30,action:'Email list, LinkedIn, 20 personal DMs. Collect feedback.'},
+      {name:'Merchant/eBay',rev:'Max volume week — push all 4 stores',pct:80,action:'Coordinate managers. More listings = more processing = more revenue.'},
+    ],
+    milestones:[
+      {week:'Day 25',title:'Soft Launch',desc:'HighRiskIntel soft launched. Feedback collected. Warehouse at 5+ contracts.'},
+      {week:'Day 28',title:'Final Proposals',desc:'All remaining pipeline contacts receive final proposals this week.'},
+    ]
+  },
+  {
+    num:'WEEK 5', title:'Close', period:'Jun 11 – Jun 18', target:'$40,000 MRR',
+    desc:'Count the money. Fill the gaps. 8-10 warehouse clients = $20-25K. 6-8 Lawyergist retainers = $8-12K.',
+    streams:[
+      {name:'Warehousing',rev:'8-10 clients = $20-25K MRR anchor',pct:100,action:'Call every outstanding proposal. Last chance urgency. Close everything.'},
+      {name:'Lawyergist',rev:'6-8 retainers = $8-12K MRR',pct:100,action:'Final push. Referral introductions close this week.'},
+      {name:'HighRiskIntel',rev:'Public launch or waitlist — $3K target',pct:80,action:'Launch publicly or go hard on waitlist. 20+ signups.'},
+      {name:'Merch + eBay',rev:'$5K combined',pct:100,action:'Max volume. All 4 stores pushing hard.'},
+    ],
+    milestones:[
+      {week:'Day 32',title:'MRR Audit',desc:'Total all 8 businesses. Calculate actual MRR. Identify the gap.'},
+      {week:'Day 35',title:'$40K Check',desc:'Final count. Every deal closed. Every contract signed. Did we hit $40K?'},
+    ]
+  },
 ];
 
 /* ═══ CALENDAR DATA ═══ */
 const CAL_MONTHS = [
+  {
+    month:'May 2026', dates:'May 14 – May 31', target:'$0 → Pipeline', days:18,
+    weeks:[
+      {wk:'W1',dates:'May 14–20',revenue:'Pipeline',tasks:[
+        {t:'Build warehouse outreach list of 50 local businesses',b:'Warehousing',pri:'high'},
+        {t:'Write cold call script + email template, send 20 emails',b:'Warehousing',pri:'high'},
+        {t:'Launch warehouse client acquisition ad campaign',b:'Ads Manager',pri:'high'},
+        {t:'Lawyergist: 20+ personalized outreach messages sent',b:'Lawyergist',pri:'high'},
+        {t:'Lawyergist: 3 discovery calls booked by Friday',b:'Lawyergist',pri:'high'},
+        {t:'HighRiskIntel: full product audit, positioning doc written',b:'HighRiskIntel',pri:'high'},
+        {t:'DSI Portal: research week — answer go/no-go questions',b:'DSI Portal',pri:'med'},
+        {t:'Amazon/Walmart: research week — category, margins, timeline',b:'Amazon / Walmart',pri:'med'},
+        {t:'DSI + Amazon: final go/no-go decision by May 20',b:'General',pri:'high'},
+        {t:'Both eBay managers: confirm daily check-in schedule',b:'eBay',pri:'med'},
+      ]},
+      {wk:'W2',dates:'May 21–27',revenue:'First Revenue',tasks:[
+        {t:'Warehousing: follow up every W1 lead, send proposals to warm contacts',b:'Warehousing',pri:'high'},
+        {t:'Warehousing: close 2-3 first clients, sign contracts',b:'Warehousing',pri:'high'},
+        {t:'Lawyergist: run all 3 discovery calls, send proposals same-day',b:'Lawyergist',pri:'high'},
+        {t:'Lawyergist: convert 1-2 calls to paying retainers',b:'Lawyergist',pri:'high'},
+        {t:'Lawyergist: launch ad set for attorney lead gen',b:'Ads Manager',pri:'med'},
+        {t:'HighRiskIntel: lock new brand identity + wireframe landing page',b:'HighRiskIntel',pri:'high'},
+        {t:'HighRiskIntel: define 3 AI agent use cases',b:'HighRiskIntel',pri:'med'},
+        {t:'eBay: all 4 stores +20% listing count — push both managers',b:'eBay',pri:'med'},
+        {t:'Merchant: pull MX + Auth.net reports, update MRR number',b:'Merchant Arbitrage',pri:'med'},
+      ]},
+      {wk:'W3',dates:'May 28–Jun 3',revenue:'$10-15K MRR',tasks:[
+        {t:'Warehousing: expand to 100 business targets, pitch tier-2 clients',b:'Warehousing',pri:'high'},
+        {t:'Warehousing: upsell existing clients on repackaging + labeling',b:'Warehousing',pri:'med'},
+        {t:'Lawyergist: push to 5 active clients — close pipeline hard',b:'Lawyergist',pri:'high'},
+        {t:'Lawyergist: upsell existing clients to higher service tier',b:'Lawyergist',pri:'med'},
+        {t:'HighRiskIntel: landing page live and deployed',b:'HighRiskIntel',pri:'high'},
+        {t:'HighRiskIntel: AI agent v1 prototype — first working demo',b:'HighRiskIntel',pri:'high'},
+        {t:'HighRiskIntel: 3 personal brand content posts published',b:'HighRiskIntel',pri:'high'},
+        {t:'Ads: scale winning sets, cut losers — report results',b:'Ads Manager',pri:'med'},
+        {t:'eBay: manager performance review, optimize weakest store',b:'eBay',pri:'med'},
+      ]},
+    ]
+  },
+  {
+    month:'June 2026', dates:'Jun 1 – Jun 18', target:'$40,000 MRR', days:18,
+    weeks:[
+      {wk:'W4',dates:'Jun 4–10',revenue:'$25-30K MRR',tasks:[
+        {t:'Warehousing: 5+ contracts locked — send final proposals with urgency',b:'Warehousing',pri:'high'},
+        {t:'Warehousing: upsell every existing client on additional services',b:'Warehousing',pri:'high'},
+        {t:'Lawyergist: collect case studies + testimonials from all clients',b:'Lawyergist',pri:'high'},
+        {t:'Lawyergist: launch referral push — ask every client for 1 intro',b:'Lawyergist',pri:'high'},
+        {t:'HighRiskIntel: soft launch new product to warm audience',b:'HighRiskIntel',pri:'high'},
+        {t:'HighRiskIntel: collect 20+ feedback responses from soft launch',b:'HighRiskIntel',pri:'med'},
+        {t:'DSI + Amazon: full activation OR officially close — no grey area',b:'General',pri:'high'},
+        {t:'Merchant Arbitrage: coordinate with eBay managers for max volume week',b:'Merchant Arbitrage',pri:'med'},
+        {t:'Ads: consolidate spend on highest-converting campaigns',b:'Ads Manager',pri:'med'},
+      ]},
+      {wk:'W5',dates:'Jun 11–18',revenue:'$40,000 MRR',tasks:[
+        {t:'Warehousing: call every outstanding proposal — 8-10 clients locked',b:'Warehousing',pri:'high'},
+        {t:'Lawyergist: 6-8 retainers confirmed — follow up every open proposal',b:'Lawyergist',pri:'high'},
+        {t:'HighRiskIntel: public launch or waitlist push — 20+ signups',b:'HighRiskIntel',pri:'high'},
+        {t:'Final MRR audit — total all 8 businesses vs $40K target',b:'General',pri:'high'},
+        {t:'Identify gap to $40K — what can close in next 48 hours?',b:'General',pri:'high'},
+        {t:'Cut any business not contributing — remove from focus',b:'General',pri:'high'},
+        {t:'Document every deal closed across the 35 days',b:'General',pri:'med'},
+        {t:'eBay: final push — both managers max listings week 5',b:'eBay',pri:'med'},
+      ]},
+    ]
+  },
 ];
 
 /* ═══ STATE ═══ */
@@ -1975,7 +2148,7 @@ let tasks=[], taskFilter='all';
 
 /* ═══ AUTH ═══ */
 function login(){
-  if(document.getElementById('ac').value==='ops2026'){
+  if(document.getElementById('ac').value==='Aina214@#'){
     document.getElementById('auth').style.display='none';
     document.getElementById('app').style.display='flex';
     boot();
@@ -2006,9 +2179,9 @@ function refresh(){ renderDash(); renderTasks(); renderGamePlan(); renderCalenda
 
 /* ═══ NAV ═══ */
 const PM = {
-  dash:     ['Operating Overview',      'ALL STREAMS · APR 14 TO AUG 12, 2026'],
-  gameplan: ['The Game Plan',           '$0 TO $150,000 MRR IN 120 DAYS'],
-  calendar: ['120-Day Calendar',        'WEEK-BY-WEEK EXECUTION · APR 14 – AUG 12, 2026'],
+  dash:     ['Operating Overview',      '8 BUSINESSES · MAY 14 TO JUN 18, 2026 · $40K TARGET'],
+  gameplan: ['The Game Plan',           '$40,000 MRR IN 35 DAYS · MAY 14 – JUN 18'],
+  calendar: ['35-Day Calendar',         'WEEK-BY-WEEK EXECUTION · MAY 14 – JUN 18, 2026'],
   tasks:    ['All Tasks',               'EXECUTION CHECKLIST · SYNCED TO CALENDAR'],
   biz:      ['All Businesses',          '15 REVENUE STREAMS · CURRENT STATUS'],
   managers: ['Team Overview',           '4 MANAGERS · TASKS + KPIs'],
@@ -2048,11 +2221,11 @@ function renderDash(){
   const totalMRR=calcMRR();
   const pct=Math.min(Math.round(totalMRR/150000*100),100);
   const daily=Math.round(totalMRR/30);
-  const end=new Date('2026-08-12'); const days=Math.max(0,Math.round((end-new Date())/86400000));
+  const end=new Date('2026-06-18'); const days=Math.max(0,Math.round((end-new Date())/86400000));
 
   document.getElementById('d-daily').textContent='$'+daily.toLocaleString();
   document.getElementById('d-mrr').textContent='$'+totalMRR.toLocaleString();
-  document.getElementById('d-mrr-f').textContent=pct+'% of $150K target';
+  document.getElementById('d-mrr-f').textContent=pct+'% of $40K target';
   document.getElementById('d-pending').textContent=pending;
   document.getElementById('d-pf').textContent='pending this week ('+wk+')';
   document.getElementById('d-days').textContent=days;
@@ -2206,9 +2379,9 @@ function renderCalendar(){
 
 /* ═══ TASKS ═══ */
 function curWeek(){
-  const start=new Date('2026-04-14');
+  const start=new Date('2026-05-14');
   const diff=Math.floor((new Date()-start)/604800000);
-  return 'W'+(Math.min(Math.max(diff+1,1),17));
+  return 'W'+(Math.min(Math.max(diff+1,1),5));
 }
 
 function renderTasks(){
@@ -2410,7 +2583,7 @@ function renderAnalytics(){
 }
 
 function getBlocker(id){
-  const blockers={merch:'EDR not active',trade:'Challenge not cleared',urban:'Scale listings',retro:'Scale listings',redr:'Scale listings',vorn:'Scale listings',amzn:'Account disabled / pending',hri:'Zero users / no video',smma:'No content posted',law:'No emails sent',dsi:'Office visit not done',
+  const blockers={merch:'Monitor MX + Auth.net daily',urban:'Manager 2 daily check-in',retro:'Manager 1 daily check-in',redr:'Manager 2 daily check-in',vorn:'Manager 2 daily check-in','3pl':'5+ cold outreach calls daily',ads:'Post creatives + monitor metrics',law:'3 outreach + 1 content piece daily',hri:'Redesign in progress — ship daily',dsi:'Go/no-go decision pending',amzn:'Go/no-go decision pending',
   '3pl':'Clients not onboarded',brand:'Nothing posted',cloth:'No payment setup',liq:'No pallet sourced',hdm:'No merchants onboarded',credit:'No bulk order placed'};
   return blockers[id]||'—';
 }
