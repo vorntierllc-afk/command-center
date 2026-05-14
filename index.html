@@ -1645,7 +1645,6 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
             <div class="metric"><div class="metric-lbl">Current MRR</div><div class="metric-val v-amber" id="d-daily">$3,989</div><div class="metric-foot">monthly recurring revenue</div></div>
             <div class="metric"><div class="metric-lbl">Current ARR</div><div class="metric-val v-amber" id="d-arr">$47,868</div><div class="metric-foot">annualized · MRR × 12</div></div>
             <div class="metric"><div class="metric-lbl">MRR Target</div><div class="metric-val v-emerald" id="d-mrr">$40,000</div><div class="metric-foot" id="d-mrr-f">35-day sprint · Jun 18</div></div>
-            <div class="metric"><div class="metric-lbl">ARR Target</div><div class="metric-val v-emerald" id="d-arr-target">$480,000</div><div class="metric-foot">$40K MRR × 12</div></div>
             <div class="metric"><div class="metric-lbl">Pending Tasks</div><div class="metric-val v-sapphire" id="d-pending">0</div><div class="metric-foot" id="d-pf">this week</div></div>
             <div class="metric"><div class="metric-lbl">Active Businesses</div><div class="metric-val v-violet">8</div><div class="metric-foot">Warehousing is the anchor</div></div>
             <div class="metric"><div class="metric-lbl">Days Remaining</div><div class="metric-val v-paper2" id="d-days">35</div><div class="metric-foot">to Jun 18, 2026</div></div>
@@ -1815,11 +1814,11 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
             </div>
           </div>
           <div class="panel">
-            <div class="p-hdr"><span class="p-title">Full Business Performance Table</span><span class="p-meta">All 16 streams · updated manually</span></div>
+            <div class="p-hdr"><span class="p-title">Full Business Performance Table</span><span class="p-meta">All 8 businesses · updated manually</span></div>
             <div style="overflow-x:auto"><table>
               <thead><tr>
-                <th>BUSINESS</th><th>STATUS</th><th>CURRENT MRR</th><th>3-MONTH TARGET</th>
-                <th>PROGRESS</th><th>CEILING</th><th>BLOCKING FACTOR</th><th>NEXT ACTION</th>
+                <th>BUSINESS</th><th>STATUS</th><th>MRR</th><th>ARR</th><th>TARGET MRR</th>
+                <th>PROGRESS</th><th>CEILING</th><th>NEXT ACTION</th>
               </tr></thead>
               <tbody id="a-tbody"></tbody>
             </table></div>
@@ -2486,8 +2485,8 @@ function renderBiz(){
         <div class="bc-name">${b.name}</div>
         <span class="badge ${scls[b.status]}">${b.status.toUpperCase()}</span>
       </div>
-      <div class="bc-rev" style="color:${b.color}">$${b.mrr.toLocaleString()}</div>
-      <div class="bc-rev-lbl">/ $${b.target.toLocaleString()} TARGET</div>
+      <div class="bc-rev" style="color:${b.color}">$${b.mrr.toLocaleString()}<span style="font-size:11px;color:var(--paper3);font-family:var(--fm);margin-left:8px">MRR</span></div>
+      <div style="font-size:11px;color:var(--paper3);margin-bottom:6px;font-family:var(--fm)">ARR <span style="color:${b.color};font-weight:600">$${(b.mrr*12).toLocaleString()}</span> &nbsp;·&nbsp; TARGET <span style="color:var(--paper2)">$${b.target.toLocaleString()}/mo</span></div>
       <div class="bc-bar-wrap"><div class="bc-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${b.color},${b.color}bb)"></div></div>
       <div class="bc-desc">${b.desc}</div>
       <div class="bc-action">→ ${b.action}</div>
@@ -2572,6 +2571,7 @@ function renderAnalytics(){
       <td><strong>${b.name}</strong></td>
       <td style="font-family:var(--fm);font-size:9.5px;${sc[b.status]}">${b.status.toUpperCase()}</td>
       <td style="font-family:var(--fm);font-size:11px;color:var(--amber)">$${b.mrr.toLocaleString()}</td>
+      <td style="font-family:var(--fm);font-size:11px;color:${b.color};font-weight:600">$${(b.mrr*12).toLocaleString()}</td>
       <td style="font-family:var(--fm);font-size:11px;color:var(--paper3)">$${b.target.toLocaleString()}</td>
       <td>
         <div style="height:3px;background:var(--z4);width:80px;overflow:hidden">
@@ -2580,7 +2580,6 @@ function renderAnalytics(){
         <div style="font-family:var(--fm);font-size:8px;color:var(--paper3);margin-top:2px">${pct}%</div>
       </td>
       <td style="font-family:var(--fm);font-size:10px;color:${b.color}">$${Math.round(b.target/1000)}K</td>
-      <td style="font-family:var(--fm);font-size:9.5px;color:var(--ruby);max-width:140px">${getBlocker(b.id)}</td>
       <td style="font-size:10.5px;color:var(--paper3);max-width:180px">${b.action}</td>
     </tr>`;
   }).join('');
