@@ -2328,7 +2328,6 @@ function renderDash(){
   const totalARR=BIZ.reduce((s,b)=>s+(b.arr||0),0);
   document.getElementById('d-arr').textContent='$'+totalARR.toLocaleString();
   document.getElementById('d-mrr').textContent='$40,000';
-  document.getElementById('d-arr-target').textContent='$480,000';
   document.getElementById('d-mrr-f').textContent=pct+'% of $40K target';
   document.getElementById('d-pending').textContent=pending;
   document.getElementById('d-pf').textContent='pending this week ('+wk+')';
