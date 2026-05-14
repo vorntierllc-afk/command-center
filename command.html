@@ -1,0 +1,2710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMMAND — Hishaam Nasir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #f3f6fb;
+  --z1: #ffffff;
+  --z2: #f7f9fd;
+  --z3: #edf2fa;
+  --z4: #d9e2ef;
+  --z5: #bfd0e2;
+  --line: rgba(15, 23, 42, 0.08);
+  --line2: rgba(15, 23, 42, 0.12);
+  --line3: rgba(15, 23, 42, 0.18);
+  --line4: rgba(15, 23, 42, 0.26);
+  --amber: #635bff;
+  --amber2: #7a73ff;
+  --amberg: rgba(99, 91, 255, 0.08);
+  --amberb: rgba(99, 91, 255, 0.18);
+  --emerald: #0f9f6e;
+  --emeraldg: rgba(15, 159, 110, 0.08);
+  --ruby: #cc4f5d;
+  --rubyg: rgba(204, 79, 93, 0.08);
+  --sapphire: #2563eb;
+  --sapphireg: rgba(37, 99, 235, 0.08);
+  --violet: #7c3aed;
+  --violetg: rgba(124, 58, 237, 0.08);
+  --paper: #162033;
+  --paper2: #4f5f79;
+  --paper3: #7d8ca5;
+  --paper4: #aab7c9;
+  --shadow-sm: 0 10px 30px rgba(20, 34, 66, 0.07);
+  --shadow-md: 0 24px 60px rgba(20, 34, 66, 0.12);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --fs: 'Plus Jakarta Sans', sans-serif;
+  --fm: 'IBM Plex Mono', monospace;
+  --fg: 'Instrument Serif', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; font-size: 13px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+body {
+  font-family: var(--fs);
+  background:
+    radial-gradient(circle at top left, rgba(99, 91, 255, 0.08), transparent 28%),
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%),
+    linear-gradient(180deg, #f9fbff 0%, var(--void) 42%, #eef3fb 100%);
+  color: var(--paper);
+  height: 100%;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(rgba(99, 91, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 91, 255, 0.03) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.3), transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--z5); border-radius: 999px; }
+
+@keyframes in-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes in-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+#auth {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(243, 246, 251, 0.84);
+  backdrop-filter: blur(14px);
+  z-index: 900;
+}
+
+.auth-container {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  width: 860px;
+  height: 500px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 30px;
+  box-shadow: var(--shadow-md);
+  animation: in-up 0.45s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+
+.auth-l {
+  background:
+    radial-gradient(circle at top right, rgba(99, 91, 255, 0.12), transparent 40%),
+    linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,249,253,0.95));
+  border-right: 1px solid var(--line2);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-l-glow {
+  position: absolute;
+  top: -48px;
+  right: -92px;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(99, 91, 255, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.auth-eyebrow {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  color: var(--paper3);
+  margin-bottom: 12px;
+}
+
+.auth-wordmark {
+  font-family: var(--fg);
+  font-size: 62px;
+  font-weight: 400;
+  color: var(--paper);
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+}
+
+.auth-wordmark-sub {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--paper2);
+  margin-top: 12px;
+}
+
+.auth-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.auth-stat {
+  background: rgba(247, 249, 253, 0.92);
+  padding: 16px 18px;
+}
+
+.auth-stat-val {
+  font-family: var(--fm);
+  font-size: 21px;
+  color: var(--paper);
+  letter-spacing: -0.02em;
+}
+
+.auth-stat-lbl {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--paper3);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.auth-r {
+  background: rgba(247, 249, 253, 0.92);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-form-title {
+  font-family: var(--fg);
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  letter-spacing: -0.03em;
+}
+
+.auth-form-sub {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--paper3);
+  margin-bottom: 32px;
+}
+
+.f-lbl {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--paper3);
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.f-inp {
+  width: 100%;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--line2);
+  border-radius: 14px;
+  padding: 13px 14px;
+  font-family: var(--fs);
+  font-size: 13px;
+  color: var(--paper);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  margin-bottom: 16px;
+  appearance: none;
+}
+
+.f-inp:focus { border-color: var(--amberb); box-shadow: 0 0 0 4px var(--amberg); }
+.f-inp::placeholder { color: var(--paper3); }
+select.f-inp { cursor: pointer; }
+textarea.f-inp { resize: vertical; min-height: 72px; line-height: 1.65; font-size: 12px; }
+
+.btn-enter {
+  width: 100%;
+  background: linear-gradient(135deg, var(--amber), var(--amber2));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-family: var(--fs);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  margin-top: 4px;
+  box-shadow: 0 16px 34px rgba(99, 91, 255, 0.22);
+}
+
+.btn-enter:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 38px rgba(99, 91, 255, 0.28);
+}
+
+.auth-hint {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--paper3);
+  text-align: center;
+  margin-top: 16px;
+  letter-spacing: 0.1em;
+}
+
+#app {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
+.hdr {
+  height: 56px;
+  min-height: 56px;
+  background: rgba(255,255,255,0.74);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  position: relative;
+  z-index: 50;
+}
+
+.hdr::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--amber) 0%, transparent 40%);
+  opacity: 0.16;
+}
+
+.hdr-mark {
+  font-family: var(--fg);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--paper);
+  margin-right: 18px;
+  flex-shrink: 0;
+  letter-spacing: -0.03em;
+}
+
+.hdr-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--line2);
+  margin-right: 16px;
+  flex-shrink: 0;
+}
+
+.hdr-nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.hn {
+  height: 36px;
+  padding: 0 14px;
+  font-family: var(--fs);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--paper3);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.12s;
+  position: relative;
+  text-transform: uppercase;
+}
+
+.hn:hover { color: var(--paper); background: rgba(99, 91, 255, 0.06); }
+.hn.on { color: var(--amber); background: var(--amberg); }
+.hn.on::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--amber);
+  border-radius: 999px;
+}
+
+.hdr-r {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.live-pill,
+.target-chip,
+.usr-btn {
+  border-radius: 999px;
+}
+
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--line2);
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--paper3);
+  letter-spacing: 0.08em;
+  background: rgba(255,255,255,0.72);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--emerald);
+  animation: pulse-dot 2s infinite;
+}
+
+.target-chip {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  padding: 6px 11px;
+  border: 1px solid var(--amberb);
+  background: var(--amberg);
+}
+
+.usr-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--line2);
+  background: rgba(255,255,255,0.72);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.usr-btn:hover { border-color: var(--line3); background: #fff; }
+
+.usr-av {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--amberg);
+  border: 1px solid var(--amberb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--amber);
+  font-weight: 500;
+}
+
+.usr-nm {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--paper2);
+  letter-spacing: 0.02em;
+}
+
+.layout {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.sb {
+  width: 228px;
+  min-width: 228px;
+  background: rgba(255,255,255,0.72);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  backdrop-filter: blur(18px);
+}
+
+.sb-section { padding: 18px 12px 6px; }
+
+.sb-heading {
+  font-family: var(--fm);
+  font-size: 8px;
+  letter-spacing: 0.22em;
+  color: var(--paper4);
+  padding: 0 8px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.sb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: all 0.12s;
+  margin-bottom: 4px;
+  border: 1px solid transparent;
+  border-left: 2px solid transparent;
+  border-radius: 12px;
+}
+
+.sb-row:hover { background: rgba(99, 91, 255, 0.05); border-color: var(--line); border-left-color: var(--line3); }
+.sb-row.on { background: var(--amberg); border-color: var(--amberb); border-left-color: var(--amber); }
+
+.sb-row-l { display: flex; align-items: center; gap: 9px; }
+
+.sb-ico {
+  font-size: 11px;
+  color: var(--paper3);
+  width: 14px;
+  text-align: center;
+  transition: color 0.12s;
+  flex-shrink: 0;
+}
+
+.sb-row:hover .sb-ico { color: var(--paper2); }
+.sb-row.on .sb-ico { color: var(--amber); }
+
+.sb-txt {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--paper2);
+  transition: color 0.12s;
+  letter-spacing: 0.01em;
+}
+
+.sb-row:hover .sb-txt,
+.sb-row.on .sb-txt { color: var(--paper); }
+
+.sb-num {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  padding: 2px 6px;
+  background: var(--z3);
+  color: var(--paper3);
+  border-radius: 999px;
+}
+
+.sb-num.alert { background: var(--amberg); color: var(--amber); border: 1px solid var(--amberb); }
+
+.sb-foot {
+  margin-top: auto;
+  padding: 14px 12px;
+  border-top: 1px solid var(--line);
+}
+
+.mrr-block {
+  background: rgba(247,249,253,0.95);
+  border: 1px solid var(--line2);
+  padding: 16px;
+  border-radius: 18px;
+  box-shadow: var(--shadow-sm);
+}
+
+.mrr-eyebrow {
+  font-family: var(--fm);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: var(--paper3);
+  margin-bottom: 7px;
+}
+
+.mrr-val {
+  font-family: var(--fg);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--paper);
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.mrr-sub {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--paper3);
+  margin-top: 6px;
+}
+
+.mrr-bar,
+.prog-bar,
+.gp-stream-track,
+.bc-bar-wrap {
+  border-radius: 999px;
+}
+
+.mrr-bar {
+  height: 6px;
+  background: var(--z4);
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.mrr-fill,
+.prog-fill,
+.gp-stream-fill,
+.bc-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), var(--amber2));
+  transition: width 0.8s ease;
+  border-radius: inherit;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.page-hdr {
+  padding: 18px 24px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(18px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-height: 74px;
+  flex-shrink: 0;
+}
+
+.page-hdr-l { display: flex; flex-direction: column; gap: 4px; }
+
+.page-title {
+  font-family: var(--fg);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.page-eyebrow {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--paper3);
+}
+
+.page-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.view { display: none; }
+.view.on { display: block; animation: in-fade 0.2s ease; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 16px;
+  font-family: var(--fs);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-transform: none;
+  border-radius: 999px;
+}
+
+.btn:active { transform: translateY(1px); }
+.btn-amber { background: linear-gradient(135deg, var(--amber), var(--amber2)); color: #fff; box-shadow: 0 14px 28px rgba(99, 91, 255, 0.18); }
+.btn-amber:hover { transform: translateY(-1px); box-shadow: 0 16px 32px rgba(99, 91, 255, 0.24); }
+.btn-ghost { background: rgba(255,255,255,0.8); color: var(--paper2); border: 1px solid var(--line2); }
+.btn-ghost:hover { background: var(--z1); color: var(--paper); border-color: var(--line3); }
+.btn-emerald { background: var(--emeraldg); color: var(--emerald); border: 1px solid rgba(15, 159, 110, 0.2); }
+.btn-ruby { background: var(--rubyg); color: var(--ruby); border: 1px solid rgba(204, 79, 93, 0.2); }
+.btn-sm { padding: 7px 13px; font-size: 10px; }
+.btn-xs { padding: 4px 9px; font-size: 9.5px; }
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.metric {
+  background: rgba(255,255,255,0.9);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+  border: 1px solid rgba(255,255,255,0.74);
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.metric:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.metric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--amber);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.metric:hover::before { opacity: 0.5; }
+
+.metric-lbl {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  color: var(--paper3);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.metric-val {
+  font-family: var(--fg);
+  font-size: 44px;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.metric-foot {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--paper3);
+}
+
+.v-amber { color: var(--amber); }
+.v-emerald { color: var(--emerald); }
+.v-sapphire { color: var(--sapphire); }
+.v-violet { color: var(--violet); }
+.v-ruby { color: var(--ruby); }
+.v-paper2 { color: var(--paper2); }
+
+.panel {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: var(--shadow-sm);
+}
+
+.p-hdr {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(247,249,253,0.96);
+}
+
+.p-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--paper);
+  text-transform: uppercase;
+}
+
+.p-meta {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--paper3);
+}
+
+.p-body { padding: 18px; }
+
+.col-2 { display: grid; grid-template-columns: 1.6fr 1fr; gap: 14px; margin-bottom: 14px; }
+.col-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 14px; }
+.col-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  color: var(--paper3);
+  padding: 10px 14px;
+  text-align: left;
+  background: rgba(247,249,253,0.96);
+  border-bottom: 1px solid var(--line);
+  text-transform: uppercase;
+  white-space: nowrap;
+  user-select: none;
+  cursor: pointer;
+}
+
+th:hover { color: var(--paper2); }
+
+td {
+  padding: 11px 14px;
+  font-size: 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--paper2);
+  transition: background 0.1s;
+  vertical-align: middle;
+}
+
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(99, 91, 255, 0.03); }
+td strong { color: var(--paper); font-weight: 700; }
+td.mono { font-family: var(--fm); font-size: 10.5px; }
+input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13px; height: 13px; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  border: 1px solid;
+  white-space: nowrap;
+  border-radius: 999px;
+}
+
+.badge::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.bs-live { color: var(--emerald); border-color: rgba(15, 159, 110, 0.22); background: var(--emeraldg); }
+.bs-live::before { background: var(--emerald); }
+.bs-build { color: var(--amber); border-color: var(--amberb); background: var(--amberg); }
+.bs-build::before { background: var(--amber); }
+.bs-paused { color: var(--ruby); border-color: rgba(204, 79, 93, 0.22); background: var(--rubyg); }
+.bs-paused::before { background: var(--ruby); }
+.bs-pending { color: var(--sapphire); border-color: rgba(37, 99, 235, 0.22); background: var(--sapphireg); }
+.bs-pending::before { background: var(--sapphire); }
+.bs-done { color: var(--emerald); border-color: rgba(15, 159, 110, 0.22); background: var(--emeraldg); }
+.bs-done::before { background: var(--emerald); }
+
+.pri {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border: 1px solid;
+  border-radius: 999px;
+}
+
+.p-h { color: var(--ruby); border-color: rgba(204, 79, 93, 0.25); background: var(--rubyg); }
+.p-m { color: var(--amber); border-color: var(--amberb); background: var(--amberg); }
+.p-l { color: var(--sapphire); border-color: rgba(37, 99, 235, 0.25); background: var(--sapphireg); }
+
+.bar-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 110px;
+  padding: 0 2px;
+}
+
+.bc-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  height: 100%;
+}
+
+.bc-bars {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.bc-bar {
+  flex: 1;
+  min-height: 2px;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: filter 0.12s;
+}
+
+.bc-bar:hover { filter: brightness(1.08); }
+
+.bc-lbl {
+  font-family: var(--fm);
+  font-size: 7.5px;
+  color: var(--paper3);
+  letter-spacing: 0.08em;
+}
+
+.funnel { display: flex; flex-direction: column; gap: 8px; }
+.fn-row { display: flex; align-items: center; gap: 10px; }
+
+.fn-lbl {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--paper3);
+  width: 84px;
+  text-align: right;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.fn-track {
+  flex: 1;
+  height: 22px;
+  background: var(--z3);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  border-radius: 999px;
+}
+
+.fn-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  min-width: 20px;
+  transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.fn-val {
+  font-family: var(--fm);
+  font-size: 9.5px;
+  font-weight: 500;
+}
+
+.task-wrap {
+  border: 1px solid var(--line);
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+.task-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(247,249,253,0.96);
+  flex-wrap: wrap;
+}
+
+.t-search {
+  background: var(--z3);
+  border: 1px solid var(--line2);
+  border-radius: 12px;
+  padding: 10px 13px;
+  font-family: var(--fs);
+  font-size: 11.5px;
+  color: var(--paper);
+  outline: none;
+  width: 220px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.t-search:focus { border-color: var(--amberb); box-shadow: 0 0 0 4px var(--amberg); }
+.t-search::placeholder { color: var(--paper3); }
+
+.chips { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.chip {
+  padding: 5px 11px;
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border: 1px solid var(--line2);
+  background: transparent;
+  color: var(--paper3);
+  transition: all 0.12s;
+  text-transform: uppercase;
+  border-radius: 999px;
+}
+
+.chip:hover { color: var(--paper2); border-color: var(--line3); }
+.chip.on { color: var(--amber); border-color: var(--amberb); background: var(--amberg); }
+
+.task-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.1s;
+  cursor: pointer;
+}
+
+.task-row:last-child { border-bottom: none; }
+.task-row:hover { background: rgba(99, 91, 255, 0.04); }
+.task-row.done-row { opacity: 0.5; }
+
+.task-check {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--line3);
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  margin-top: 1px;
+  cursor: pointer;
+  font-family: var(--fm);
+  font-size: 9px;
+  border-radius: 5px;
+}
+
+.task-check.chk { background: var(--emerald); border-color: var(--emerald); color: #fff; }
+
+.task-body { flex: 1; min-width: 0; }
+
+.task-title-txt {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--paper);
+  margin-bottom: 5px;
+  line-height: 1.45;
+}
+
+.done-row .task-title-txt { text-decoration: line-through; color: var(--paper3); }
+.task-metas { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+
+.task-biz-tag {
+  font-family: var(--fm);
+  font-size: 8.5px;
+  padding: 2px 7px;
+  border: 1px solid var(--line2);
+  color: var(--paper3);
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+}
+
+.task-note {
+  font-family: var(--fm);
+  font-size: 10px;
+  color: var(--paper3);
+  margin-top: 5px;
+  line-height: 1.55;
+}
+
+.task-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.week-chip {
+  font-family: var(--fm);
+  font-size: 8px;
+  padding: 2px 7px;
+  background: var(--z3);
+  border: 1px solid var(--line);
+  color: var(--paper3);
+  letter-spacing: 0.08em;
+  border-radius: 999px;
+}
+
+.cal-container { display: flex; flex-direction: column; gap: 16px; }
+
+.cal-month {
+  border: 1px solid var(--line);
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+.cal-month-hdr {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(247,249,253,0.96);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cal-month-name {
+  font-family: var(--fg);
+  font-size: 30px;
+  font-weight: 400;
+  color: var(--paper);
+  letter-spacing: -0.03em;
+}
+
+.cal-month-target {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--paper3);
+}
+
+.cal-month-rev {
+  font-family: var(--fg);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--amber);
+}
+
+.cal-weeks {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--line);
+}
+
+.cal-week {
+  background: var(--z1);
+  padding: 16px 18px;
+  transition: background 0.12s;
+}
+
+.cal-week.active-week {
+  background: linear-gradient(180deg, rgba(99, 91, 255, 0.08), rgba(99, 91, 255, 0.03));
+  box-shadow: inset 0 0 0 1px var(--amberb);
+}
+
+.cal-week-lbl {
+  font-family: var(--fm);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--paper3);
+  margin-bottom: 11px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cal-week-active-badge {
+  background: var(--amber);
+  color: #fff;
+  font-size: 7px;
+  padding: 2px 5px;
+  letter-spacing: 0.1em;
+  border-radius: 999px;
+}
+
+.cal-week-tasks { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+
+.cal-task {
+  font-size: 11px;
+  color: var(--paper2);
+  padding: 7px 10px;
+  background: var(--z2);
+  border-left: 2px solid var(--line3);
+  line-height: 1.4;
+  transition: all 0.12s;
+  border-radius: 10px;
+}
+
+.cal-task:hover { border-left-color: var(--amber); color: var(--paper); background: var(--z3); }
+.cal-task.ct-done { border-left-color: var(--emerald); opacity: 0.55; text-decoration: line-through; }
+.cal-task.ct-high { border-left-color: var(--ruby); }
+
+.cal-task-biz {
+  font-family: var(--fm);
+  font-size: 8px;
+  color: var(--paper3);
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+}
+
+.cal-week-revenue {
+  font-family: var(--fm);
+  font-size: 9px;
+  color: var(--amber);
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+}
+
+.gp-container { display: flex; flex-direction: column; gap: 14px; }
+
+.gp-phase {
+  border: 1px solid var(--line);
+  overflow: hidden;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: var(--shadow-sm);
+}
+
+.gp-phase-hdr {
+  padding: 18px 22px;
+  background: rgba(247,249,253,0.96);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.gp-phase-num {
+  font-family: var(--fm);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--paper3);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.gp-phase-title {
+  font-family: var(--fg);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--paper);
+  letter-spacing: -0.03em;
+}
+
+.gp-phase-target {
+  font-family: var(--fg);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--amber);
+  letter-spacing: -0.04em;
+}
+
+.gp-body { padding: 20px; display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+.gp-streams { display: flex; flex-direction: column; gap: 8px; }
+
+.gp-stream {
+  border: 1px solid var(--line);
+  padding: 14px 16px;
+  background: var(--z2);
+  transition: background 0.12s;
+  border-radius: 16px;
+}
+
+.gp-stream:hover { background: var(--z3); }
+
+.gp-stream-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.gp-stream-name { font-size: 12px; font-weight: 700; color: var(--paper); }
+
+.gp-stream-rev {
+  font-family: var(--fg);
+  font-size: 19px;
+  font-weight: 400;
+  color: var(--amber);
+}
+
+.gp-stream-action {
+  font-family: var(--fm);
+  font-size: 9.5px;
+  color: var(--paper3);
+  line-height: 1.55;
+}
+
+.gp-stream-track {
+  height: 6px;
+  background: var(--z4);
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.gp-milestones { display: flex; flex-direction: column; gap: 8px; }
+
+.gp-milestone {
+  padding: 12px 16px;
+  background: var(--z2);
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--amber);
+  position: relative;
+  border-radius: 16px;
+}
+
+.gp-ms-week { font-family: var(--fm); font-size: 8px; letter-spacing: 0.14em; color: var(--paper3); margin-bottom: 4px; }
+.gp-ms-title { font-size: 12px; font-weight: 700; color: var(--paper); margin-bottom: 4px; }
+.gp-ms-desc { font-family: var(--fm); font-size: 9.5px; color: var(--paper3); line-height: 1.55; }
+
+.biz-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.biz-card {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--line);
+  padding: 18px;
+  transition: all 0.15s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.biz-card:hover { border-color: var(--line2); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.biz-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  transition: height 0.3s;
+}
+
+.biz-card:hover::after { height: 100%; }
+
+.bc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 7px; }
+.bc-name { font-size: 13px; font-weight: 700; color: var(--paper); }
+
+.bc-rev {
+  font-family: var(--fg);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin-bottom: 2px;
+}
+
+.bc-rev-lbl { font-family: var(--fm); font-size: 8.5px; color: var(--paper3); margin-bottom: 12px; letter-spacing: 0.06em; }
+.bc-bar-wrap { height: 6px; background: var(--z4); margin-bottom: 12px; overflow: hidden; }
+.bc-desc { font-family: var(--fm); font-size: 9.5px; color: var(--paper3); line-height: 1.6; margin-bottom: 8px; }
+.bc-action { font-family: var(--fm); font-size: 9.5px; color: var(--amber); }
+
+.mgr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
+.mgr-card {
+  background: rgba(255,255,255,0.92);
+  border: 1px solid var(--line);
+  padding: 18px;
+  border-radius: 22px;
+  box-shadow: var(--shadow-sm);
+}
+
+.mgr-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+
+.mgr-av {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fg);
+  font-size: 18px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.mgr-nm { font-size: 12.5px; font-weight: 700; color: var(--paper); }
+.mgr-role { font-family: var(--fm); font-size: 9px; color: var(--paper3); margin-top: 1px; }
+.mgr-task-list { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+
+.mgr-t {
+  font-size: 10.5px;
+  color: var(--paper2);
+  padding: 6px 8px;
+  background: var(--z2);
+  border-left: 2px solid var(--line2);
+  line-height: 1.35;
+  border-radius: 10px;
+}
+
+.mgr-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.mgr-kpi { background: var(--z2); padding: 10px; text-align: center; }
+.mgr-kpi-val { font-family: var(--fg); font-size: 22px; font-weight: 400; }
+.mgr-kpi-lbl { font-family: var(--fm); font-size: 7.5px; color: var(--paper3); margin-top: 2px; letter-spacing: 0.1em; }
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 24, 40, 0.35);
+  backdrop-filter: blur(14px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 400;
+}
+
+.overlay.on { display: flex; }
+
+.modal {
+  background: rgba(255,255,255,0.98);
+  border: 1px solid var(--line3);
+  width: 520px;
+  max-width: 96vw;
+  max-height: 88vh;
+  overflow-y: auto;
+  padding: 30px;
+  animation: in-up 0.22s ease;
+  position: relative;
+  border-radius: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+
+.modal-title {
+  font-family: var(--fg);
+  font-size: 36px;
+  font-weight: 400;
+  margin-bottom: 4px;
+  letter-spacing: -0.04em;
+}
+
+.modal-sub { font-family: var(--fm); font-size: 9px; letter-spacing: 0.14em; color: var(--paper3); margin-bottom: 26px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px; }
+.g2-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  z-index: 999;
+  transform: translateX(130%);
+  transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 320px;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.02em;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.toast.show { transform: translateX(0); }
+.t-ok { background: var(--emeraldg); border-color: rgba(15, 159, 110, 0.28); color: var(--emerald); }
+.t-err { background: var(--rubyg); border-color: rgba(204, 79, 93, 0.28); color: var(--ruby); }
+.t-info { background: var(--amberg); border-color: var(--amberb); color: var(--amber); }
+
+.empty { text-align: center; padding: 48px 20px; }
+.empty-mark { font-family: var(--fm); font-size: 20px; color: var(--paper3); opacity: 0.35; margin-bottom: 12px; }
+.empty-title { font-size: 13px; font-weight: 700; color: var(--paper2); margin-bottom: 4px; }
+.empty-sub { font-family: var(--fm); font-size: 10px; color: var(--paper3); }
+
+.prog-bar {
+  height: 6px;
+  background: var(--z4);
+  overflow: hidden;
+}
+
+@media (max-width: 1280px) {
+  .metrics,
+  .biz-grid,
+  .mgr-grid,
+  .col-4 { grid-template-columns: repeat(2, 1fr); }
+  .col-2,
+  .gp-body { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 980px) {
+  body { overflow: auto; }
+  #app { min-height: 100vh; }
+  .layout { flex-direction: column; overflow: visible; }
+  .sb {
+    width: 100%;
+    min-width: 100%;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+  .hdr,
+  .page-hdr {
+    height: auto;
+    min-height: 0;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .hdr-nav,
+  .hdr-r,
+  .page-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .hn {
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+  .metrics,
+  .biz-grid,
+  .mgr-grid,
+  .col-3,
+  .col-4,
+  .cal-weeks { grid-template-columns: 1fr; }
+  .scroll { padding: 18px; }
+}
+
+@media (max-width: 720px) {
+  html { font-size: 12px; }
+  #auth { padding: 16px; }
+  .auth-container {
+    width: 100%;
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+  .auth-l,
+  .auth-r,
+  .modal { padding: 24px; }
+  .page-title,
+  .gp-phase-title,
+  .modal-title { font-size: 28px; }
+  .metric-val { font-size: 34px; }
+  .task-toolbar { align-items: stretch; }
+  .t-search { width: 100%; }
+  .g2-form { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth">
+  <div class="auth-container">
+    <div class="auth-l">
+      <div class="auth-l-glow"></div>
+      <div>
+        <div class="auth-eyebrow">PRIVATE OPERATIONS SYSTEM</div>
+        <div class="auth-wordmark">Command</div>
+        <div class="auth-wordmark-sub">HISHAAM NASIR · PINESMAX INTERNATIONAL</div>
+      </div>
+      <div class="auth-stats">
+        <div class="auth-stat">
+          <div class="auth-stat-val">16</div>
+          <div class="auth-stat-lbl">Active Streams</div>
+        </div>
+        <div class="auth-stat">
+          <div class="auth-stat-val">$150K</div>
+          <div class="auth-stat-lbl">MRR Target</div>
+        </div>
+        <div class="auth-stat">
+          <div class="auth-stat-val">120</div>
+          <div class="auth-stat-lbl">Day Plan</div>
+        </div>
+        <div class="auth-stat">
+          <div class="auth-stat-val">Aug '26</div>
+          <div class="auth-stat-lbl">Target Window</div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-r">
+      <div class="auth-form-title">Access system</div>
+      <div class="auth-form-sub">PRIVATE OPERATING DASHBOARD</div>
+      <label class="f-lbl">Access Code</label>
+      <input id="ac" class="f-inp" type="password" placeholder="Enter code" value="ops2026">
+      <button class="btn-enter" onclick="login()">Enter dashboard</button>
+      <div class="auth-hint">Demo access code: ops2026</div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <header class="hdr">
+    <div class="hdr-mark">Command</div>
+    <div class="hdr-sep"></div>
+    <nav class="hdr-nav">
+      <button class="hn on"  onclick="go('dash',this)">Overview</button>
+      <button class="hn"     onclick="go('gameplan',this)">Game Plan</button>
+      <button class="hn"     onclick="go('calendar',this)">120-Day Calendar</button>
+      <button class="hn"     onclick="go('tasks',this)">Tasks</button>
+      <button class="hn"     onclick="go('biz',this)">Businesses</button>
+      <button class="hn"     onclick="go('managers',this)">Managers</button>
+      <button class="hn"     onclick="go('analytics',this)">Analytics</button>
+    </nav>
+    <div class="hdr-r">
+      <div class="live-pill"><div class="live-dot"></div><span style="font-family:var(--fm);font-size:9px;color:var(--paper3);letter-spacing:0.08em" id="hdr-date"></span></div>
+      <div class="target-chip">$150K TARGET · AUG 2026</div>
+      <div class="usr-btn" onclick="logout()">
+        <div class="usr-av">HN</div>
+        <span class="usr-nm">Hishaam</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+
+    <aside class="sb">
+      <div class="sb-section">
+        <div class="sb-heading">Overview</div>
+        <div class="sb-row on" onclick="sbgo(this,'dash')"><div class="sb-row-l"><span class="sb-ico">◈</span><span class="sb-txt">Dashboard</span></div></div>
+        <div class="sb-row" onclick="sbgo(this,'analytics')"><div class="sb-row-l"><span class="sb-ico">◎</span><span class="sb-txt">Analytics</span></div></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-heading">Strategy</div>
+        <div class="sb-row" onclick="sbgo(this,'gameplan')"><div class="sb-row-l"><span class="sb-ico">▣</span><span class="sb-txt">Game Plan</span></div></div>
+        <div class="sb-row" onclick="sbgo(this,'calendar')"><div class="sb-row-l"><span class="sb-ico">⬡</span><span class="sb-txt">120-Day Calendar</span></div></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-heading">Execution</div>
+        <div class="sb-row" onclick="sbgo(this,'tasks')"><div class="sb-row-l"><span class="sb-ico">✓</span><span class="sb-txt">All Tasks</span></div><span class="sb-num alert" id="sb-pending">0</span></div>
+        <div class="sb-row" onclick="filterAndGo('today')"><div class="sb-row-l"><span class="sb-ico">→</span><span class="sb-txt">Today</span></div><span class="sb-num alert" id="sb-today">0</span></div>
+        <div class="sb-row" onclick="filterAndGo('high')"><div class="sb-row-l"><span class="sb-ico">!</span><span class="sb-txt">High Priority</span></div><span class="sb-num" id="sb-high">0</span></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-heading">Portfolio</div>
+        <div class="sb-row" onclick="sbgo(this,'biz')"><div class="sb-row-l"><span class="sb-ico">≡</span><span class="sb-txt">All Businesses</span></div><span class="sb-num">16</span></div>
+        <div class="sb-row" onclick="sbgo(this,'managers')"><div class="sb-row-l"><span class="sb-ico">◐</span><span class="sb-txt">Managers</span></div><span class="sb-num">4</span></div>
+      </div>
+      <div class="sb-foot">
+        <div class="mrr-block">
+          <div class="mrr-eyebrow">CURRENT MRR</div>
+          <div class="mrr-val" id="sb-mrr">$2,589</div>
+          <div class="mrr-sub" id="sb-mrr-pct">1.7% of $150K goal</div>
+          <div class="mrr-bar"><div class="mrr-fill" id="sb-mrr-fill" style="width:1.7%"></div></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="page-hdr">
+        <div class="page-hdr-l">
+          <div class="page-title" id="pg-title">Operating Overview</div>
+          <div class="page-eyebrow" id="pg-sub">ALL STREAMS · APR 14 TO AUG 12, 2026</div>
+        </div>
+        <div class="page-actions" id="pg-actions"></div>
+      </div>
+
+      <div class="scroll">
+
+        <!-- ─── DASHBOARD ─── -->
+        <div class="view on" id="v-dash">
+
+          <div class="metrics">
+            <div class="metric"><div class="metric-lbl">Daily Revenue</div><div class="metric-val v-amber" id="d-daily">$86</div><div class="metric-foot">$50 merch + $36 eBay</div></div>
+            <div class="metric"><div class="metric-lbl">Monthly Run Rate</div><div class="metric-val v-emerald" id="d-mrr">$2,589</div><div class="metric-foot" id="d-mrr-f">1.7% of $150K</div></div>
+            <div class="metric"><div class="metric-lbl">Pending Tasks</div><div class="metric-val v-sapphire" id="d-pending">0</div><div class="metric-foot" id="d-pf">this week</div></div>
+            <div class="metric"><div class="metric-lbl">Live Streams</div><div class="metric-val v-violet">3</div><div class="metric-foot">of 15 total</div></div>
+            <div class="metric"><div class="metric-lbl">Days Remaining</div><div class="metric-val v-paper2" id="d-days">120</div><div class="metric-foot">to Aug 12, 2026</div></div>
+          </div>
+
+          <div class="panel" style="margin-bottom:16px">
+            <div class="p-hdr"><span class="p-title">Daily Non-Negotiables</span><span class="p-meta" style="color:var(--ruby);font-weight:600">every day · no exceptions</span></div>
+            <div class="p-body">
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">EBAY MANAGER</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Orders + Revenue Report</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Acc 2: 40+ listings. Acc 1: disputes cleared. Acc 3: when live.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">MERCHANT</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Verify $50+ Daily Volume</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Check processor dashboard. Flag any holds immediately.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">CONTENT</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">1 Post Across All Platforms</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">SMMA + Brand. TikTok, IG, YouTube Shorts. Every day.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">OUTREACH</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">10+ Lawyergist Emails</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Use LeadFlow CRM. Track open rates. Follow up on opens.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">3PL BROWARD</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Inbound Requests + Billing</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Client updates, incoming freight, send daily status.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">HIGH RISK INTEL</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Signups + Support Check</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">New users? Cancellations? Any support tickets open?</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">DEALS</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">2-Hour Response Rule</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">Merchants, clients, prospects. No message goes 2h+ unanswered.</div>
+                </div>
+                <div style="background:var(--z2);border:1px solid var(--line);padding:10px 12px;border-radius:10px">
+                  <div style="font-family:var(--fm);font-size:8px;letter-spacing:0.1em;color:var(--paper3);margin-bottom:4px">CLOTHING BRAND</div>
+                  <div style="font-size:11px;color:var(--paper);font-weight:600">Collect + Forward Payments</div>
+                  <div style="font-size:9.5px;color:var(--paper3);margin-top:3px">$5–8K monthly volume. 30 min/day. Passive once set up.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-2">
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">Revenue Trajectory vs Target</span><span class="p-meta" id="rev-meta">Current: $2,589</span></div>
+              <div class="p-body">
+                <div style="display:flex;align-items:flex-end;gap:3px;height:130px;padding:0 2px" id="traj-chart"></div>
+                <div style="display:flex;gap:16px;margin-top:12px">
+                  <div style="display:flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8.5px;color:var(--paper3)"><div style="width:10px;height:2px;background:var(--z4)"></div>TARGET</div>
+                  <div style="display:flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8.5px;color:var(--paper3)"><div style="width:10px;height:2px;background:var(--amber)"></div>ACTUAL</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">Revenue Mix (Target)</span></div>
+              <div class="p-body">
+                <div class="funnel" id="d-funnel"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-2" style="margin-bottom:0">
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">This Week — All Pending</span><button class="btn btn-amber btn-sm" onclick="go('tasks',null)">All Tasks →</button></div>
+              <div id="dash-today-tasks"></div>
+            </div>
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">Revenue by Stream</span></div>
+              <div class="p-body">
+                <div id="biz-revenue-bars"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ─── GAME PLAN ─── -->
+        <div class="view" id="v-gameplan">
+          <div style="background:var(--z1);border:1px solid var(--line);padding:22px 26px;margin-bottom:16px;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:0.6"></div>
+            <div style="font-family:var(--fm);font-size:9px;letter-spacing:0.18em;color:var(--paper3);margin-bottom:8px">STRATEGIC THESIS</div>
+            <div style="font-family:var(--fg);font-size:28px;font-weight:300;font-style:italic;color:var(--paper);margin-bottom:12px;letter-spacing:-0.01em">$0 to $150,000 MRR in 120 Days</div>
+            <div style="font-family:var(--fm);font-size:11px;color:var(--paper3);line-height:2;max-width:780px">
+              You currently run 15 revenue streams across payment processing, ecommerce, SaaS, SMMA, logistics and content.<br>
+              The plan is simple: <span style="color:var(--amber)">activate what's paused, scale what's working, add what's ready.</span><br>
+              Every week has a non-negotiable primary action. Miss it and the month target slips. Hit it and it compounds.
+            </div>
+          </div>
+          <div class="gp-container" id="gp-container"></div>
+        </div>
+
+        <!-- ─── 120-DAY CALENDAR ─── -->
+        <div class="view" id="v-calendar">
+          <div style="background:var(--z1);border:1px solid var(--line);padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-family:var(--fm);font-size:9px;letter-spacing:0.16em;color:var(--paper3);margin-bottom:4px">120-DAY EXECUTION CALENDAR</div>
+              <div style="font-family:var(--fg);font-size:18px;font-weight:300;font-style:italic">April 14 — August 12, 2026</div>
+            </div>
+            <div style="display:flex;gap:16px">
+              <div style="text-align:center"><div style="font-family:var(--fg);font-size:22px;font-weight:300;color:var(--amber)" id="cal-done">0</div><div style="font-family:var(--fm);font-size:8.5px;color:var(--paper3);letter-spacing:0.1em">DONE</div></div>
+              <div style="text-align:center"><div style="font-family:var(--fg);font-size:22px;font-weight:300;color:var(--paper2)" id="cal-total">0</div><div style="font-family:var(--fm);font-size:8.5px;color:var(--paper3);letter-spacing:0.1em">TOTAL</div></div>
+              <div style="text-align:center"><div style="font-family:var(--fg);font-size:22px;font-weight:300;color:var(--emerald)" id="cal-pct">0%</div><div style="font-family:var(--fm);font-size:8.5px;color:var(--paper3);letter-spacing:0.1em">COMPLETE</div></div>
+            </div>
+          </div>
+          <div class="cal-container" id="cal-container"></div>
+        </div>
+
+        <!-- ─── TASKS ─── -->
+        <div class="view" id="v-tasks">
+          <div class="task-wrap">
+            <div class="task-toolbar">
+              <input class="t-search" id="ts" placeholder="Search tasks, business, notes…" oninput="renderTasks()">
+              <div class="chips">
+                <button class="chip on" onclick="setTF('all',this)">All</button>
+                <button class="chip" onclick="setTF('today',this)">This Week</button>
+                <button class="chip" onclick="setTF('mine',this)">Mine</button>
+                <button class="chip" onclick="setTF('high',this)">High Priority</button>
+                <button class="chip" onclick="setTF('pending',this)">Pending</button>
+                <button class="chip" onclick="setTF('done',this)">Done</button>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:7px">
+                <button class="btn btn-ghost btn-sm" onclick="omt()">+ Add Task</button>
+                <button class="btn btn-amber btn-sm" onclick="resetWeek()">Reset Week</button>
+              </div>
+            </div>
+            <div id="tasks-body"></div>
+          </div>
+        </div>
+
+        <!-- ─── BUSINESSES ─── -->
+        <div class="view" id="v-biz">
+          <div class="biz-grid" id="biz-grid"></div>
+        </div>
+
+        <!-- ─── MANAGERS ─── -->
+        <div class="view" id="v-managers">
+          <div class="mgr-grid" id="mgr-grid"></div>
+        </div>
+
+        <!-- ─── ANALYTICS ─── -->
+        <div class="view" id="v-analytics">
+          <div class="metrics" style="margin-bottom:18px">
+            <div class="metric"><div class="metric-lbl">Open Rate (Lawyergist)</div><div class="metric-val v-amber" id="an1">—</div><div class="metric-foot">emails not sent yet</div></div>
+            <div class="metric"><div class="metric-lbl">eBay Acc 2 Margin</div><div class="metric-val v-emerald">66%</div><div class="metric-foot">$1,089 / 28 days</div></div>
+            <div class="metric"><div class="metric-lbl">Task Completion</div><div class="metric-val v-sapphire" id="an3">0%</div><div class="metric-foot" id="an3f">0 of 0 done</div></div>
+            <div class="metric"><div class="metric-lbl">MRR Growth Needed</div><div class="metric-val v-violet">58×</div><div class="metric-foot">to hit $150K</div></div>
+            <div class="metric"><div class="metric-lbl">Streams Activated</div><div class="metric-val v-ruby">3</div><div class="metric-foot">of 16 possible</div></div>
+          </div>
+          <div class="col-2" style="margin-bottom:14px">
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">16-Week Revenue Projection</span></div>
+              <div class="p-body">
+                <div style="display:flex;align-items:flex-end;gap:4px;height:140px" id="a-traj"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="p-hdr"><span class="p-title">Revenue by Category</span></div>
+              <div class="p-body">
+                <div class="funnel" id="a-funnel"></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="p-hdr"><span class="p-title">Full Business Performance Table</span><span class="p-meta">All 16 streams · updated manually</span></div>
+            <div style="overflow-x:auto"><table>
+              <thead><tr>
+                <th>BUSINESS</th><th>STATUS</th><th>CURRENT MRR</th><th>3-MONTH TARGET</th>
+                <th>PROGRESS</th><th>CEILING</th><th>BLOCKING FACTOR</th><th>NEXT ACTION</th>
+              </tr></thead>
+              <tbody id="a-tbody"></tbody>
+            </table></div>
+          </div>
+        </div>
+
+      </div><!-- /scroll -->
+    </main>
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- TASK MODAL -->
+<div class="overlay" id="mo-task">
+  <div class="modal">
+    <div class="modal-title">Add Task</div>
+    <div class="modal-sub">OPERATIONS COMMAND CENTER</div>
+    <div class="f-lbl">Task</div>
+    <input class="f-inp" id="mt-t" placeholder="What needs to happen?">
+    <div class="g2-form">
+      <div><div class="f-lbl">Business</div>
+        <select class="f-inp" id="mt-b">
+          <option value="General">General</option>
+          <option value="Merchant Arbitrage">Merchant Arbitrage</option>
+          <option value="eBay">eBay</option>
+          <option value="Shopify">Shopify</option>
+          <option value="Amazon/Walmart">Amazon/Walmart</option>
+          <option value="HighRiskIntel">HighRiskIntel</option>
+          <option value="SocialRework">SocialRework</option>
+          <option value="Lawyergist">Lawyergist</option>
+          <option value="DSI Portal">DSI Portal</option>
+          <option value="3PL Broward">3PL Broward</option>
+          <option value="Personal Brand">Personal Brand</option>
+          <option value="Liquidation">Liquidation</option>
+          <option value="High Dispute Merch">High Dispute Merch</option>
+        </select>
+      </div>
+      <div><div class="f-lbl">Priority</div>
+        <select class="f-inp" id="mt-p">
+          <option value="high">High — Critical</option>
+          <option value="med" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+      <div><div class="f-lbl">Owner</div>
+        <select class="f-inp" id="mt-w">
+          <option value="me">Hishaam (Me)</option>
+          <option value="eBay Manager">eBay Manager</option>
+          <option value="Shopify Team">Shopify Team</option>
+          <option value="3PL Team">3PL Team</option>
+        </select>
+      </div>
+      <div><div class="f-lbl">Week</div>
+        <select class="f-inp" id="mt-wk">
+          <option value="W1">W1 · Apr 14–20</option>
+          <option value="W2">W2 · Apr 21–27</option>
+          <option value="W3">W3 · Apr 28–May 4</option>
+          <option value="W4">W4 · May 5–11</option>
+          <option value="W5">W5 · May 12–18</option>
+          <option value="W6">W6 · May 19–25</option>
+          <option value="W7">W7 · May 26–Jun 1</option>
+          <option value="W8">W8 · Jun 2–8</option>
+          <option value="W9">W9 · Jun 9–15</option>
+          <option value="W10">W10 · Jun 16–22</option>
+          <option value="W11">W11 · Jun 23–29</option>
+          <option value="W12">W12 · Jun 30–Jul 6</option>
+          <option value="W13">W13 · Jul 7–13</option>
+          <option value="W14">W14 · Jul 14–20</option>
+          <option value="W15">W15 · Jul 21–27</option>
+          <option value="W16">W16 · Jul 28–Aug 3</option>
+          <option value="W17">W17 · Aug 4–12</option>
+        </select>
+      </div>
+    </div>
+    <div class="f-lbl">Notes / Context</div>
+    <textarea class="f-inp" id="mt-n" rows="2" placeholder="Why this matters, how to do it…"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-ghost btn-sm" onclick="close('mo-task')">Cancel</button>
+      <button class="btn btn-amber btn-sm" onclick="addTask()">Add Task</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══ DB ═══ */
+let idb;
+const openDB = () => new Promise((res,rej) => {
+  const r = indexedDB.open('CommandV5', 2);
+  r.onupgradeneeded = e => {
+    const d = e.target.result;
+    ['tasks','settings'].forEach(s => {
+      if (!d.objectStoreNames.contains(s))
+        d.createObjectStore(s, {keyPath:'id', autoIncrement: s!=='settings'});
+    });
+  };
+  r.onsuccess = e => { idb = e.target.result; res(); };
+  r.onerror = () => rej(r.error);
+});
+const TX = (s,m='readonly') => idb.transaction(s,m).objectStore(s);
+const dbAll = s => new Promise((r,f) => { const q=TX(s).getAll(); q.onsuccess=()=>r(q.result); q.onerror=()=>f(q.error); });
+const dbGet = (s,k) => new Promise((r,f) => { const q=TX(s).get(k); q.onsuccess=()=>r(q.result); q.onerror=()=>f(q.error); });
+const dbPut = (s,o) => new Promise((r,f) => { const q=TX(s,'readwrite').put(o); q.onsuccess=()=>r(q.result); q.onerror=()=>f(q.error); });
+const dbAdd = (s,o) => new Promise((r,f) => { const q=TX(s,'readwrite').add(o); q.onsuccess=()=>r(q.result); q.onerror=()=>f(q.error); });
+const dbDel = (s,k) => new Promise((r,f) => { const q=TX(s,'readwrite').delete(k); q.onsuccess=()=>r(); q.onerror=()=>f(q.error); });
+const dbClear = (s) => new Promise((r,f) => { const q=TX(s,'readwrite').clear(); q.onsuccess=()=>r(); q.onerror=()=>f(q.error); });
+
+/* ═══ BUSINESS DATA ═══ */
+const BIZ = [
+  {id:'merch',  name:'Merchant Arbitrage',  status:'live',    mrr:1500,  target:13000, color:'#D4954E', desc:'High-risk processing, 12-13% net margin. 1 processor live $50/day.',  action:'Send Vortier LLC to Chargebacks911 TODAY', ceiling:'$13K/mo at $80K vol'},
+  {id:'ebay',   name:'eBay (3 Accounts)',     status:'live',    mrr:1089,  target:8000,  color:'#5888C4', desc:'Acc 2 crushing: $1,089/28d at 66% margin. Acc 1 in loss. Acc 3 pending bank.', action:'Get Acc 3 bank account approved THIS WEEK', ceiling:'$8K/mo at scale'},
+  {id:'shopify',name:'Shopify Stores',        status:'build',   mrr:0,     target:15000, color:'#8B68C4', desc:'3 stores live. 500-1.5K views/day. Zero sales. Funnel broken.',       action:'Diagnose why Store 1 gets views but no sales', ceiling:'$15K/mo all 3'},
+  {id:'amzn',   name:'Amazon / Walmart',      status:'pending', mrr:0,     target:20000, color:'#C45858', desc:'3 LLCs ready. One disabled. One ready to file. Walmart pending.',       action:'File Amazon application under clean LLC TODAY', ceiling:'$20K/mo combined'},
+  {id:'hri',    name:'HighRiskIntel SaaS',    status:'build',   mrr:0,     target:10000, color:'#D4954E', desc:'App live. Zero users. 4 slideshows posted — 15 views. Needs video.',   action:'Record a 3-minute explainer video THIS WEEK', ceiling:'$10K/mo at 50 users'},
+  {id:'smma',   name:'SocialRework (SMMA)',   status:'paused',  mrr:0,     target:10000, color:'#3DAF78', desc:'5yr experience. Team + community ready. 30 videos recorded, none posted.', action:'Post 2 videos this week. No excuses.', ceiling:'$10K/mo 5 clients'},
+  {id:'law',    name:'Lawyergist',             status:'build',   mrr:0,     target:3000,  color:'#5888C4', desc:'200K attorney database. Owner friendly. Email approach confirmed.',    action:'Write + send first 100 emails THIS WEEK', ceiling:'$3K/mo 50-50 split'},
+  {id:'dsi',    name:'DSI Portal',             status:'build',   mrr:0,     target:8750,  color:'#8B68C4', desc:'AT&T reseller. Up to $1,500/activation. Portal needs in-person visit.', action:'VISIT DSI OFFICE IN PERSON — Broward County', ceiling:'$8.75K/mo 50 activations'},
+  {id:'3pl',    name:'3PL Broward',            status:'live',    mrr:0,     target:8000,  color:'#D4954E', desc:'4 clients ready. Website live. You are the labor currently.',           action:'ONBOARD ALL 4 CLIENTS THIS WEEK — instant cash', ceiling:'$8K/mo at capacity'},
+  {id:'brand',  name:'Personal Brand',         status:'build',   mrr:0,     target:5000,  color:'#3DAF78', desc:'30 videos recorded. 2 correct format. 0 posted. 0 edited.',           action:'Edit + post the 2 correct videos NOW', ceiling:'$5K/mo brand deals + funnels'},
+  {id:'liq',    name:'Liquidation Inventory',  status:'pending', mrr:0,     target:5000,  color:'#8B68C4', desc:'50% off retail. Pay after selling. Zero capital required.',             action:'Source first pallet — electronics or tools', ceiling:'$5K/mo with scale'},
+  {id:'hdm',    name:'High Dispute Merchants', status:'build',   mrr:0,     target:15000, color:'#C45858', desc:'4-5 parties. $50-100K volume. 18-39% cut. Feeds HighRiskIntel.',       action:'Onboard first merchant via HighRiskIntel', ceiling:'$15K/mo max'},
+  {id:'credit', name:'Credit Line (Uncle)',    status:'live',    mrr:0,     target:10000, color:'#D4954E', desc:'Pay back 60% of credit in 15-30 days. Net 40% before team.',           action:'Identify proven fast-movers from eBay Acc 2', ceiling:'$10K/mo at scale'},
+];
+
+const MANAGERS = [
+  {id:'m1', name:'eBay Manager',     role:'eBay Dropshipping',  color:'#5888C4', colorDim:'rgba(88,136,196,0.12)',
+   tasks:['Scale Acc 2 to 40+ listings daily','Clear all Acc 1 disputes ($200 remaining)','Activate Acc 3 the day bank account approves','Report daily: orders, revenue, disputes'],
+   done:1, rev:1089, target:3000},
+  {id:'m2', name:'Shopify Team',     role:'Content & Stores',   color:'#8B68C4', colorDim:'rgba(139,104,196,0.12)',
+   tasks:['Post 1 video daily across 4 platforms','Fix Store 1 conversion funnel (find drop-off point)','Activate Stores 2 and 3 this month','Weekly report: views, click rate, sales'],
+   done:1, rev:0, target:5000},
+  {id:'m4', name:'3PL Team',         role:'Fulfillment Ops',    color:'#D4954E', colorDim:'rgba(212,149,78,0.12)',
+   tasks:['Onboard all 4 clients this week','Set up intake and tracking process','Handle all shipping and receiving','Weekly billing report to Hishaam'],
+   done:0, rev:0, target:2000},
+];
+
+/* ═══ TASK MASTER LIST ═══ */
+const TASK_DEFAULTS = [
+  // W1 — IGNITION WEEK
+  {t:'Send Vortier LLC entity details to Chargebacks911 ($180 invoice)',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W1',note:'They dropped from $250 to $180. Entity info ready. Do this NOW.',done:false},
+  {t:'Onboard first 3PL Broward client',b:'3PL Broward',p:'high',w:'me',wk:'W1',note:'4 clients are ready right now. Start with 1 this week. Instant revenue.',done:false},
+  {t:'File Amazon Seller Central reapplication under clean LLC',b:'Amazon/Walmart',p:'high',w:'me',wk:'W1',note:'Check which of 3 LLCs is clean. File the application. Takes 1 hour.',done:false},
+  {t:'Get eBay Acc 3 bank account approved',b:'eBay',p:'high',w:'me',wk:'W1',note:'Account is ready to list. Blocked only by missing bank account. Unblock this.',done:false},
+  {t:'Record SocialRework offer video — one take, phone, bedroom',b:'SocialRework',p:'high',w:'me',wk:'W1',note:'You make money I get money. Simple pitch. One take. No overthinking.',done:false},
+  {t:'Open TikTok support ticket for identity verification',b:'Amazon/Walmart',p:'med',w:'me',wk:'W1',note:'Manager uploaded copyrighted content. Submit ID to restore.',done:false},
+  {t:'Manager check-in: eBay Acc 2 daily listing count + revenue',b:'eBay',p:'med',w:'eBay Manager',wk:'W1',note:'Every single day. Non-negotiable.',done:false},
+  {t:'Write first Lawyergist email template',b:'Lawyergist',p:'med',w:'me',wk:'W1',note:'Keep it short. Show profile views data. Ask if they want a free report.',done:false},
+
+  // W2 — UNLOCK WEEK
+  {t:'Chargebacks911 onboarding complete — resume merchant sales',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W2',note:'EDR must be live before first sale. This week.',done:false},
+  {t:'Visit DSI Systems office in person — Broward County',b:'DSI Portal',p:'high',w:'me',wk:'W2',note:'Portal REQUIRES a physical visit. You are in Broward. Stop procrastinating on this.',done:false},
+  {t:'Post first 2 personal brand videos (already recorded)',b:'Personal Brand',p:'high',w:'me',wk:'W2',note:'2 correct format videos exist on your phone. Edit and post. That is all.',done:false},
+  {t:'eBay Acc 3 goes live — first listings day 1',b:'eBay',p:'high',w:'eBay Manager',wk:'W2',note:'The moment bank account is approved.',done:false},
+  {t:'Onboard 3PL Broward clients 2 and 3',b:'3PL Broward',p:'high',w:'me',wk:'W2',note:'4 clients total. Get 3 on by end of week 2.',done:false},
+  {t:'Diagnose Shopify Store 1 funnel drop-off',b:'Shopify',p:'med',w:'Shopify Team',wk:'W2',note:'Why are 1,000 people viewing but not buying? Product page? Price? Shipping? Find the answer.',done:false},
+  {t:'Source first liquidation pallet (electronics or tools)',b:'Liquidation',p:'med',w:'me',wk:'W2',note:'Pay after selling model. Zero risk. Test the channel.',done:false},
+  {t:'Send first Lawyergist email batch — 100 attorneys',b:'Lawyergist',p:'med',w:'me',wk:'W2',note:'Use the database. Personal subject line. Track open rates.',done:false},
+  {t:'Pakistan clothing brand: set up Cash App + Zelle (30 min task)',b:'Pakistan Clothing',p:'high',w:'me',wk:'W3',note:'$5-8K/month volume already there. 30 minutes of setup. $1,000-1,600/month passive once live.',done:false},
+
+  // W3 — MOMENTUM WEEK
+  {t:'Trading: push cousin hard on $3.5K recovery — need funded capital',b:'Funded Trading',p:'high',w:'me',wk:'W3',note:'$50K funded capital incoming after recovery. This is blocking a full revenue stream.',done:false},
+  {t:'Follow up on 2 pending merchant processor applications',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W3',note:'2 declined for low credit. Credit should be improving. Apply to 2 new ones this week also.',done:false},
+  {t:'Record HighRiskIntel explainer video (3-5 mins)',b:'HighRiskIntel',p:'high',w:'me',wk:'W3',note:'"If your chargeback ratio hits 1%, your processor terminates you. Here is how to stop it." Post immediately.',done:false},
+  {t:'File Walmart Seller Central application',b:'Amazon/Walmart',p:'med',w:'me',wk:'W3',note:'After Amazon is filed. Walmart has less competition.',done:false},
+  {t:'Send Lawyergist batch 2 — 200 attorneys',b:'Lawyergist',p:'med',w:'me',wk:'W3',note:'Follow up on batch 1 opens. Send fresh outreach to 200 more.',done:false},
+  {t:'Shopify: implement funnel fix based on week 2 diagnosis',b:'Shopify',p:'med',w:'Shopify Team',wk:'W3',note:'Fix the one thing causing 0% conversion.',done:false},
+  {t:'3PL: onboard 4th client (complete set)',b:'3PL Broward',p:'med',w:'me',wk:'W3',note:'4 clients = ~$8,000/month potential.',done:false},
+  {t:'DSI portal: follow up on activation status',b:'DSI Portal',p:'med',w:'me',wk:'W3',note:'After the in-person visit last week.',done:false},
+  {t:'Close first SocialRework retainer ($2K+ minimum)',b:'SocialRework',p:'high',w:'me',wk:'W3',note:'Content should be live. Use it as proof. Close the first client.',done:false},
+  {t:'Apply to 2 additional merchant processors',b:'Merchant Arbitrage',p:'med',w:'me',wk:'W3',note:'Always be adding processors. Diversify.',done:false},
+  {t:'eBay: all 3 accounts on daily payout',b:'eBay',p:'med',w:'eBay Manager',wk:'W3',note:'Confirm all accounts are set to daily settlement.',done:false},
+
+  // W4 — FIRST REVENUE STACK
+  {t:'Onboard first high-dispute merchant via HighRiskIntel',b:'High Dispute Merchants',p:'high',w:'me',wk:'W4',note:'4-5 parties ready. 18-39% of their volume. Stack this on top of existing processing.',done:false},
+  {t:'Uncle credit line: place first bulk order on proven SKUs',b:'Credit Line (Uncle)',p:'med',w:'me',wk:'W4',note:'Only use for products already proven on eBay Acc 2. Fast-moving only.',done:false},
+  {t:'Post HighRiskIntel video — drive first 10 users',b:'HighRiskIntel',p:'high',w:'me',wk:'W4',note:'Post on LinkedIn, Twitter, relevant Facebook groups. Tag high-risk merchant communities.',done:false},
+  {t:'Monthly W1-W4 review — did we hit $15K?',b:'General',p:'high',w:'me',wk:'W4',note:'Review every business. What worked. What did not. Adjust.',done:false},
+  {t:'Amazon: first product listings should be live',b:'Amazon/Walmart',p:'high',w:'me',wk:'W4',note:'',done:false},
+  {t:'Lawyergist: target first 5 paid conversions',b:'Lawyergist',p:'med',w:'me',wk:'W4',note:'$300/month each = $1,500 gross. $750 for you.',done:false},
+  {t:'Close second SocialRework retainer',b:'SocialRework',p:'med',w:'me',wk:'W4',note:'',done:false},
+  {t:'Manager performance review — all 4',b:'General',p:'med',w:'me',wk:'W4',note:'Revenue per manager. Task completion. Problems. Decisions.',done:false},
+
+  // W5-W8 — SCALE PHASE
+  {t:'Merchant arbitrage: 3 processors live simultaneously',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W5',note:'$150/day = $4,500/month. Phase 1 of payment empire.',done:false},
+  {t:'Activate crypto backend processing',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W5',note:'Bypass credit requirements. Open new merchant categories.',done:false},
+  {t:'DSI portal: first customer activations',b:'DSI Portal',p:'high',w:'me',wk:'W5',note:'Each AT&T activation = up to $1,500 commission.',done:false},
+  {t:'Shopify Store 2: activate and post daily content',b:'Shopify',p:'med',w:'Shopify Team',wk:'W5',note:'',done:false},
+  {t:'HighRiskIntel: push to 25 paying users',b:'HighRiskIntel',p:'high',w:'me',wk:'W6',note:'25 users × $200/month = $5,000 MRR. Pure software margin.',done:false},
+  {t:'SocialRework: 3 clients on retainer = $6K MRR',b:'SocialRework',p:'high',w:'me',wk:'W6',note:'',done:false},
+  {t:'Amazon: 50+ ASINs listed and optimizing',b:'Amazon/Walmart',p:'med',w:'me',wk:'W6',note:'',done:false},
+  {t:'Onboard 2nd high-dispute merchant',b:'High Dispute Merchants',p:'med',w:'me',wk:'W7',note:'',done:false},
+  {t:'3PL: hire first staff member (exit labor role)',b:'3PL Broward',p:'med',w:'me',wk:'W7',note:'You should not be doing the physical work forever.',done:false},
+  {t:'Month 2 review — did we hit $50K?',b:'General',p:'high',w:'me',wk:'W8',note:'',done:false},
+
+  // W9-W12 — COMPOUND PHASE
+  {t:'DSI: scale to 50+ activations per month',b:'DSI Portal',p:'high',w:'me',wk:'W9',note:'50 × $500 avg = $25K gross. Your share = $8,750.',done:false},
+  {t:'HighRiskIntel: 50 users = $10K MRR',b:'HighRiskIntel',p:'high',w:'me',wk:'W10',note:'Pure software. No team costs.',done:false},
+  {t:'Merchant arbitrage: $80K/month processing volume',b:'Merchant Arbitrage',p:'high',w:'me',wk:'W10',note:'= $9,600-10,400/month net.',done:false},
+  {t:'SocialRework: 5 clients = $10K MRR',b:'SocialRework',p:'high',w:'me',wk:'W11',note:'',done:false},
+  {t:'Shopify: first $10K/month store',b:'Shopify',p:'med',w:'Shopify Team',wk:'W11',note:'',done:false},
+  {t:'Month 3 review — approaching $100K?',b:'General',p:'high',w:'me',wk:'W12',note:'',done:false},
+
+  // W13-W17 — FINAL PUSH
+  {t:'All 15 streams contributing minimum $500/month',b:'General',p:'high',w:'me',wk:'W13',note:'',done:false},
+  {t:'DSI: 100+ activations/month target',b:'DSI Portal',p:'high',w:'me',wk:'W14',note:'',done:false},
+  {t:'Amazon + Walmart combined $20K/month',b:'Amazon/Walmart',p:'high',w:'me',wk:'W15',note:'',done:false},
+  {t:'HighRiskIntel 100 users — $20K MRR',b:'HighRiskIntel',p:'high',w:'me',wk:'W16',note:'',done:false},
+  {t:'FINAL: $150K MRR TARGET — FULL AUDIT',b:'General',p:'high',w:'me',wk:'W17',note:'Sum every stream. Total MRR. Did we hit $150K? If not, what is the gap and how do we close it?',done:false},
+];
+
+/* ═══ GAME PLAN DATA ═══ */
+const GAME_PLAN = [
+  {
+    num:'PHASE 01', title:'Activate the Dormant', period:'Apr 14 – May 11', target:'$15,000',
+    desc:'Everything that is paused or pending has a specific reason. This phase eliminates every blocking factor.',
+    streams:[
+      {name:'Merchant Arbitrage',rev:'$1,500 → $4,500',pct:12,action:'Chargebacks911 live this week. Apply to 2 more processors.'},
+      {name:'eBay (3 Accounts)',rev:'$1,089 → $3,000',pct:14,action:'Acc 3 bank account sorted. Acc 2 scaled to 40+ listings. Acc 1 disputes cleared.'},
+      {name:'3PL Broward',rev:'$0 → $2,000',pct:0,action:'4 clients ready. Onboard all 4 this week. Immediate cash.'},
+      {name:'SocialRework',rev:'$0 → $2,000',pct:0,action:'Video this week. Close first client week 3.'},
+      {name:'Lawyergist',rev:'$0 → $1,500',pct:0,action:'Email 100 attorneys week 1. Follow up week 2. Close 5 week 4.'},
+    ],
+    milestones:[
+      {week:'Week 1',title:'Ignition',desc:'Chargebacks911 sent. Amazon filed. 3PL client 1 onboarded. SocialRework video recorded.'},
+      {week:'Week 2',title:'Unlocks',desc:'DSI office visited. eBay Acc 3 live. 3PL clients 2+3 onboarded. First brand videos posted.'},
+      {week:'Week 3',title:'Momentum',desc:'2nd processor active. HighRiskIntel video live. Walmart filed. First SMMA retainer closed.'},
+      {week:'Week 4',title:'First Stack',desc:'First high-dispute merchant. Amazon listings live. Monthly review. Target: $15K.'},
+    ]
+  },
+  {
+    num:'PHASE 02', title:'Scale What Works', period:'May 12 – Jun 8', target:'$50,000',
+    desc:'The machines are running. Now we push volume on everything working and ignore what is not.',
+    streams:[
+      {name:'Merchant Arbitrage',rev:'$4,500 → $9,000',pct:35,action:'3 processors live. Crypto backend active. 5+ merchants total.'},
+      {name:'HighRiskIntel',rev:'$0 → $5,000',pct:0,action:'25 users at $200/month. Video content driving organic growth.'},
+      {name:'DSI Portal',rev:'$0 → $3,000',pct:0,action:'Portal approved after office visit. First 20 activations.'},
+      {name:'SocialRework',rev:'$2,000 → $6,000',pct:20,action:'3 retainer clients. AI automation differentiation closing deals.'},
+      {name:'Amazon/Walmart',rev:'$0 → $5,000',pct:0,action:'50+ ASINs. Using uncle credit line for inventory.'},
+    ],
+    milestones:[
+      {week:'Week 5',title:'Three Processors',desc:'$150/day from processing. Crypto backend goes live. DSI first activations.'},
+      {week:'Week 6',title:'SaaS + Agency',desc:'HighRiskIntel 25 users. SMMA 3 clients. Amazon scaling.'},
+      {week:'Week 7',title:'Compounding',desc:'2nd high-dispute merchant. 3PL hires staff. Credit line bulk order placed.'},
+      {week:'Week 8',title:'Second Stack',desc:'Monthly review. Target: $50K MRR.'},
+    ]
+  },
+  {
+    num:'PHASE 03', title:'Build the Empire', period:'Jun 9 – Aug 12', target:'$150,000',
+    desc:'Everything is working. This phase is about volume, systems and making money while you sleep.',
+    streams:[
+      {name:'Merchant Arbitrage',rev:'$9,000 → $13,000',pct:69,action:'$80K/month volume. 5+ merchants. Crypto backend fully live.'},
+      {name:'DSI Portal',rev:'$3,000 → $8,750',pct:34,action:'50+ activations/month. Recurring commissions.'},
+      {name:'HighRiskIntel',rev:'$5,000 → $15,000',pct:50,action:'100 users × $150-200/month = $15-20K MRR.'},
+      {name:'Amazon/Walmart',rev:'$5,000 → $20,000',pct:50,action:'Uncle credit line + liquidation = massive inventory.'},
+      {name:'High Dispute Merch',rev:'$0 → $15,000',pct:0,action:'5 parties × $20K avg volume × 18-39% = $15K+.'},
+      {name:'Shopify',rev:'$0 → $15,000',pct:0,action:'3 stores converting. AI content system. 3,000 videos/month.'},
+    ],
+    milestones:[
+      {week:'Weeks 9-10',title:'6-Figure Approach',desc:'DSI 50 activations. HighRiskIntel 50 users. Merchant $80K volume. Approaching $100K.'},
+      {week:'Weeks 11-12',title:'Stack Complete',desc:'SMMA 5 clients. Shopify $10K. Amazon $20K. All streams firing.'},
+      {week:'Weeks 13-15',title:'Final Optimization',desc:'All 16 streams contributing. Remove bottlenecks. Push every number higher.'},
+      {week:'Weeks 16-17',title:'$150K Target',desc:'Final audit. Every stream at target. $150,000 MRR achieved.'},
+    ]
+  }
+];
+
+/* ═══ CALENDAR DATA ═══ */
+const CAL_MONTHS = [
+  {
+    month:'April 2026', dates:'Apr 14 – Apr 30', target:'$15,000 MRR', days:17,
+    weeks:[
+      {wk:'W1',dates:'Apr 14–20',revenue:'$2,000',tasks:[
+        {t:'Chargebacks911: send Vortier LLC details',b:'Merch',pri:'high'},
+        {t:'Onboard 3PL client #1',b:'3PL',pri:'high'},
+        {t:'File Amazon reapplication',b:'Amazon',pri:'high'},
+        {t:'Record SocialRework video',b:'SMMA',pri:'high'},
+        {t:'Get eBay Acc 3 bank account sorted',b:'eBay',pri:'high'},
+      ]},
+      {wk:'W2',dates:'Apr 21–27',revenue:'$4,000',tasks:[
+        {t:'Merchant sales resume (EDR active)',b:'Merch',pri:'high'},
+        {t:'Visit DSI office in person — Broward',b:'DSI',pri:'high'},
+        {t:'Post 2 personal brand videos',b:'Brand',pri:'high'},
+        {t:'eBay Acc 3 goes live',b:'eBay',pri:'high'},
+        {t:'Onboard 3PL clients 2 + 3',b:'3PL',pri:'med'},
+        {t:'Send Lawyergist email batch 1 (100)',b:'Law',pri:'med'},
+      ]},
+      {wk:'W3',dates:'Apr 28–May 4',revenue:'$8,000',tasks:[
+        {t:'Pakistan clothing: Cash App + Zelle setup (30 min)',b:'Clothing',pri:'high'},
+        {t:'Follow up on 2 pending processors',b:'Merch',pri:'high'},
+        {t:'Record + post HighRiskIntel video',b:'HRI',pri:'high'},
+        {t:'Close first SMMA retainer ($2K+)',b:'SMMA',pri:'high'},
+        {t:'Trading: push cousin on $3.5K recovery',b:'Trading',pri:'high'},
+        {t:'File Walmart Seller application',b:'Amazon',pri:'med'},
+        {t:'Shopify: implement funnel fix',b:'Shopify',pri:'med'},
+        {t:'Onboard 3PL client 4',b:'3PL',pri:'med'},
+        {t:'Lawyergist batch 2 (200 emails)',b:'Law',pri:'med'},
+        {t:'Apply to 2 new merchant processors',b:'Merch',pri:'med'},
+      ]},
+      {wk:'W4',dates:'May 5–11',revenue:'$15,000',tasks:[
+        {t:'Onboard first high-dispute merchant',b:'HDM',pri:'high'},
+        {t:'HighRiskIntel: push for 10 users',b:'HRI',pri:'high'},
+        {t:'Amazon: first listings live',b:'Amazon',pri:'high'},
+        {t:'Close SMMA client 2',b:'SMMA',pri:'med'},
+        {t:'Monthly review — hit $15K?',b:'General',pri:'high'},
+        {t:'Manager performance review (all 4)',b:'General',pri:'med'},
+        {t:'Lawyergist: target 5 conversions',b:'Law',pri:'med'},
+      ]},
+    ]
+  },
+  {
+    month:'May 2026', dates:'May 12 – Jun 8', target:'$50,000 MRR', days:28,
+    weeks:[
+      {wk:'W5',dates:'May 12–18',revenue:'$20,000',tasks:[
+        {t:'3 processors live simultaneously',b:'Merch',pri:'high'},
+        {t:'Crypto backend processing — activate',b:'Merch',pri:'high'},
+        {t:'DSI: first customer activations',b:'DSI',pri:'high'},
+        {t:'Shopify Store 2 — activate',b:'Shopify',pri:'med'},
+        {t:'Uncle credit line: first bulk order',b:'Credit',pri:'med'},
+        {t:'Liquidation: list pallet on eBay',b:'Liq',pri:'med'},
+      ]},
+      {wk:'W6',dates:'May 19–25',revenue:'$30,000',tasks:[
+        {t:'HighRiskIntel: 25 paying users',b:'HRI',pri:'high'},
+        {t:'SMMA: 3 clients on retainer',b:'SMMA',pri:'high'},
+        {t:'Amazon: 50+ ASINs optimizing',b:'Amazon',pri:'med'},
+        {t:'Lawyergist: 20 paying clients',b:'Law',pri:'med'},
+        {t:'DSI: 10+ activations done',b:'DSI',pri:'med'},
+      ]},
+      {wk:'W7',dates:'May 26–Jun 1',revenue:'$40,000',tasks:[
+        {t:'Onboard 2nd high-dispute merchant',b:'HDM',pri:'med'},
+        {t:'3PL: hire first staff member',b:'3PL',pri:'med'},
+        {t:'Shopify Store 3 — activate',b:'Shopify',pri:'med'},
+        {t:'Personal brand: weekly posting schedule',b:'Brand',pri:'med'},
+        {t:'Review all manager KPIs',b:'General',pri:'high'},
+      ]},
+      {wk:'W8',dates:'Jun 2–8',revenue:'$50,000',tasks:[
+        {t:'MONTH 2 REVIEW — TARGET $50K',b:'General',pri:'high'},
+        {t:'Identify next 3 processor targets',b:'Merch',pri:'med'},
+        {t:'DSI: 20+ activations/month',b:'DSI',pri:'high'},
+        {t:'Amazon: first $5K month',b:'Amazon',pri:'high'},
+        {t:'HighRiskIntel: product roadmap',b:'HRI',pri:'med'},
+        {t:'Onboard 3rd high-dispute merchant',b:'HDM',pri:'med'},
+      ]},
+    ]
+  },
+  {
+    month:'June 2026', dates:'Jun 9 – Jul 6', target:'$100,000 MRR', days:28,
+    weeks:[
+      {wk:'W9',dates:'Jun 9–15',revenue:'$65,000',tasks:[
+        {t:'DSI: 50 activations/month target',b:'DSI',pri:'high'},
+        {t:'5th merchant processor live',b:'Merch',pri:'high'},
+        {t:'Shopify: first $10K/month store',b:'Shopify',pri:'high'},
+        {t:'HighRiskIntel: 50 users',b:'HRI',pri:'high'},
+        {t:'Amazon + Walmart: $10K combined',b:'Amazon',pri:'med'},
+      ]},
+      {wk:'W10',dates:'Jun 16–22',revenue:'$80,000',tasks:[
+        {t:'Merchant arbitrage: $80K/month vol',b:'Merch',pri:'high'},
+        {t:'HighRiskIntel: content push',b:'HRI',pri:'med'},
+        {t:'SMMA: 5 clients = $10K MRR',b:'SMMA',pri:'high'},
+        {t:'Review all manager KPIs month 3',b:'General',pri:'high'},
+        {t:'Lawyergist: 50 clients target',b:'Law',pri:'med'},
+      ]},
+      {wk:'W11',dates:'Jun 23–29',revenue:'$90,000',tasks:[
+        {t:'Pakistan clothing: confirm payment volumes + scale',b:'Clothing',pri:'med'},
+        {t:'Amazon: $20K/month target',b:'Amazon',pri:'high'},
+        {t:'4th-5th high-dispute merchant',b:'HDM',pri:'med'},
+        {t:'3PL: expand capacity',b:'3PL',pri:'med'},
+        {t:'Personal brand: monetization plan',b:'Brand',pri:'low'},
+      ]},
+      {wk:'W12',dates:'Jun 30–Jul 6',revenue:'$100,000',tasks:[
+        {t:'MONTH 3 REVIEW — TARGET $100K',b:'General',pri:'high'},
+        {t:'Audit all 15 streams',b:'General',pri:'high'},
+        {t:'Plan final 6-week push strategy',b:'General',pri:'high'},
+        {t:'Identify what is missing to hit $150K',b:'General',pri:'high'},
+      ]},
+    ]
+  },
+  {
+    month:'July – Aug 12, 2026', dates:'Jul 7 – Aug 12', target:'$150,000 MRR', days:36,
+    weeks:[
+      {wk:'W13',dates:'Jul 7–13',revenue:'$115,000',tasks:[
+        {t:'All 15 streams: minimum $500/month each',b:'General',pri:'high'},
+        {t:'DSI: 100+ activations/month',b:'DSI',pri:'high'},
+        {t:'HighRiskIntel: 75 users',b:'HRI',pri:'high'},
+        {t:'Merchant: 6+ processors',b:'Merch',pri:'med'},
+      ]},
+      {wk:'W14',dates:'Jul 14–20',revenue:'$125,000',tasks:[
+        {t:'Amazon + Walmart: $25K/month',b:'Amazon',pri:'high'},
+        {t:'SMMA: 7 clients',b:'SMMA',pri:'med'},
+        {t:'All managers hitting KPIs',b:'General',pri:'med'},
+      ]},
+      {wk:'W15',dates:'Jul 21–27',revenue:'$135,000',tasks:[
+        {t:'HighRiskIntel: 100 users = $20K MRR',b:'HRI',pri:'high'},
+        {t:'High dispute merchants: $15K total',b:'HDM',pri:'high'},
+        {t:'Final gap analysis — what is left?',b:'General',pri:'high'},
+        {t:'Double down on top 3 earners',b:'General',pri:'high'},
+      ]},
+      {wk:'W16',dates:'Jul 28–Aug 3',revenue:'$145,000',tasks:[
+        {t:'Final sprint — all hands on deck',b:'General',pri:'high'},
+        {t:'Close any open deals immediately',b:'General',pri:'high'},
+        {t:'All processors: max volume week',b:'Merch',pri:'high'},
+        {t:'DSI: push for 120+ activations',b:'DSI',pri:'high'},
+      ]},
+      {wk:'W17',dates:'Aug 4–12',revenue:'$150,000',tasks:[
+        {t:'$150K MRR FINAL AUDIT',b:'General',pri:'high'},
+        {t:'Document every revenue stream',b:'General',pri:'high'},
+        {t:'Celebrate. Then plan Q4.',b:'General',pri:'low'},
+      ]},
+    ]
+  }
+];
+
+/* ═══ STATE ═══ */
+let tasks=[], taskFilter='all';
+
+/* ═══ AUTH ═══ */
+function login(){
+  if(document.getElementById('ac').value==='ops2026'){
+    document.getElementById('auth').style.display='none';
+    document.getElementById('app').style.display='flex';
+    boot();
+  } else toast('Wrong access code','err');
+}
+function logout(){ document.getElementById('app').style.display='none'; document.getElementById('auth').style.display='flex'; }
+document.addEventListener('keydown',e=>{ if(e.key==='Enter'&&document.getElementById('auth').style.display!=='none') login(); });
+
+/* ═══ BOOT ═══ */
+async function boot(){
+  tasks = await dbAll('tasks');
+  if (!tasks.length) {
+    for (const t of TASK_DEFAULTS) {
+      const id = await dbAdd('tasks', {...t, done:false, added: new Date().toISOString()});
+      t.id = id;
+    }
+    tasks = await dbAll('tasks');
+  }
+  setInterval(()=>{
+    const d=new Date();
+    document.getElementById('hdr-date').textContent=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase()+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+  }, 1000);
+  document.getElementById('hdr-date').textContent=new Date().toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+  refresh();
+}
+
+function refresh(){ renderDash(); renderTasks(); renderGamePlan(); renderCalendar(); renderBiz(); renderMgrs(); renderAnalytics(); updateSB(); }
+
+/* ═══ NAV ═══ */
+const PM = {
+  dash:     ['Operating Overview',      'ALL STREAMS · APR 14 TO AUG 12, 2026'],
+  gameplan: ['The Game Plan',           '$0 TO $150,000 MRR IN 120 DAYS'],
+  calendar: ['120-Day Calendar',        'WEEK-BY-WEEK EXECUTION · APR 14 – AUG 12, 2026'],
+  tasks:    ['All Tasks',               'EXECUTION CHECKLIST · SYNCED TO CALENDAR'],
+  biz:      ['All Businesses',          '15 REVENUE STREAMS · CURRENT STATUS'],
+  managers: ['Team Overview',           '4 MANAGERS · TASKS + KPIs'],
+  analytics:['Analytics',               'REVENUE + PERFORMANCE METRICS'],
+};
+
+function go(v, btn){
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('on'));
+  document.getElementById('v-'+v).classList.add('on');
+  document.querySelectorAll('.hn').forEach(x=>x.classList.remove('on'));
+  if (btn?.classList.contains('hn')) btn.classList.add('on');
+  const [t,s]=PM[v]||['',''];
+  document.getElementById('pg-title').textContent=t;
+  document.getElementById('pg-sub').textContent=s;
+  const pa=document.getElementById('pg-actions'); pa.innerHTML='';
+  if (v==='tasks') pa.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="omt()">+ Add Task</button><button class="btn btn-ghost btn-sm" onclick="resetWeek()">Reset This Week</button><button class="btn btn-amber btn-sm" onclick="rebuildTasks()">Rebuild All Tasks</button>`;
+  if (v==='biz')   pa.innerHTML=`<button class="btn btn-amber btn-sm" onclick="updateMRR()">Update Revenue</button>`;
+  if (v==='analytics') renderAnalytics();
+  if (v==='dash')  renderDash();
+}
+
+function sbgo(el,v){
+  document.querySelectorAll('.sb-row').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on'); go(v,null);
+}
+
+function filterAndGo(f){
+  taskFilter=f;
+  go('tasks',null);
+  setTimeout(()=>{ document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.textContent.toLowerCase()===f||c.textContent.toLowerCase()==='this week'&&f==='today')); renderTasks(); },30);
+}
+
+/* ═══ DASHBOARD ═══ */
+function renderDash(){
+  const wk=curWeek(); const wkTasks=tasks.filter(t=>t.wk===wk);
+  const pending=wkTasks.filter(t=>!t.done).length;
+  const totalMRR=calcMRR();
+  const pct=Math.min(Math.round(totalMRR/150000*100),100);
+  const daily=Math.round(totalMRR/30);
+  const end=new Date('2026-08-12'); const days=Math.max(0,Math.round((end-new Date())/86400000));
+
+  document.getElementById('d-daily').textContent='$'+daily.toLocaleString();
+  document.getElementById('d-mrr').textContent='$'+totalMRR.toLocaleString();
+  document.getElementById('d-mrr-f').textContent=pct+'% of $150K target';
+  document.getElementById('d-pending').textContent=pending;
+  document.getElementById('d-pf').textContent='pending this week ('+wk+')';
+  document.getElementById('d-days').textContent=days;
+  document.getElementById('rev-meta').textContent='Current: $'+totalMRR.toLocaleString();
+
+  // Trajectory chart
+  const weekTargets=[2589,4000,8000,15000,20000,30000,40000,50000,65000,80000,90000,100000,115000,125000,135000,145000,150000];
+  const maxV=150000; const h=120;
+  document.getElementById('traj-chart').innerHTML=weekTargets.map((v,i)=>{
+    const th=Math.max(Math.round(v/maxV*h),2);
+    const actual=i===0?totalMRR:0;
+    const ah=Math.max(Math.round(actual/maxV*h),2);
+    const isNow=i===0;
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:${h+20}px;justify-content:flex-end">
+      <div style="display:flex;gap:1px;align-items:flex-end;width:100%">
+        <div style="flex:1;height:${th}px;background:var(--z4);min-height:2px;border-radius:1px 1px 0 0" title="W${i} target: $${v.toLocaleString()}"></div>
+        <div style="flex:1;height:${isNow?ah:2}px;background:${isNow?'var(--amber)':'transparent'};min-height:${isNow?2:0}px;border-radius:1px 1px 0 0" title="W${i} actual: $${actual.toLocaleString()}"></div>
+      </div>
+      <div style="font-family:var(--fm);font-size:7px;color:var(--paper3)">W${i}</div>
+    </div>`;
+  }).join('');
+
+  // Revenue mix funnel (top businesses by target)
+  const top=BIZ.filter(b=>b.target>0).sort((a,b)=>b.target-a.target).slice(0,6);
+  const maxT=top[0]?.target||1;
+  document.getElementById('d-funnel').innerHTML=top.map(b=>`
+    <div class="fn-row">
+      <div class="fn-lbl">${b.name.split(' ')[0].toUpperCase().slice(0,8)}</div>
+      <div class="fn-track">
+        <div class="fn-fill" style="width:${Math.round(b.target/maxT*100)}%;background:${b.color}15;border-right:2px solid ${b.color}">
+          <span class="fn-val" style="color:${b.color}">$${Math.round(b.target/1000)}K</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Today's priority tasks
+  const urgent=tasks.filter(t=>t.wk===wk&&!t.done).sort((a,b)=>{const po={high:0,med:1,low:2};return po[a.p]-po[b.p];}).slice(0,10);
+  document.getElementById('dash-today-tasks').innerHTML=urgent.length
+    ?urgent.map(t=>taskRowFn(t)).join('')
+    :`<div class="empty"><div class="empty-mark">—</div><div class="empty-title">All high priority tasks done</div><div class="empty-sub">Check the full task list for pending items</div></div>`;
+
+  // Revenue by stream bars
+  const liveBiz=BIZ.filter(b=>b.mrr>0);
+  const maxMRR=Math.max(...liveBiz.map(b=>b.mrr),1);
+  document.getElementById('biz-revenue-bars').innerHTML=BIZ.filter(b=>b.mrr>0||b.status==='live').slice(0,8).map(b=>`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+      <div style="font-family:var(--fm);font-size:8.5px;color:var(--paper3);width:80px;flex-shrink:0;text-align:right;letter-spacing:0.04em">${b.name.split(' ')[0].toUpperCase()}</div>
+      <div style="flex:1;height:14px;background:var(--z3);overflow:hidden">
+        <div style="height:100%;width:${Math.round(b.mrr/maxMRR*100)}%;background:${b.color};opacity:0.85;transition:width .6s"></div>
+      </div>
+      <div style="font-family:var(--fm);font-size:9px;color:${b.color};width:50px;text-align:right">$${b.mrr.toLocaleString()}</div>
+    </div>
+  `).join('')||'<div class="empty"><div class="empty-mark">—</div><div class="empty-title">No live revenue yet</div><div class="empty-sub">Activate streams to see data</div></div>';
+}
+
+/* ═══ GAME PLAN ═══ */
+function renderGamePlan(){
+  document.getElementById('gp-container').innerHTML=GAME_PLAN.map(ph=>`
+    <div class="gp-phase">
+      <div class="gp-phase-hdr">
+        <div>
+          <div class="gp-phase-num">${ph.num} · ${ph.period}</div>
+          <div class="gp-phase-title">${ph.title}</div>
+          <div style="font-family:var(--fm);font-size:10px;color:var(--paper3);margin-top:5px;max-width:600px;line-height:1.6">${ph.desc}</div>
+        </div>
+        <div class="gp-phase-target">${ph.target}</div>
+      </div>
+      <div class="gp-body">
+        <div class="gp-streams">
+          <div style="font-family:var(--fm);font-size:8.5px;letter-spacing:0.16em;color:var(--paper3);margin-bottom:8px;text-transform:uppercase">Revenue Streams This Phase</div>
+          ${ph.streams.map(s=>`
+            <div class="gp-stream">
+              <div class="gp-stream-top">
+                <div class="gp-stream-name">${s.name}</div>
+                <div class="gp-stream-rev">${s.rev}</div>
+              </div>
+              <div class="gp-stream-action">${s.action}</div>
+              <div class="gp-stream-track"><div class="gp-stream-fill" style="width:${s.pct}%"></div></div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="gp-milestones">
+          <div style="font-family:var(--fm);font-size:8.5px;letter-spacing:0.16em;color:var(--paper3);margin-bottom:8px;text-transform:uppercase">Weekly Milestones</div>
+          ${ph.milestones.map(m=>`
+            <div class="gp-milestone">
+              <div class="gp-ms-week">${m.week}</div>
+              <div class="gp-ms-title">${m.title}</div>
+              <div class="gp-ms-desc">${m.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══ CALENDAR ═══ */
+function renderCalendar(){
+  const wk=curWeek();
+  const allCalTasks=CAL_MONTHS.flatMap(m=>m.weeks.flatMap(w=>w.tasks));
+  const tasksDone=tasks.filter(t=>t.done).length;
+  document.getElementById('cal-done').textContent=tasksDone;
+  document.getElementById('cal-total').textContent=tasks.length;
+  document.getElementById('cal-pct').textContent=tasks.length?Math.round(tasksDone/tasks.length*100)+'%':'0%';
+
+  let wkNum=0;
+  document.getElementById('cal-container').innerHTML=CAL_MONTHS.map(month=>`
+    <div class="cal-month">
+      <div class="cal-month-hdr">
+        <div>
+          <div style="font-family:var(--fm);font-size:8.5px;letter-spacing:0.16em;color:var(--paper3);margin-bottom:4px">${month.dates}</div>
+          <div class="cal-month-name">${month.month}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="cal-month-target">${month.target}</div>
+        </div>
+      </div>
+      <div class="cal-weeks">
+        ${month.weeks.map(w=>{
+          wkNum++;
+          const thisWkId='W'+wkNum;
+          const isActive=thisWkId===wk;
+          const isPast=parseInt(wk.slice(1))>wkNum;
+          const wkTasks=tasks.filter(t=>t.wk===thisWkId);
+          const wkDone=wkTasks.filter(t=>t.done).length;
+          return `<div class="cal-week ${isActive?'active-week':''}">
+            <div class="cal-week-lbl">
+              ${isActive?'<span class="cal-week-active-badge">NOW</span>':isPast?'<span style="color:var(--emerald);font-size:9px">✓</span>':''}
+              ${w.wk} · ${w.dates}
+            </div>
+            <div class="cal-week-tasks">
+              ${w.tasks.map(t=>{
+                const dbTask=tasks.find(dt=>dt.t&&dt.t.toLowerCase().includes(t.t.toLowerCase().slice(0,20)));
+                const isDone=dbTask?.done||false;
+                return `<div class="cal-task ${isDone?'ct-done':''} ${t.pri==='high'&&!isDone?'ct-high':''}">
+                  ${t.t}
+                  <div class="cal-task-biz">${t.b}</div>
+                </div>`;
+              }).join('')}
+            </div>
+            <div class="cal-week-revenue">
+              Target: ${w.revenue} &nbsp;·&nbsp; ${wkDone}/${w.tasks.length} tasks done
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══ TASKS ═══ */
+function curWeek(){
+  const start=new Date('2026-04-14');
+  const diff=Math.floor((new Date()-start)/604800000);
+  return 'W'+(Math.min(Math.max(diff+1,1),17));
+}
+
+function renderTasks(){
+  const q=(document.getElementById('ts')||{value:''}).value.toLowerCase();
+  const wk=curWeek();
+  let list=tasks.filter(t=>{
+    if(taskFilter==='today'||taskFilter==='week') return t.wk===wk;
+    if(taskFilter==='mine') return t.w==='me';
+    if(taskFilter==='high') return t.p==='high';
+    if(taskFilter==='pending') return !t.done;
+    if(taskFilter==='done') return t.done;
+    return true;
+  }).filter(t=>!q||[t.t,t.b,t.note,t.wk].some(v=>(v||'').toLowerCase().includes(q)));
+
+  list.sort((a,b)=>{
+    const po={high:0,med:1,low:2};
+    if(po[a.p]!==po[b.p]) return po[a.p]-po[b.p];
+    return (a.wk||'').localeCompare(b.wk||'');
+  });
+
+  document.getElementById('tasks-body').innerHTML=list.length
+    ?list.map(t=>taskRowFn(t)).join('')
+    :`<div class="empty"><div class="empty-mark">—</div><div class="empty-title">No tasks match</div><div class="empty-sub">Adjust the filter or search term</div></div>`;
+
+  updateSB();
+}
+
+function taskRowFn(t){
+  return `<div class="task-row ${t.done?'done-row':''}" id="tr-${t.id}">
+    <div class="task-check ${t.done?'chk':''}" onclick="togTask(${t.id})">${t.done?'✓':''}</div>
+    <div class="task-body">
+      <div class="task-title-txt">${esc(t.t)}</div>
+      <div class="task-metas">
+        <span class="task-biz-tag">${esc(t.b)}</span>
+        <span class="pri p-${t.p}">${t.p.toUpperCase()}</span>
+        <span style="font-family:var(--fm);font-size:9px;color:var(--paper3)">${t.w==='me'?'→ Hishaam':'→ '+t.w}</span>
+      </div>
+      ${t.note?`<div class="task-note">${esc(t.note)}</div>`:''}
+    </div>
+    <div class="task-right">
+      <span class="week-chip">${t.wk}</span>
+      <button class="btn btn-ghost btn-xs" style="padding:2px 6px;font-size:9px" onclick="delTask(${t.id})">×</button>
+    </div>
+  </div>`;
+}
+
+async function togTask(id){
+  const t=tasks.find(x=>x.id===id); if(!t) return;
+  t.done=!t.done; await dbPut('tasks',t);
+  refresh(); if(t.done) toast('Task complete ✓','ok');
+}
+
+async function delTask(id){
+  await dbDel('tasks',id); tasks=tasks.filter(t=>t.id!==id);
+  refresh(); toast('Task removed','info');
+}
+
+function setTF(f,btn){ taskFilter=f; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); btn.classList.add('on'); renderTasks(); }
+
+async function addTask(){
+  const title=document.getElementById('mt-t').value.trim();
+  if(!title){toast('Enter a task title','err');return;}
+  const t={t:title,b:document.getElementById('mt-b').value,p:document.getElementById('mt-p').value,w:document.getElementById('mt-w').value,wk:document.getElementById('mt-wk').value,note:document.getElementById('mt-no').value,done:false,added:new Date().toISOString()};
+  const id=await dbAdd('tasks',t); t.id=id; tasks.push(t);
+  refresh(); close('mo-task'); toast('Task added','ok');
+}
+
+function omt(){ document.getElementById('mt-t').value=''; document.getElementById('mt-no').value=''; open('mo-task'); }
+
+async function resetWeek(){
+  const wk=curWeek();
+  const toReset=tasks.filter(t=>t.wk===wk&&t.done);
+  if(!toReset.length){toast('No completed tasks in '+wk,'info');return;}
+  for(const t of toReset){t.done=false;await dbPut('tasks',t);}
+  refresh(); toast(wk+' tasks reset','ok');
+}
+
+async function rebuildTasks(){
+  if(!confirm('Wipe all tasks and rebuild from latest defaults? Done tasks will be lost.')) return;
+  await dbClear('tasks');
+  tasks=[];
+  for(const t of TASK_DEFAULTS){
+    const id=await dbAdd('tasks',{...t,done:false,added:new Date().toISOString()});
+    t.id=id;
+  }
+  tasks=await dbAll('tasks');
+  refresh(); toast('Tasks rebuilt from latest defaults','ok');
+}
+
+/* ═══ BUSINESSES ═══ */
+function renderBiz(){
+  const scls={live:'bs-live',build:'bs-build',paused:'bs-paused',pending:'bs-pending'};
+  document.getElementById('biz-grid').innerHTML=BIZ.map(b=>{
+    const pct=b.target?Math.min(Math.round(b.mrr/b.target*100),100):0;
+    return `<div class="biz-card" style="--bc:${b.color}">
+      <style>.biz-card[style*="${b.color}"]:hover::after{background:${b.color};}</style>
+      <div class="bc-top">
+        <div class="bc-name">${b.name}</div>
+        <span class="badge ${scls[b.status]}">${b.status.toUpperCase()}</span>
+      </div>
+      <div class="bc-rev" style="color:${b.color}">$${b.mrr.toLocaleString()}</div>
+      <div class="bc-rev-lbl">/ $${b.target.toLocaleString()} TARGET</div>
+      <div class="bc-bar-wrap"><div class="bc-bar-fill" style="width:${pct}%;background:linear-gradient(90deg,${b.color},${b.color}bb)"></div></div>
+      <div class="bc-desc">${b.desc}</div>
+      <div class="bc-action">→ ${b.action}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateMRR(){
+  const name=prompt('Business name (partial ok):');
+  if(!name) return;
+  const found=BIZ.find(b=>b.name.toLowerCase().includes(name.toLowerCase()));
+  if(!found){toast('Not found','err');return;}
+  const val=prompt(`New monthly revenue for "${found.name}" ($):`);
+  if(!val||isNaN(val)) return;
+  found.mrr=parseInt(val);
+  refresh(); toast(found.name+' → $'+parseInt(val).toLocaleString()+'/mo','ok');
+}
+
+/* ═══ MANAGERS ═══ */
+function renderMgrs(){
+  document.getElementById('mgr-grid').innerHTML=MANAGERS.map(m=>`
+    <div class="mgr-card">
+      <div class="mgr-header">
+        <div class="mgr-av" style="background:${m.colorDim};color:${m.color}">${m.name[0]}</div>
+        <div><div class="mgr-nm">${m.name}</div><div class="mgr-role">${m.role}</div></div>
+      </div>
+      <div class="mgr-task-list">
+        ${m.tasks.map((t,i)=>`<div class="mgr-t" style="border-left-color:${i<m.done?m.color:'var(--line2)'}">${t}</div>`).join('')}
+      </div>
+      <div class="mgr-kpis">
+        <div class="mgr-kpi"><div class="mgr-kpi-val" style="color:${m.color}">$${m.rev.toLocaleString()}</div><div class="mgr-kpi-lbl">MRR</div></div>
+        <div class="mgr-kpi"><div class="mgr-kpi-val" style="color:${m.color}">${m.done}/${m.tasks.length}</div><div class="mgr-kpi-lbl">TASKS</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══ ANALYTICS ═══ */
+function renderAnalytics(){
+  const done=tasks.filter(t=>t.done).length;
+  const total=tasks.length;
+  document.getElementById('an3').textContent=total?Math.round(done/total*100)+'%':'0%';
+  document.getElementById('an3f').textContent=done+' of '+total+' done';
+
+  // 17-week projection
+  const proj=[2589,4000,8000,15000,20000,30000,40000,50000,65000,80000,90000,100000,115000,125000,135000,145000,150000];
+  const maxV=150000;
+  document.getElementById('a-traj').innerHTML=proj.map((v,i)=>{
+    const h=Math.max(Math.round(v/maxV*130),2);
+    const clr=i===0?'var(--amber)':v>=100000?'var(--emerald)':v>=50000?'var(--sapphire)':'var(--z4)';
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:150px;justify-content:flex-end">
+      <div style="width:100%;height:${h}px;background:${clr};border-radius:1px 1px 0 0;min-height:2px;cursor:pointer;transition:filter .12s" title="W${i}: $${v.toLocaleString()}" onmouseover="this.style.filter='brightness(1.3)'" onmouseout="this.style.filter=''"></div>
+      <div style="font-family:var(--fm);font-size:7px;color:var(--paper3)">W${i}</div>
+    </div>`;
+  }).join('');
+
+  // Revenue mix by category
+  const cats=[
+    {l:'PROCESSING',v:35000,c:'var(--amber)'},
+    {l:'ECOMMERCE', v:45000,c:'var(--sapphire)'},
+    {l:'SAAS/SMMA', v:25000,c:'var(--violet)'},
+    {l:'LOGISTICS', v:15000,c:'var(--emerald)'},
+    {l:'CONTENT',   v:10000,c:'var(--ruby)'},
+  ];
+  const maxC=cats[1].v;
+  document.getElementById('a-funnel').innerHTML=cats.map(c=>`
+    <div class="fn-row">
+      <div class="fn-lbl">${c.l}</div>
+      <div class="fn-track">
+        <div class="fn-fill" style="width:${Math.round(c.v/maxC*100)}%;background:${c.c}18;border-right:2px solid ${c.c}">
+          <span class="fn-val" style="color:${c.c}">$${Math.round(c.v/1000)}K</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Performance table
+  document.getElementById('a-tbody').innerHTML=BIZ.map(b=>{
+    const pct=b.target?Math.min(Math.round(b.mrr/b.target*100),100):0;
+    const sc={live:`color:var(--emerald)`,build:`color:var(--amber)`,paused:`color:var(--ruby)`,pending:`color:var(--sapphire)`};
+    return `<tr>
+      <td><strong>${b.name}</strong></td>
+      <td style="font-family:var(--fm);font-size:9.5px;${sc[b.status]}">${b.status.toUpperCase()}</td>
+      <td style="font-family:var(--fm);font-size:11px;color:var(--amber)">$${b.mrr.toLocaleString()}</td>
+      <td style="font-family:var(--fm);font-size:11px;color:var(--paper3)">$${b.target.toLocaleString()}</td>
+      <td>
+        <div style="height:3px;background:var(--z4);width:80px;overflow:hidden">
+          <div style="height:100%;width:${pct}%;background:${b.color};transition:width .4s"></div>
+        </div>
+        <div style="font-family:var(--fm);font-size:8px;color:var(--paper3);margin-top:2px">${pct}%</div>
+      </td>
+      <td style="font-family:var(--fm);font-size:10px;color:${b.color}">$${Math.round(b.target/1000)}K</td>
+      <td style="font-family:var(--fm);font-size:9.5px;color:var(--ruby);max-width:140px">${getBlocker(b.id)}</td>
+      <td style="font-size:10.5px;color:var(--paper3);max-width:180px">${b.action}</td>
+    </tr>`;
+  }).join('');
+}
+
+function getBlocker(id){
+  const blockers={merch:'EDR not active',trade:'Challenge not cleared',ebay:'Acc 3 bank pending',shopify:'Zero conversion',amzn:'Account disabled / pending',hri:'Zero users / no video',smma:'No content posted',law:'No emails sent',dsi:'Office visit not done',
+  '3pl':'Clients not onboarded',brand:'Nothing posted',cloth:'No payment setup',liq:'No pallet sourced',hdm:'No merchants onboarded',credit:'No bulk order placed'};
+  return blockers[id]||'—';
+}
+
+/* ═══ SIDEBAR ═══ */
+function updateSB(){
+  const wk=curWeek();
+  const pending=tasks.filter(t=>t.wk===wk&&!t.done).length;
+  const todayH=tasks.filter(t=>t.wk===wk&&!t.done&&t.p==='high').length;
+  const allH=tasks.filter(t=>!t.done&&t.p==='high').length;
+  document.getElementById('sb-pending').textContent=pending;
+  document.getElementById('sb-today').textContent=todayH;
+  document.getElementById('sb-high').textContent=allH;
+  const mrr=calcMRR();
+  document.getElementById('sb-mrr').textContent='$'+mrr.toLocaleString();
+  const pct=Math.min(Math.round(mrr/150000*100),100);
+  document.getElementById('sb-mrr-pct').textContent=pct+'% of $150K goal';
+  document.getElementById('sb-mrr-fill').style.width=pct+'%';
+}
+
+function calcMRR(){ return BIZ.reduce((s,b)=>s+b.mrr,0); }
+
+/* ═══ HELPERS ═══ */
+function esc(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'):''; }
+function open(id){ document.getElementById(id).classList.add('on'); }
+function close(id){ document.getElementById(id).classList.remove('on'); }
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('on'); }));
+function toast(msg,type='info'){ const el=document.getElementById('toast'); el.textContent=msg; el.className=`toast show t-${type}`; clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove('show'),3200); }
+
+window.addEventListener('load',async()=>{ await openDB(); document.getElementById('auth').style.display='flex'; });
+</script>
+</body>
+</html>
