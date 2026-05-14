@@ -2285,7 +2285,7 @@ function go(v, btn){
   document.getElementById('pg-sub').textContent=s;
   const pa=document.getElementById('pg-actions'); pa.innerHTML='';
   if (v==='tasks') pa.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="omt()">+ Add Task</button><button class="btn btn-ghost btn-sm" onclick="resetWeek()">Reset This Week</button><button class="btn btn-amber btn-sm" onclick="rebuildTasks()">Rebuild All Tasks</button>`;
-  if (v==='biz')   pa.innerHTML=`<button class="btn btn-amber btn-sm" onclick="updateMRR()">Edit Revenue (ARR)</button>`;
+  if (v==='biz')   pa.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="updateMRR('mrr')">Edit MRR</button><button class="btn btn-amber btn-sm" onclick="updateMRR('arr')" style="margin-left:8px">Edit ARR</button>`;
   if (v==='analytics') renderAnalytics();
   if (v==='dash')  renderDash();
 }
@@ -2594,14 +2594,26 @@ function renderBiz(){
   }).join('');
 }
 
-function updateMRR(){
+function updateMRR(mode){
   const sel = document.getElementById('rev-biz-select');
   sel.innerHTML = '<option value="">— select a business —</option>' +
     BIZ.map(b=>`<option value="${b.id}">${b.name} · MRR $${b.mrr.toLocaleString()} · ARR $${b.arr.toLocaleString()}</option>`).join('');
   document.getElementById('rev-current-display').style.display='none';
   document.getElementById('rev-mrr-input').value='';
   document.getElementById('rev-arr-input').value='';
+  document.getElementById('mo-rev').dataset.mode = mode||'both';
+  const title = mode==='mrr' ? 'Edit MRR' : mode==='arr' ? 'Edit ARR' : 'Edit Revenue';
+  document.querySelector('#mo-rev .modal-title').textContent = title;
+  document.querySelector('#mo-rev .modal-sub').textContent = mode==='mrr'
+    ? 'SET THIS MONTH\'S REVENUE — DOES NOT AFFECT ARR'
+    : mode==='arr'
+    ? 'SET ANNUAL REVENUE — DOES NOT AFFECT MRR'
+    : 'SET MRR + ARR INDEPENDENTLY';
   open('mo-rev');
+  setTimeout(()=>{
+    if(mode==='mrr') document.getElementById('rev-mrr-input').focus();
+    else document.getElementById('rev-arr-input').focus();
+  }, 50);
 }
 function revSelectChange(){
   const id = document.getElementById('rev-biz-select').value;
@@ -2610,8 +2622,10 @@ function revSelectChange(){
   if(!b){ disp.style.display='none'; return; }
   document.getElementById('rev-cur-mrr').textContent='$'+b.mrr.toLocaleString();
   document.getElementById('rev-cur-arr').textContent='$'+b.arr.toLocaleString();
-  document.getElementById('rev-mrr-input').value=b.mrr||'';
-  document.getElementById('rev-arr-input').value=b.arr||'';
+  const mode = document.getElementById('mo-rev').dataset.mode;
+  if(mode==='mrr') document.getElementById('rev-mrr-input').value=b.mrr||'';
+  else if(mode==='arr') document.getElementById('rev-arr-input').value=b.arr||'';
+  else { document.getElementById('rev-mrr-input').value=b.mrr||''; document.getElementById('rev-arr-input').value=b.arr||''; }
   disp.style.display='block';
 }
 function saveRevenue(){
