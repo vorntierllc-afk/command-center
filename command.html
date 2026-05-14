@@ -1609,13 +1609,13 @@ input[type="checkbox"] { accent-color: var(--amber); cursor: pointer; width: 13p
       <div class="sb-section">
         <div class="sb-heading">Execution</div>
         <div class="sb-row" onclick="sbgo(this,'tasks')"><div class="sb-row-l"><span class="sb-ico">✓</span><span class="sb-txt">All Tasks</span></div><span class="sb-num alert" id="sb-pending">0</span></div>
-        <div class="sb-row" onclick="filterAndGo('today')"><div class="sb-row-l"><span class="sb-ico">→</span><span class="sb-txt">Today</span></div><span class="sb-num alert" id="sb-today">0</span></div>
-        <div class="sb-row" onclick="filterAndGo('high')"><div class="sb-row-l"><span class="sb-ico">!</span><span class="sb-txt">High Priority</span></div><span class="sb-num" id="sb-high">0</span></div>
+        <div class="sb-row" onclick="filterAndGo('today',this)"><div class="sb-row-l"><span class="sb-ico">→</span><span class="sb-txt">Today</span></div><span class="sb-num alert" id="sb-today">0</span></div>
+        <div class="sb-row" onclick="filterAndGo('high',this)"><div class="sb-row-l"><span class="sb-ico">!</span><span class="sb-txt">High Priority</span></div><span class="sb-num" id="sb-high">0</span></div>
       </div>
       <div class="sb-section">
         <div class="sb-heading">Portfolio</div>
         <div class="sb-row" onclick="sbgo(this,'biz')"><div class="sb-row-l"><span class="sb-ico">≡</span><span class="sb-txt">All Businesses</span></div><span class="sb-num">8</span></div>
-        <div class="sb-row" onclick="sbgo(this,'managers')"><div class="sb-row-l"><span class="sb-ico">◐</span><span class="sb-txt">Managers</span></div><span class="sb-num">4</span></div>
+        <div class="sb-row" onclick="sbgo(this,'managers')"><div class="sb-row-l"><span class="sb-ico">◐</span><span class="sb-txt">Managers</span></div><span class="sb-num">3</span></div>
       </div>
       <div class="sb-foot">
         <div class="mrr-block">
@@ -2245,13 +2245,27 @@ function go(v, btn){
 
 function sbgo(el,v){
   document.querySelectorAll('.sb-row').forEach(x=>x.classList.remove('on'));
-  el.classList.add('on'); go(v,null);
+  el.classList.add('on');
+  if(v==='tasks') taskFilter='all';
+  go(v,null);
 }
 
-function filterAndGo(f){
+function filterAndGo(f, el){
+  document.querySelectorAll('.sb-row').forEach(x=>x.classList.remove('on'));
+  if(el) el.classList.add('on');
   taskFilter=f;
   go('tasks',null);
-  setTimeout(()=>{ document.querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c.textContent.toLowerCase()===f||c.textContent.toLowerCase()==='this week'&&f==='today')); renderTasks(); },30);
+  setTimeout(()=>{
+    document.querySelectorAll('.chip').forEach(c=>{
+      const t=c.textContent.trim().toLowerCase();
+      c.classList.toggle('on',
+        (f==='today' && t==='this week') ||
+        (f==='high' && t==='high priority') ||
+        (f==='all' && t==='all')
+      );
+    });
+    renderTasks();
+  },30);
 }
 
 /* ═══ DASHBOARD ═══ */
