@@ -2029,6 +2029,13 @@ const MANAGERS = [
 
 /* ═══ TASK MASTER LIST ═══ */
 const TASK_DEFAULTS = [
+  // ── HIGHRISKINTEL PAY BUILD ──
+  {t:'Build /app/pay/[merchantId]/page.tsx — customer checkout page',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'Next.js 14 app dir. Use Crossmint SDK @crossmint/client-sdk-react-ui. Supabase: https://hmkwyrrihxrmdnqkkqyz.supabase.co. Black and silver minimal UI.',done:false},
+  {t:'Build /app/pay/signup/page.tsx — merchant onboarding flow',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'Merchant signs up, gets a unique merchantId, stored in Supabase merchants table. Black/silver UI.',done:false},
+  {t:'Build /app/pay/dashboard/page.tsx — merchant dashboard',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'Show transactions, volume, status. Pull from Supabase transactions table filtered by merchantId.',done:false},
+  {t:'Build /api/pay/process/route.ts — Crossmint API payment processor',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'POST route. Call Crossmint API, write result to Supabase transactions table. Handle errors.',done:false},
+  {t:'Create Supabase tables: merchants + transactions',b:'HighRiskIntel',p:'high',w:'me',wk:'W1',note:'merchants: id, name, email, merchantId, createdAt. transactions: id, merchantId, amount, status, crossmintRef, createdAt.',done:false},
+
   // ── DAILY RECURRING ──
   {t:'eBay: Manager check-in — review overnight orders, revenue, flag issues',b:'eBay',p:'high',w:'me',wk:'W1',note:'Text both managers by 9am. Get order count, revenue, any flags. If no response in 1 hour, call.',done:false},
   {t:'Warehousing: 5+ cold outreach calls/emails to businesses needing storage',b:'Warehousing (3PL)',p:'high',w:'me',wk:'W1',note:'Target: e-commerce brands, importers, distributors, contractors. Use LinkedIn, Google Maps, local biz directories. Script: short, direct, pain-focused.',done:false},
